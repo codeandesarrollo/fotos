@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Carrusel 3D · 100% responsivo</title>
+<title>Carrusel 3D · 100% responsivo · Rotación continua</title>
 <style>
   :root{
     /* ======= Variables base (desktop) ======= */
@@ -129,7 +129,7 @@
     from{ transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt)) rotateY(0deg) }
     to  { transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt)) rotateY(360deg) }
   }
-  .hero:hover .ring{ animation-play-state: paused }
+  /* Eliminado: .hero:hover .ring{ animation-play-state: paused } */
 
   .card{
     --i:0; --count:12;
@@ -273,12 +273,7 @@
   const count = cards.length;
   cards.forEach(el => el.style.setProperty('--count', count));
 
-  // Pausa/reanuda con click o toque en el carrusel
-  let paused = false;
-  ring.addEventListener('click', () => {
-    paused = !paused;
-    ring.style.animationPlayState = paused ? 'paused' : 'running';
-  }, {passive:true});
+  // Eliminado: Evento para pausar/reanudar con click
 
   // ===== Menú móvil =====
   const navToggle = document.getElementById('navToggle');
