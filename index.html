@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Carrusel 3D · 100% responsivo · Rotación continua</title>
+<title>Fotografía · Alejandra Camacho</title>
 <style>
   :root{
     /* ======= Variables base (desktop) ======= */
@@ -34,6 +34,59 @@
     margin:0; background:var(--bg); color:var(--text);
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
     overflow-x:hidden; /* evita scroll lateral */
+    position: relative;
+  }
+
+  /* ===== MARCA DE AGUA COMPLETA ===== */
+  .watermark-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.08;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(122, 162, 255, 0.05) 40px,
+      rgba(122, 162, 255, 0.05) 80px
+    );
+  }
+  
+  .watermark-text {
+    position: fixed;
+    font-size: 6rem;
+    font-weight: 900;
+    color: rgba(233, 238, 252, 0.15);
+    text-transform: uppercase;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 9999;
+    animation: watermarkFloat 45s infinite linear;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  @keyframes watermarkFloat {
+    0% {
+      transform: translate(0, 0) rotate(-15deg);
+    }
+    25% {
+      transform: translate(5vw, 10vh) rotate(-10deg);
+    }
+    50% {
+      transform: translate(10vw, 5vh) rotate(-15deg);
+    }
+    75% {
+      transform: translate(5vw, 15vh) rotate(-20deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(-15deg);
+    }
   }
 
   /* ===== NAVBAR FULL-WIDTH ===== */
@@ -129,7 +182,6 @@
     from{ transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt)) rotateY(0deg) }
     to  { transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt)) rotateY(360deg) }
   }
-  /* Eliminado: .hero:hover .ring{ animation-play-state: paused } */
 
   .card{
     --i:0; --count:12;
@@ -160,11 +212,15 @@
   .portfolio {
     padding: 80px 24px;
     background: var(--bg);
+    position: relative;
+    z-index: 10;
   }
   
   .container {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    z-index: 10;
   }
   
   .section-header {
@@ -275,7 +331,7 @@
   .portfolio-link:hover {
     gap: 10px;
   }
-  
+
   /* ===== Breakpoints ===== */
   /* Laptops / <=1200px: centra un poco y abre separación */
   @media (max-width:1200px){
@@ -285,6 +341,10 @@
       --tilt: -16deg;
     }
     .ring{ width: 125vw }
+    
+    .watermark-text {
+      font-size: 5rem;
+    }
   }
   /* Tablets / <=992px: menos inclinación, cartas un poco más grandes */
   @media (max-width:992px){
@@ -300,6 +360,10 @@
     
     .portfolio-grid {
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .watermark-text {
+      font-size: 4rem;
     }
   }
   /* Móviles / <=768px: centra más, mayor profundidad para que se "lea" */
@@ -328,6 +392,10 @@
     .portfolio-grid {
       grid-template-columns: 1fr;
       gap: 20px;
+    }
+    
+    .watermark-text {
+      font-size: 3rem;
     }
   }
   /* Teléfonos pequeños / <=520px: casi centrado, baja tilt, tipo poster */
@@ -358,6 +426,10 @@
     .section-subtitle {
       font-size: 1rem;
     }
+    
+    .watermark-text {
+      font-size: 2.2rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -365,16 +437,24 @@
     .portfolio-item, .portfolio-img img {
       transition: none;
     }
+    .watermark-text {
+      animation: none;
+    }
   }
 </style>
 </head>
 <body>
 
+<!-- Marca de agua completa -->
+<div class="watermark-overlay"></div>
+<div class="watermark-text" style="top: 20%; left: 5%;">ALEJANDRA CAMACHO</div>
+
+
 <header class="navbar" aria-label="Barra de navegación principal">
   <div class="nav-left">
     <a class="brand" href="#home" aria-label="Inicio">
-      <div class="brand-badge">F</div>
-      <span>Fotografía</span>
+      <div class="brand-badge">AC</div>
+      <span>Alejandra Camacho</span>
     </a>
   </div>
 
@@ -428,8 +508,8 @@
 <section class="portfolio" id="portfolio">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Nuestro Portafolio</h2>
-      <p class="section-subtitle">Explora nuestra colección de trabajos fotográficos que capturan momentos únicos y emociones auténticas.</p>
+      <h2 class="section-title">Portafolio</h2>
+      <p class="section-subtitle">Explora mi colección de trabajos fotográficos que capturan momentos únicos y emociones auténticas.</p>
     </div>
     
     <div class="portfolio-grid">
@@ -440,7 +520,7 @@
         </div>
         <div class="portfolio-content">
           <h3 class="portfolio-title">Retratos Artísticos</h3>
-          <p class="portfolio-desc">Capturamos la esencia y personalidad de cada individuo con un enfoque creativo y único.</p>
+          <p class="portfolio-desc">Capturo la esencia y personalidad de cada individuo con un enfoque creativo y único.</p>
           <div class="portfolio-tags">
             <span class="portfolio-tag">Retrato</span>
             <span class="portfolio-tag">Estudio</span>
@@ -456,7 +536,7 @@
         </div>
         <div class="portfolio-content">
           <h3 class="portfolio-title">Bodas & Eventos</h3>
-          <p class="portfolio-desc">Documentamos los momentos más especiales de tu día con sensibilidad y atención al detalle.</p>
+          <p class="portfolio-desc">Documento los momentos más especiales de tu día con sensibilidad y atención al detalle.</p>
           <div class="portfolio-tags">
             <span class="portfolio-tag">Bodas</span>
             <span class="portfolio-tag">Eventos</span>
@@ -480,54 +560,6 @@
           <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
         </div>
       </div>
-      
-      <!-- Item 4 -->
-      <div class="portfolio-item">
-        <div class="portfolio-img">
-          <img src="https://images.unsplash.com/photo-1460904577954-8fadb262612c?q=80&w=1738&auto=format&fit=crop" alt="Moda y estilo">
-        </div>
-        <div class="portfolio-content">
-          <h3 class="portfolio-title">Moda & Estilo</h3>
-          <p class="portfolio-desc">Fotografía de moda con un enfoque contemporáneo que resalta la esencia de cada diseño.</p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Moda</span>
-            <span class="portfolio-tag">Estudio</span>
-          </div>
-          <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
-        </div>
-      </div>
-      
-      <!-- Item 5 -->
-      <div class="portfolio-item">
-        <div class="portfolio-img">
-          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1740&auto=format&fit=crop" alt="Conciertos y música">
-        </div>
-        <div class="portfolio-content">
-          <h3 class="portfolio-title">Conciertos & Música</h3>
-          <p class="portfolio-desc">Capturamos la energía y emoción de los eventos en vivo con un estilo dinámico y vibrante.</p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Música</span>
-            <span class="portfolio-tag">Eventos</span>
-          </div>
-          <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
-        </div>
-      </div>
-      
-      <!-- Item 6 -->
-      <div class="portfolio-item">
-        <div class="portfolio-img">
-          <img src="https://images.unsplash.com/photo-1558901357-ca41e027e43a?q=80&w=1742&auto=format&fit=crop" alt="Productos y comercial">
-        </div>
-        <div class="portfolio-content">
-          <h3 class="portfolio-title">Producto & Comercial</h3>
-          <p class="portfolio-desc">Fotografía profesional de productos que destaca sus características y atractivo comercial.</p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Producto</span>
-            <span class="portfolio-tag">Comercial</span>
-          </div>
-          <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -538,8 +570,6 @@
   const cards = ring.querySelectorAll('.card');
   const count = cards.length;
   cards.forEach(el => el.style.setProperty('--count', count));
-
-  // Eliminado: Evento para pausar/reanudar con click
 
   // ===== Menú móvil =====
   const navToggle = document.getElementById('navToggle');
