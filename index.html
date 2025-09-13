@@ -3,573 +3,544 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Fotografía · Alejandra Camacho</title>
+<title data-i18n="meta_title">Cris Bernal Photography · Bodas y Retratos en Puerto Vallarta</title>
+
+<!-- ===== SEO / Social ===== -->
+<meta name="description" content="Fotografía de bodas y retratos en Puerto Vallarta, Sayulita y Punta Mita. Estilo documental y artístico. Reserva tu fecha con Cris Bernal." data-i18n-attr="content:meta_desc"/>
+<link rel="canonical" href="https://puertovallartaweddingphotos.com/"/>
+<meta property="og:title" content="Cris Bernal Photography · Bodas y Retratos" data-i18n-attr="content:meta_og_title" />
+<meta property="og:description" content="Fotografía de bodas y retratos en Puerto Vallarta y Bahía de Banderas." data-i18n-attr="content:meta_og_desc" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_MX" />
+<meta name="color-scheme" content="light"/>
+
+<!-- ===== Design System ===== -->
 <style>
   :root{
-    /* ======= Variables base (desktop) ======= */
-    --tilt: -18deg;                        /* inclinación */
-    --radius: clamp(240px, 28vw, 460px);   /* profundidad del anillo */
-    --spread: 1.24;                        /* separación entre tarjetas */
-    --offsetY: 0vh;                        /* vertical */
-    --offsetX: -12vw;                      /* horizontal (negativo = izquierda) */
-
-    /* UI */
-    --bg:#0a0b0f;
-    --panel:#0e1118;
-    --glass: rgba(16,20,32,.52);
-    --border: rgba(255,255,255,.10);
-    --text:#e9eefc;
-    --text-dim:#b9c2da;
-    --accent:#7aa2ff;
-    --shadow: 0 8px 24px rgba(0,0,0,.35);
-    --radius-xl: 18px;
-
+    --container: 1200px;
+    --gap: clamp(14px, 2vw, 24px);
+    --radius: 16px;
+    --radius-xl: 22px;
     --nav-h: 64px;
     --safe-top: env(safe-area-inset-top, 0px);
+
+    --bg:#ffffff;
+    --surface:#fafbff;
+    --panel:#ffffffcc;
+    --border:#e7e9f0;
+    --shadow: 0 10px 30px rgba(10, 15, 35, .08);
+
+    --text:#0f1220;
+    --text-dim:#59607a;
+    --muted:#8b93ad;
+
+    --accent:#101214;
+    --accent-ink:#ffffff;
+    --focus: color-mix(in oklab, var(--accent) 52%, #ffffff);
+
+    --card-bg:#fff;
+    --chip-bg:#fff;
+
+    --blur: blur(10px);
   }
 
   *{ box-sizing:border-box }
   html,body{ height:100% }
   body{
     margin:0; background:var(--bg); color:var(--text);
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-    overflow-x:hidden; /* evita scroll lateral */
-    position: relative;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    overflow-x:hidden;
   }
+  img{ max-width:100%; display:block }
+  a{ color:inherit; text-decoration:none }
+  :focus-visible{ outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 8px }
 
-  /* ===== MARCA DE AGUA COMPLETA ===== */
-  .watermark-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9998;
-    opacity: 0.08;
-    background-image: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 40px,
-      rgba(122, 162, 255, 0.05) 40px,
-      rgba(122, 162, 255, 0.05) 80px
-    );
-  }
-  
-  .watermark-text {
-    position: fixed;
-    font-size: 6rem;
-    font-weight: 900;
-    color: rgba(233, 238, 252, 0.15);
-    text-transform: uppercase;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
-    z-index: 9999;
-    animation: watermarkFloat 45s infinite linear;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  @keyframes watermarkFloat {
-    0% {
-      transform: translate(0, 0) rotate(-15deg);
-    }
-    25% {
-      transform: translate(5vw, 10vh) rotate(-10deg);
-    }
-    50% {
-      transform: translate(10vw, 5vh) rotate(-15deg);
-    }
-    75% {
-      transform: translate(5vw, 15vh) rotate(-20deg);
-    }
-    100% {
-      transform: translate(0, 0) rotate(-15deg);
-    }
-  }
+  .container{ max-width:var(--container); margin:0 auto; padding:0 20px }
+  .section{ padding: clamp(56px, 8vw, 96px) 0; scroll-margin-top: calc(var(--nav-h) + 16px) }
+  .section-header{ text-align:center; margin-bottom: clamp(28px, 4vw, 48px) }
+  .section-title{ font-size: clamp(28px, 3.2vw, 38px); font-weight: 800; letter-spacing:.01em; margin:0 0 8px }
+  .section-sub{ color:var(--text-dim); font-size: clamp(14px, 1.8vw, 16px); max-width: 720px; margin: 0 auto }
 
-  /* ===== NAVBAR FULL-WIDTH ===== */
+  /* ===== NAVBAR ===== */
   .navbar{
-    position:fixed; top:0; left:0; right:0; height:calc(var(--nav-h) + var(--safe-top));
-    padding: max(8px, var(--safe-top)) 12px 8px 12px; z-index:50;
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:50; height: calc(var(--nav-h) + var(--safe-top));
+    display:flex; align-items:center; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    background: color-mix(in oklab, #fff 80%, transparent); border-bottom:1px solid var(--border);
   }
-  .nav-left{ display:flex; align-items:center; gap:12px; min-width:0 }
-  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text); white-space:nowrap }
+  .nav-wrap{ display:flex; align-items:center; gap:14px; justify-content:space-between; height:100% }
+  .brand{ display:flex; align-items:center; gap:12px; }
   .brand-badge{
-    width:36px; height:36px; border-radius:10px;
-    background: linear-gradient(135deg, #1a2032, #273553);
-    display:grid; place-items:center; font-weight:700; letter-spacing:.5px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
-    flex:0 0 auto;
+    width:38px; height:38px; border-radius:12px; background:var(--accent); color:var(--accent-ink);
+    display:grid; place-items:center; font-weight:800; letter-spacing:.5px; box-shadow: inset 0 0 0 1px #00000014;
   }
-  .brand span{ font-weight:600; font-size:15px; }
+  .brand span{ font-weight:700; font-size:15px; white-space:nowrap }
 
   .nav-links{
-    display:flex; gap:8px; align-items:center; padding:6px;
-    border-radius:12px; background: rgba(255,255,255,.03); border:1px solid var(--border);
+    display:flex; align-items:center; gap:6px; padding:6px; border-radius:14px;
+    background:#fff; border:1px solid var(--border);
   }
   .nav-links a{
-    color:var(--text-dim); text-decoration:none; font-size:14px;
-    padding:8px 12px; border-radius:10px; position:relative;
+    color:var(--text-dim); font-size:14px; padding:8px 12px; border-radius:10px; position:relative;
   }
-  .nav-links a:hover{ color:var(--text) }
+  .nav-links a.active{ color:var(--text); background: #f4f6fb }
   .nav-links a::after{
     content:""; position:absolute; left:12px; right:12px; bottom:6px; height:2px;
     background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    transform: scaleX(0); transform-origin:center; transition:.25s;
+    transform: scaleX(0); transform-origin:center; transition:.22s;
   }
   .nav-links a:hover::after{ transform: scaleX(1) }
 
-  .nav-actions{ display:flex; gap:8px; align-items:center; flex:0 0 auto }
+  .nav-actions{ display:flex; align-items:center; gap:10px }
   .btn{
-    appearance:none; border:none; cursor:pointer; font-size:14px; color:var(--text);
-    background: rgba(255,255,255,.06); padding:10px 14px; border-radius:12px;
-    border:1px solid var(--border);
+    appearance:none; border:none; cursor:pointer; font-size:14px; line-height:1;
+    color:var(--accent-ink); background: var(--accent); padding:12px 14px; border-radius:12px;
+    border:1px solid #000; box-shadow: 0 2px 0 #000; transition: transform .06s ease, box-shadow .06s ease, opacity .2s;
   }
-  .btn:hover{ background: rgba(255,255,255,.10) }
+  .btn:hover{ opacity:.92 } .btn:active{ transform: translateY(1px); box-shadow: 0 1px 0 #000 }
 
   .nav-toggle{
-    display:none; width:44px; height:44px; border-radius:12px; background: rgba(255,255,255,.06);
+    display:none; width:44px; height:44px; border-radius:12px; background:#fff;
     border:1px solid var(--border); align-items:center; justify-content:center;
   }
   .nav-toggle span, .nav-toggle::before, .nav-toggle::after{
-    content:""; display:block; width:20px; height:2px; background:#fff; opacity:.9;
-    border-radius:2px; transition:.25s
+    content:""; display:block; width:20px; height:2px; background:#000; border-radius:2px; transition:.25s
   }
-  .nav-toggle::before{ transform: translateY(-6px) }
-  .nav-toggle::after{ transform: translateY(6px) }
+  .nav-toggle::before{ transform: translateY(-6px) } .nav-toggle::after{ transform: translateY(6px) }
   .nav-toggle.active span{ transform: scaleX(0) }
   .nav-toggle.active::before{ transform: translateY(0) rotate(45deg) }
   .nav-toggle.active::after{ transform: translateY(0) rotate(-45deg) }
 
   .nav-flyout{
-    position:fixed; left:12px; right:12px; top:calc(var(--nav-h) + var(--safe-top) + 8px); z-index:49;
-    display:none; padding:10px; border-radius:16px; background: var(--glass);
+    position: fixed; left:16px; right:16px; top: calc(var(--nav-h) + var(--safe-top) + 8px); z-index:40;
+    display:none; padding:10px; border-radius:16px; background: color-mix(in oklab, #fff 92%, transparent);
     border:1px solid var(--border); box-shadow: var(--shadow);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
   }
   .nav-flyout a{
-    display:block; padding:12px 10px; border-radius:10px; color:var(--text-dim); text-decoration:none; font-size:15px;
+    display:block; padding:12px 10px; border-radius:10px; color:var(--text-dim); font-size:15px;
   }
-  .nav-flyout a:hover{ background: rgba(255,255,255,.06); color:var(--text) }
+  .nav-flyout a:hover{ background:#f2f4fa; color:var(--text) }
 
-  /* ===== HERO / CARRUSEL ===== */
-  .hero{
-    position:relative; width:100%; height:100vh; min-height:560px; overflow:hidden;
-    display:grid; place-items:center;
-    padding-top: calc(var(--nav-h) + var(--safe-top) + 12px); /* espacio para navbar */
+  /* Language switch */
+  .lang-switch{ display:flex; gap:6px }
+  .lang-btn{
+    background:#fff; border:1px solid var(--border); border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;
   }
-  .stage{
-    width:100%; height:100%;
-    display:grid; place-items:center;
-    perspective: 2200px;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
-            mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
-  }
-  .ring{
-    position:relative;
-    width: 120vw; /* ancho extra para que “salga” del centro */
-    height: clamp(320px, 40vw, 640px);
-    transform-style: preserve-3d;
-    animation: spin 44s linear infinite;
-    transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt));
-  }
-  @keyframes spin{
-    from{ transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt)) rotateY(0deg) }
-    to  { transform: translateX(var(--offsetX)) translateY(var(--offsetY)) rotateX(var(--tilt)) rotateY(360deg) }
-  }
+  .lang-btn.active{ background:#f4f6fb }
 
+  /* ===== HERO ===== */
+  .hero{ position:relative; background:var(--surface); padding: clamp(18px, 4vw, 28px) 0 0; }
+  .hero-inner{ position:relative }
+
+  .hero-tagline{
+    position:absolute; left:24px; bottom:24px; z-index:4;
+    background: var(--panel); backdrop-filter: var(--blur); border:1px solid var(--border);
+    padding:14px 18px; border-radius:14px; max-width:min(640px, 86vw)
+  }
+  .hero-tagline h1{ margin:0 0 6px; font-size: clamp(20px, 3.2vw, 30px); font-weight:800; letter-spacing:.02em }
+  .hero-tagline p{ margin:0; color:var(--text-dim); font-size: clamp(13px, 2.2vw, 15.5px) }
+
+  /* === Marquee (igual que el tuyo, pero adaptado) === */
+  .scroller{ position:relative; width:100%; height:min(72vh, 680px); display:grid; place-items:center; overflow:hidden; }
+  .scroller::before, .scroller::after{
+    content:""; position:absolute; top:0; bottom:0; width:min(10vw,140px); z-index:3; pointer-events:none;
+  }
+  .scroller::before{ left:0; background:linear-gradient(90deg, var(--surface), transparent) }
+  .scroller::after{ right:0; background:linear-gradient(270deg, var(--surface), transparent) }
+  .marquee{ display:flex; gap:var(--gap); width:max-content; align-items:center; animation: scroll var(--marquee-duration, 40s) linear infinite; will-change: transform }
+  .scroller:hover .marquee{ animation-play-state: paused }        /* desktop hover */
+  .marquee.paused{ animation-play-state: paused }                 /* pausa por toque/visibilidad */
+  .track{ display:flex; gap:var(--gap); align-items:center }
   .card{
-    --i:0; --count:12;
-    position:absolute; inset:0; margin:auto;
-    width: clamp(132px, 15vw, 200px);
-    height: clamp(168px, 20vw, 280px);
-    border-radius: 20px; overflow:hidden; background:#0b0f18;
-    transform:
-      rotateY(calc( (360deg / var(--count)) * var(--i) ))
-      translateZ(calc(var(--radius) * var(--spread)))
-      rotateZ(-8deg);
-    box-shadow: 0 16px 34px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.06);
+    position:relative; width: clamp(140px, 22vw, 300px); aspect-ratio: 4 / 5;
+    border-radius: var(--radius-xl); overflow:hidden; background:#fff; border:1px solid var(--border); box-shadow: 0 16px 34px rgba(0,0,0,.06);
+    flex:0 0 auto;
   }
-  .card img{ width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02) }
-  .card::after{
-    content:""; position:absolute; inset:0;
-    background: linear-gradient(180deg, #0000 46%, #0007 100%);
-    pointer-events:none;
+  .card img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition: transform .5s ease, filter .4s ease }
+  .card:hover img{ transform: scale(1.04); filter: saturate(1.06) contrast(1.03) }
+
+  @keyframes scroll{ from{ transform: translateX(0) } to{ transform: translateX(-50%) } }
+  .shade-top, .shade-bot{ position:absolute; left:0; right:0; height:10vh; z-index:2; pointer-events:none; }
+  .shade-top{ top:0; background:linear-gradient(var(--surface), #ffffff00) }
+  .shade-bot{ bottom:0; background:linear-gradient(#ffffff00, var(--surface)) }
+
+  /* ===== ABOUT / CONTACT ===== */
+  .about, .contact{
+    display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center;
+    background:#fff; border:1px solid var(--border); border-radius:18px; padding:22px; box-shadow:var(--shadow);
+  }
+  .about p, .contact p{ color:var(--text-dim); line-height:1.6 }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
+  .chip{ border:1px solid var(--border); border-radius:999px; padding:6px 10px; font-size:.85rem; background:#fff }
+
+  /* ===== REVIEWS ===== */
+  .reviews{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:18px }
+  .review{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow:var(--shadow) }
+  .stars{ color:#f59e0b; font-weight:800; letter-spacing:.12em }
+
+  /* ===== Footer / WhatsApp ===== */
+  footer{ padding:28px 0; border-top:1px solid var(--border); color:var(--muted); text-align:center }
+  .fab{
+    position: fixed; right:16px; bottom:16px; z-index:60;
+    background:#25D366; color:#fff; border:0; border-radius:999px; padding:12px 16px; font-weight:800;
+    box-shadow: 0 10px 24px rgba(0,0,0,.18); cursor:pointer
   }
 
-  .shade-top, .shade-bot{
-    position:absolute; left:0; right:0; height:10vh; z-index:1; pointer-events:none;
+  /* ===== RECENT (ÁLBUMES) ===== */
+  .albums-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:18px;
   }
-  .shade-top{ top:0; background:linear-gradient(var(--bg), #0a0b0000) }
-  .shade-bot{ bottom:0; background:linear-gradient(#0a0b0000, var(--bg)) }
-
-  /* ===== PORTFOLIO SECTION ===== */
-  .portfolio {
-    padding: 80px 24px;
-    background: var(--bg);
-    position: relative;
-    z-index: 10;
+  .album-card{
+    background:#fff; border:1px solid var(--border); border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
+    display:grid; grid-template-rows:auto 1fr;
   }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 10;
-  }
-  
-  .section-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-  
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 16px;
-    background: linear-gradient(135deg, var(--text), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .section-subtitle {
-    color: var(--text-dim);
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-  }
-  
-  .portfolio-item {
-    background: var(--glass);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .portfolio-item:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow);
-  }
-  
-  .portfolio-img {
-    width: 100%;
-    height: 240px;
-    overflow: hidden;
-  }
-  
-  .portfolio-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-  
-  .portfolio-item:hover .portfolio-img img {
-    transform: scale(1.05);
-  }
-  
-  .portfolio-content {
-    padding: 20px;
-  }
-  
-  .portfolio-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--text);
-  }
-  
-  .portfolio-desc {
-    color: var(--text-dim);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 16px;
-  }
-  
-  .portfolio-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  
-  .portfolio-tag {
-    background: rgba(122, 162, 255, 0.12);
-    color: var(--accent);
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-  
-  .portfolio-link {
-    display: inline-flex;
-    align-items: center;
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: gap 0.2s ease;
-    gap: 6px;
-  }
-  
-  .portfolio-link:hover {
-    gap: 10px;
+  .album-cover{ aspect-ratio:16/10; overflow:hidden; background:#f2f4fa }
+  .album-cover img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s ease, filter .4s ease }
+  .album-card:hover .album-cover img{ transform:scale(1.04); filter:saturate(1.05) contrast(1.02) }
+  .album-meta{ padding:16px; display:grid; gap:8px; align-content:start }
+  .album-title{ margin:0; font-size:1.06rem; font-weight:800 }
+  .album-count{ margin:0; color:var(--text-dim); font-size:.92rem }
+  .btn-small{ padding:8px 12px; font-size:13px }
+  .btn-small-outline{
+    background:#fff; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 12px; cursor:pointer;
   }
 
-  /* ===== Breakpoints ===== */
-  /* Laptops / <=1200px: centra un poco y abre separación */
-  @media (max-width:1200px){
-    :root{
-      --offsetX: -8vw;
-      --spread: 1.28;
-      --tilt: -16deg;
-    }
-    .ring{ width: 125vw }
-    
-    .watermark-text {
-      font-size: 5rem;
-    }
+  /* ===== Gallery Modal ===== */
+  .gallery-modal{
+    position:fixed; inset:0; background:rgba(6,8,20,.86); z-index:80; display:flex; flex-direction:column;
+    padding:16px; backdrop-filter:var(--blur);
   }
-  /* Tablets / <=992px: menos inclinación, cartas un poco más grandes */
+  .gallery-modal[hidden]{ display:none }
+  .gal-header{
+    display:flex; align-items:center; gap:12px; justify-content:space-between;
+    background:#fff; border:1px solid var(--border); border-radius:14px; padding:10px 12px; box-shadow:var(--shadow);
+  }
+  .gal-meta{ color:var(--text-dim); font-size:.9rem }
+  .gal-grid{
+    margin-top:12px; flex:1; overflow:auto; padding:4px;
+    column-width: 280px; column-gap: 12px; /* Masonry fluido */
+  }
+  .gal-grid a{ break-inside: avoid; display:block; margin:0 0 12px; border-radius:12px; overflow:hidden; background:#f1f3f8; border:1px solid var(--border) }
+  .gal-grid img{ width:100%; height:auto; display:block }
+  .gal-actions{ display:flex; justify-content:center; margin-top:10px }
+
+  /* ===== Responsive ===== */
   @media (max-width:992px){
-    :root{
-      --offsetX: -6vw;
-      --radius: clamp(220px, 36vw, 420px);
-      --spread: 1.30;
-      --tilt: -12deg;
-    }
-    .ring{ width: 135vw; height: clamp(300px, 52vw, 560px) }
-    .nav-links{ display:none }
-    .nav-toggle{ display:flex }
-    
-    .portfolio-grid {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-    
-    .watermark-text {
-      font-size: 4rem;
-    }
+    .nav-links{ display:none } .nav-toggle{ display:flex }
+    .about, .contact{ grid-template-columns: 1fr }
   }
-  /* Móviles / <=768px: centra más, mayor profundidad para que se "lea" */
+  /* --- Móvil: ajustes del marquee y del hero --- */
   @media (max-width:768px){
-    :root{
-      --offsetX: -3vw;
-      --radius: clamp(200px, 54vw, 400px);
-      --spread: 1.34;
-      --tilt: -9deg;
+    .scroller{ height: clamp(360px, 60vh, 540px); }
+    .track{ gap: clamp(10px, 3.6vw, 16px); }
+    .card{ width: 68vw; border-radius: 18px; }
+    .hero-tagline{
+      left: 12px; right: 12px; bottom: 12px;
+      max-width: none; padding:12px 14px;
     }
-    .ring{ width: 145vw; height: clamp(280px, 64vw, 520px) }
-    .card{
-      width: clamp(128px, 26vw, 180px);
-      height: clamp(160px, 34vw, 250px);
-      border-radius: 16px;
-    }
-    
-    .portfolio {
-      padding: 60px 16px;
-    }
-    
-    .section-title {
-      font-size: 2rem;
-    }
-    
-    .portfolio-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    
-    .watermark-text {
-      font-size: 3rem;
-    }
+    .shade-top, .shade-bot{ height: 14vh; }
   }
-  /* Teléfonos pequeños / <=520px: casi centrado, baja tilt, tipo poster */
-  @media (max-width:520px){
-    :root{
-      --offsetX: -1vw;
-      --radius: clamp(180px, 70vw, 360px);
-      --spread: 1.38;
-      --tilt: -6deg;
-    }
-    .ring{ width: 160vw; height: clamp(260px, 76vw, 500px) }
+  @media (max-width:380px){
+    .card{ width: 78vw; }
+  }
+  @media (max-width:560px){
     .brand span{ font-size:14px }
-    .brand-badge{ width:32px; height:32px }
-    .btn{ padding:8px 12px; font-size:13px }
-    
-    .portfolio {
-      padding: 40px 12px;
-    }
-    
-    .section-header {
-      margin-bottom: 40px;
-    }
-    
-    .section-title {
-      font-size: 1.75rem;
-    }
-    
-    .section-subtitle {
-      font-size: 1rem;
-    }
-    
-    .watermark-text {
-      font-size: 2.2rem;
-    }
+    .btn{ padding:10px 12px; font-size:13px }
   }
-
   @media (prefers-reduced-motion: reduce){
-    .ring{ animation:none }
-    .portfolio-item, .portfolio-img img {
-      transition: none;
-    }
-    .watermark-text {
-      animation: none;
-    }
+    .marquee{ animation: none }
+    .card img{ transition: none }
   }
 </style>
 </head>
 <body>
 
-<!-- Marca de agua completa -->
-<div class="watermark-overlay"></div>
-<div class="watermark-text" style="top: 20%; left: 5%;">ALEJANDRA CAMACHO</div>
-
-
-<header class="navbar" aria-label="Barra de navegación principal">
-  <div class="nav-left">
-    <a class="brand" href="#home" aria-label="Inicio">
-      <div class="brand-badge">AC</div>
-      <span>Alejandra Camacho</span>
+<!-- ===== NAV ===== -->
+<header class="navbar" aria-label="Navigation bar">
+  <div class="container nav-wrap">
+    <a class="brand" href="#home" aria-label="Inicio / Home">
+      <div class="brand-badge">CB</div>
+      <span>Cris Bernal Photography</span>
     </a>
-  </div>
 
-  <nav class="nav-links" aria-label="Enlaces principales">
-    <a href="#home">Inicio</a>
-    <a href="#portfolio">Portafolio</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#acerca">Acerca</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+    <nav class="nav-links" aria-label="Main links">
+      <a href="#home" data-i18n="nav_home" class="active">Inicio</a>
+      <a href="#acerca" data-i18n="nav_about">Acerca</a>
+      <a href="#recent" data-i18n="nav_recent">Reciente</a>
+      <a href="#contacto" data-i18n="nav_contact">Contacto</a>
+      <a href="#reseñas" data-i18n="nav_reviews">Reseñas</a>
+    </nav>
 
-  <div class="nav-actions">
-    <button class="btn" onclick="window.location.hash='#contacto'">Reserva</button>
-    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú"><span></span></button>
+    <div class="nav-actions">
+      <button class="btn" id="ctaTop" data-i18n="nav_book">Reservar</button>
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <button class="lang-btn active" id="btnES">ES</button>
+        <button class="lang-btn" id="btnEN">EN</button>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" data-i18n-attr="aria-label:aria_menu_open"><span></span></button>
+    </div>
   </div>
 </header>
 
-<nav class="nav-flyout" id="navFlyout" aria-label="Menú móvil">
-  <a href="#home">Inicio</a>
-  <a href="#portfolio">Portafolio</a>
-  <a href="#servicios">Servicios</a>
-  <a href="#acerca">Acerca</a>
-  <a href="#contacto">Contacto</a>
+<nav class="nav-flyout" id="navFlyout" aria-label="Mobile menu">
+  <a href="#home" data-i18n="nav_home">Inicio</a>
+  <a href="#acerca" data-i18n="nav_about">Acerca</a>
+  <a href="#recent" data-i18n="nav_recent">Reciente</a>
+  <a href="#contacto" data-i18n="nav_contact">Contacto</a>
+  <a href="#reseñas" data-i18n="nav_reviews">Reseñas</a>
 </nav>
 
-<section class="hero" id="home" aria-label="Carrusel de fotos">
-  <div class="stage">
-    <div class="ring" id="ring">
-      <!-- Reemplaza por tus fotos -->
-      <figure class="card" style="--i:0"><img src="https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=1600&auto=format&fit=crop" alt="Foto 1"></figure>
-      <figure class="card" style="--i:1"><img src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?q=80&w=1600&auto=format&fit=crop" alt="Foto 2"></figure>
-      <figure class="card" style="--i:2"><img src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?q=80&w=1600&auto=format&fit=crop" alt="Foto 3"></figure>
-      <figure class="card" style="--i:3"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop" alt="Foto 4"></figure>
-      <figure class="card" style="--i:4"><img src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?q=80&w=1600&auto=format&fit=crop" alt="Foto 5"></figure>
-      <figure class="card" style="--i:5"><img src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?q=80&w=1600&auto=format&fit=crop" alt="Foto 6"></figure>
-      <figure class="card" style="--i:6"><img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1600&auto=format&fit=crop" alt="Foto 7"></figure>
-      <figure class="card" style="--i:7"><img src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?q=80&w=1600&auto=format&fit=crop" alt="Foto 8"></figure>
-      <figure class="card" style="--i:8"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop" alt="Foto 9"></figure>
-      <figure class="card" style="--i:9"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1600&auto=format&fit=crop" alt="Foto 10"></figure>
-      <figure class="card" style="--i:10"><img src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=1600&auto=format&fit=crop" alt="Foto 11"></figure>
-      <figure class="card" style="--i:11"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop" alt="Foto 12"></figure>
-      <figure class="card" style="--i:12"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1600&auto=format&fit=crop" alt="Foto 13"></figure>
-      <figure class="card" style="--i:13"><img src="https://images.unsplash.com/photo-1517602302552-471fe67acf66?q=80&w=1600&auto=format&fit=crop" alt="Foto 14"></figure>
+<!-- ===== HERO ===== -->
+<section class="hero section" id="home" aria-label="Horizontal gallery">
+  <div class="container hero-inner">
+    <div class="scroller" aria-live="off" id="scroller">
+      <div class="marquee" id="marquee">
+        <!-- Track 1 -->
+        <div class="track">
+          <figure class="card">
+            <picture>
+              <source srcset="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop&fm=webp" type="image/webp">
+              <img loading="eager" decoding="async" src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" alt="Beach wedding, Puerto Vallarta">
+            </picture>
+          </figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" alt="Intimate wedding moments"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" alt="Wedding details"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop" alt="Sayulita landscape"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?w=1200&auto=format&fit=crop" alt="Creative portrait"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1200&auto=format&fit=crop" alt="Couple on the beach"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" alt="Sunset ceremony"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?w=1200&auto=format&fit=crop" alt="Bouquet and rings"></figure>
+        </div>
+        <!-- Track 2 -->
+        <div class="track" aria-hidden="true">
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?w=1200&auto=format&fit=crop" alt=""></figure>
+        </div>
+      </div>
     </div>
+
+    <div class="hero-tagline">
+      <h1 data-i18n="hero_h1">Hola, soy Cris Bernal — Puerto Vallarta Photos</h1>
+      <p data-i18n="hero_p">Fotógrafa de bodas y retratos con base en Puerto Vallarta. Cobertura en Sayulita y Punta Mita. Reserva tu fecha.</p>
+    </div>
+    <div class="shade-top"></div>
+    <div class="shade-bot"></div>
   </div>
-  <div class="shade-top"></div>
-  <div class="shade-bot"></div>
 </section>
 
-<!-- Sección de Portafolio -->
-<section class="portfolio" id="portfolio">
+<!-- ===== ABOUT ===== -->
+<section class="section" id="acerca" aria-label="About Cris">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">Portafolio</h2>
-      <p class="section-subtitle">Explora mi colección de trabajos fotográficos que capturan momentos únicos y emociones auténticas.</p>
+      <h2 class="section-title" data-i18n="about_title">Acerca de Cris</h2>
+      <p class="section-sub" data-i18n="about_sub">Más de 15 años fotografiando historias en Bahía de Banderas.</p>
     </div>
-    
-    <div class="portfolio-grid">
-      <!-- Item 1 -->
-      <div class="portfolio-item">
-        <div class="portfolio-img">
-          <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1740&auto=format&fit=crop" alt="Retratos artísticos">
-        </div>
-        <div class="portfolio-content">
-          <h3 class="portfolio-title">Retratos Artísticos</h3>
-          <p class="portfolio-desc">Capturo la esencia y personalidad de cada individuo con un enfoque creativo y único.</p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Retrato</span>
-            <span class="portfolio-tag">Estudio</span>
-          </div>
-          <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
+
+    <div class="about">
+      <div>
+        <p data-i18n="about_p1"><strong>Hola, soy Cris Bernal</strong>, fotógrafa con base en <strong>Puerto Vallarta</strong>. Trabajo en <strong>Sayulita</strong> y <strong>Punta Mita</strong>, creando imágenes genuinas con una mezcla de estilo <em>documental</em>, <em>artístico</em> y <em>fotoperiodístico</em>.</p>
+        <p data-i18n="about_p2">En 2018 fui reconocida con <strong>Wedding Awards</strong> (Bodas.com.mx) y he recibido reseñas 5★ por profesionalismo, flexibilidad y entrega puntual.</p>
+        <div class="chips">
+          <span class="chip" data-i18n="chip1">PV · Sayulita · Punta Mita</span>
+          <span class="chip" data-i18n="chip2">Documental & Artístico</span>
+          <span class="chip" data-i18n="chip3">+15 años</span>
         </div>
       </div>
-      
-      <!-- Item 2 -->
-      <div class="portfolio-item">
-        <div class="portfolio-img">
-          <img src="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?q=80&w=1740&auto=format&fit=crop" alt="Bodas y eventos">
-        </div>
-        <div class="portfolio-content">
-          <h3 class="portfolio-title">Bodas & Eventos</h3>
-          <p class="portfolio-desc">Documento los momentos más especiales de tu día con sensibilidad y atención al detalle.</p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Bodas</span>
-            <span class="portfolio-tag">Eventos</span>
-          </div>
-          <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
-        </div>
-      </div>
-      
-      <!-- Item 3 -->
-      <div class="portfolio-item">
-        <div class="portfolio-img">
-          <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?q=80&w=1740&auto=format&fit=crop" alt="Paisajes naturales">
-        </div>
-        <div class="portfolio-content">
-          <h3 class="portfolio-title">Paisajes Naturales</h3>
-          <p class="portfolio-desc">Impresionantes capturas de la naturaleza en su máximo esplendor y en las mejores condiciones de luz.</p>
-          <div class="portfolio-tags">
-            <span class="portfolio-tag">Naturaleza</span>
-            <span class="portfolio-tag">Exteriores</span>
-          </div>
-          <a href="#" class="portfolio-link">Ver proyecto <span>→</span></a>
-        </div>
+      <div>
+        <p><strong data-i18n="label_address">Dirección:</strong> <span data-i18n="addr_value">Paseo de la Rivera, 48290 Puerto Vallarta, Jal.</span></p>
+        <p><strong data-i18n="label_hours">Atención:</strong> <span data-i18n="hours_value">Lun–Vie, 15:00–20:00 (previa cita)</span></p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ===== RECENT (ÁLBUMES) ===== -->
+<section class="section" id="recent" aria-label="Recent work">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="recent_title">Reciente</h2>
+      <p class="section-sub" data-i18n="recent_sub">Álbumes por categoría. Abre uno para ver más.</p>
+    </div>
+
+    <div class="albums-grid">
+      <!-- Album cards (igual) -->
+      <article class="album-card" data-album="weddings">
+        <div class="album-cover">
+          <img src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" alt="Weddings cover">
+        </div>
+        <div class="album-meta">
+          <h3 class="album-title" data-i18n="cat_weddings">Bodas (varias parejas)</h3>
+          <p class="album-count"><span data-count="weddings">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
+        </div>
+      </article>
+
+      <article class="album-card" data-album="engagement">
+        <div class="album-cover">
+          <img src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" alt="Engagement cover">
+        </div>
+        <div class="album-meta">
+          <h3 class="album-title" data-i18n="cat_engagement">Engagement</h3>
+          <p class="album-count"><span data-count="engagement">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
+        </div>
+      </article>
+
+      <article class="album-card" data-album="family">
+        <div class="album-cover">
+          <img src="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1200&auto=format&fit=crop" alt="Family cover">
+        </div>
+        <div class="album-meta">
+          <h3 class="album-title" data-i18n="cat_family">Family</h3>
+          <p class="album-count"><span data-count="family">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
+        </div>
+      </article>
+
+      <article class="album-card" data-album="pregnancy">
+        <div class="album-cover">
+          <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" alt="Pregnancy cover">
+        </div>
+        <div class="album-meta">
+          <h3 class="album-title" data-i18n="cat_pregnancy">Pregnancy</h3>
+          <p class="album-count"><span data-count="pregnancy">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
+        </div>
+      </article>
+
+      <article class="album-card" data-album="vow">
+        <div class="album-cover">
+          <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" alt="Vow renewal cover">
+        </div>
+        <div class="album-meta">
+          <h3 class="album-title" data-i18n="cat_vow">Vow Renewal</h3>
+          <p class="album-count"><span data-count="vow">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
+        </div>
+      </article>
+
+      <article class="album-card" data-album="trash">
+        <div class="album-cover">
+          <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1200&auto=format&fit=crop" alt="Trash the Dress cover">
+        </div>
+        <div class="album-meta">
+          <h3 class="album-title" data-i18n="cat_trash">Trash the Dress</h3>
+          <p class="album-count"><span data-count="trash">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALLERY MODAL ===== -->
+<div id="galleryModal" class="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="galTitle" hidden>
+  <div class="gal-header">
+    <h3 id="galTitle">Album</h3>
+    <div class="gal-meta"><span id="galCount">0</span> <span data-i18n="photos_word">fotos</span></div>
+    <button id="galClose" class="btn btn-small-outline" data-i18n="close">Cerrar</button>
+  </div>
+  <div id="galGrid" class="gal-grid" aria-live="polite"></div>
+  <div class="gal-actions">
+    <button id="galMore" class="btn" data-i18n="load_more">Ver más</button>
+  </div>
+</div>
+
+<!-- ===== REVIEWS ===== -->
+<section class="section" id="reseñas" aria-label="Reviews">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="reviews_title">Reseñas</h2>
+      <p class="section-sub" data-i18n="reviews_sub">Valoración 5.0/5 — 100% de parejas recomiendan a Cris Bernal Photography.</p>
+    </div>
+    <div class="reviews">
+      <blockquote class="review">
+        <div class="stars">★★★★★</div>
+        <p data-i18n="rev1">“Excelente servicio y profesionalismo… capturó cada momento con ideas originales y mucha energía.”</p>
+        <small>— <span data-i18n="rev1_by">Christian</span></small>
+      </blockquote>
+      <blockquote class="review">
+        <div class="stars">★★★★★</div>
+        <p data-i18n="rev2">“Seria, responsable, puntual y flexible; te hace sentir cómoda. Entrega a tiempo y trabajo magnífico.”</p>
+        <small>— <span data-i18n="rev2_by">Tania</span></small>
+      </blockquote>
+      <blockquote class="review">
+        <div class="stars">★★★★★</div>
+        <p data-i18n="rev3">“De las mejores decisiones para nuestra boda. Desde la sesión casual hasta el evento, siempre atenta.”</p>
+        <small>— <span data-i18n="rev3_by">Casandra</span></small>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section" id="contacto" aria-label="Contact">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="contact_title">Contacto</h2>
+      <p class="section-sub" data-i18n="contact_sub">Comparte fecha, locación y tipo de sesión; te responderé dentro de horario de atención.</p>
+    </div>
+
+    <div class="contact">
+      <div>
+        <p><strong data-i18n="label_whatsapp">WhatsApp:</strong> <a id="waLink1" href="https://wa.me/523221217474" target="_blank" rel="noopener">+52 322 121 7474</a></p>
+        <p><strong data-i18n="label_instagram">Instagram:</strong> <a href="https://www.instagram.com/crisbernalphoto/" target="_blank" rel="noopener">@crisbernalphoto</a></p>
+        <p><strong data-i18n="label_facebook">Facebook:</strong> <a href="https://www.facebook.com/CrisBernalPhotography/" target="_blank" rel="noopener">Cris Bernal Photography</a></p>
+        <div class="chips">
+          <span class="chip" data-i18n="chip_hours">Lun–Vie 15:00–20:00</span>
+          <span class="chip" data-i18n="chip_reserve">Reserva por WhatsApp</span>
+          <span class="chip" data-i18n="chip_delivery">Entrega digital</span>
+        </div>
+      </div>
+      <div>
+        <button class="btn" id="ctaWhats" data-i18n="cta_whatsapp">Reservar por WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container"><span id="footCopy">© <span id="yr"></span> Cris Bernal Photography · Puerto Vallarta, México</span></div>
+</footer>
+
+<!-- ===== Floating WhatsApp ===== -->
+<button class="fab" id="fabWA" data-i18n="fab_text" aria-label="Open WhatsApp">WhatsApp</button>
+
+<!-- ===== Lightbox minimal ===== -->
+<div id="lightbox" style="position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:24px; z-index:70;">
+  <button id="lbClose" aria-label="Close" style="position:absolute; top:16px; right:16px; background:#ffffff; border:1px solid #0f1220; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;">✕</button>
+  <img id="lbImg" alt="" style="max-width: min(96vw, 1400px); max-height: 86vh; border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.35)"/>
+  <div id="lbCap" style="color:#e9eefc; margin-top:10px; text-align:center"></div>
+</div>
+
+<!-- ===== Schema ===== -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"Cris Bernal Photography",
+  "areaServed":["Puerto Vallarta","Sayulita","Punta Mita"],
+  "image":"https://puertovallartaweddingphotos.com/logo.jpg",
+  "url":"https://puertovallartaweddingphotos.com",
+  "address":{"@type":"PostalAddress","streetAddress":"Paseo de la Rivera","addressLocality":"Puerto Vallarta","addressRegion":"Jalisco","postalCode":"48290","addressCountry":"MX"},
+  "telephone":"+523221217474",
+  "sameAs":["https://www.instagram.com/crisbernalphoto/","https://www.facebook.com/CrisBernalPhotography/"],
+  "priceRange":"$$"
+}
+</script>
+
+<!-- ===== Scripts ===== -->
 <script>
-  // Ajusta automáticamente --count según tarjetas
-  const ring = document.getElementById('ring');
-  const cards = ring.querySelectorAll('.card');
-  const count = cards.length;
-  cards.forEach(el => el.style.setProperty('--count', count));
+  // Año en footer
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
   // ===== Menú móvil =====
   const navToggle = document.getElementById('navToggle');
@@ -578,25 +549,335 @@
     navToggle.classList.toggle('active');
     const open = navToggle.classList.contains('active');
     navFlyout.style.display = open ? 'block' : 'none';
+    navToggle.setAttribute('aria-label', open ? t.aria_menu_close : t.aria_menu_open);
   };
-  navToggle.addEventListener('click', toggleMenu);
-  navFlyout.addEventListener('click', e => {
-    if(e.target.tagName === 'A'){ toggleMenu(); }
-  });
+
+  // ===== Lightbox =====
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
+  const lbClose = document.getElementById('lbClose');
+
   document.addEventListener('click', (e)=>{
-    if(!e.target.closest('.navbar') && !e.target.closest('#navFlyout')){
-      navToggle.classList.remove('active'); navFlyout.style.display='none';
-    }
+    const a = e.target.closest('[data-lightbox]');
+    if(!a) return;
+    e.preventDefault();
+    lbImg.src = a.getAttribute('href');
+    lbImg.alt = a.dataset.lightbox || '';
+    lbCap.textContent = a.dataset.lightbox || '';
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
   });
 
-  // Resalta enlace activo según hash
-  const links = [...document.querySelectorAll('.nav-links a, #navFlyout a')];
-  const setActive = () => {
-    const h = location.hash || '#home';
-    links.forEach(a => a.style.color = (a.getAttribute('href')===h) ? 'var(--text)' : 'var(--text-dim)');
+  const closeLB = ()=>{ lb.style.display='none'; lbImg.src=''; document.body.style.overflow = '' };
+  lbClose.addEventListener('click', closeLB);
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() });
+
+  // ===== Scrollspy =====
+  const navLinks = [...document.querySelectorAll('.nav-links a, #navFlyout a')];
+  const sections = ['home','acerca','recent','contacto','reseñas'].map(id => document.getElementById(id));
+  const setActiveLink = (hash) => navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === hash));
+  const onScroll = () => {
+    let current = '#home';
+    for (const sec of sections){
+      if(!sec) continue;
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.28) current = '#' + sec.id;
+    }
+    setActiveLink(current);
   };
-  window.addEventListener('hashchange', setActive);
-  setActive();
+  window.addEventListener('scroll', onScroll, { passive:true });
+  setActiveLink('#home');
+
+  // ===== Marquee duration (mejor en móviles) =====
+  const marquee = document.getElementById('marquee');
+  const scroller = document.getElementById('scroller');
+
+  function setMarqueeDuration(){
+    if(!marquee) return;
+    const track = marquee.querySelector('.track');
+    if(!track) return;
+    const w = track.getBoundingClientRect().width;
+    const vw = Math.max(window.innerWidth, 360);
+    // Un poco más lento en pantallas pequeñas para que se aprecie mejor
+    const pxPerSecond = vw < 768 ? 64 : 82;
+    const duration = Math.max(22, Math.round(w / pxPerSecond));
+    marquee.style.setProperty('--marquee-duration', duration + 's');
+  }
+
+  // Pausa inteligente: toque/drag, pérdida de visibilidad
+  const pause = ()=> marquee.classList.add('paused');
+  const play  = ()=> marquee.classList.remove('paused');
+
+  ['pointerdown','touchstart'].forEach(ev=>{
+    scroller.addEventListener(ev, pause, {passive:true});
+  });
+  ['pointerup','pointercancel','touchend','mouseleave'].forEach(ev=>{
+    scroller.addEventListener(ev, play, {passive:true});
+  });
+  document.addEventListener('visibilitychange', ()=> document.hidden ? pause() : play());
+
+  const ro = new ResizeObserver(setMarqueeDuration);
+  ro.observe(document.body);
+  window.addEventListener('load', setMarqueeDuration);
+  window.addEventListener('orientationchange', setMarqueeDuration);
+
+  // ===== Smooth anchors =====
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      const id = a.getAttribute('href');
+      const el = document.querySelector(id);
+      if(!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior:'smooth', block:'start' });
+      history.pushState(null, '', id);
+    });
+  });
+
+  // ====== DATA: URLs por álbum ======
+  const albums = {
+    weddings: [
+      "https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1600&auto=format&fit=crop"
+    ],
+    engagement: [
+      "https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&auto=format&fit=crop"
+    ],
+    family: [
+      "https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1600&auto=format&fit=crop"
+    ],
+    pregnancy: [
+      "https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1600&auto=format&fit=crop"
+    ],
+    vow: [
+      "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1600&auto=format&fit=crop"
+    ],
+    trash: [
+      "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1600&auto=format&fit=crop"
+    ],
+  };
+
+  // Pinta conteos en tarjetas
+  Object.keys(albums).forEach(k=>{
+    const el = document.querySelector(`[data-count="${k}"]`);
+    if (el) el.textContent = albums[k].length;
+  });
+
+  // ===== Gallery modal =====
+  const modal = document.getElementById('galleryModal');
+  const galTitle = document.getElementById('galTitle');
+  const galGrid = document.getElementById('galGrid');
+  const galCount = document.getElementById('galCount');
+  const galMore = document.getElementById('galMore');
+  const galClose = document.getElementById('galClose');
+
+  const BATCH = 12;
+  let currentKey = null;
+  let pointer = 0;
+
+  function openAlbum(key){
+    currentKey = key;
+    pointer = 0;
+    const list = albums[key] || [];
+    galGrid.innerHTML = "";
+    galTitle.textContent = document.querySelector(`.album-card[data-album="${key}"] .album-title`)?.textContent || 'Album';
+    galCount.textContent = list.length;
+    loadBatch();
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAlbum(){
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+  function loadBatch(){
+    const list = albums[currentKey] || [];
+    const slice = list.slice(pointer, pointer + BATCH);
+    slice.forEach(url=>{
+      const a = document.createElement('a');
+      a.href = url;
+      a.className = 'g-thumb';
+      a.setAttribute('data-lightbox', galTitle.textContent);
+      a.innerHTML = `<img loading="lazy" decoding="async" src="${url}&q=80" alt="${galTitle.textContent}">`;
+      galGrid.appendChild(a);
+    });
+    pointer += slice.length;
+    galMore.style.display = pointer < list.length ? '' : 'none';
+  }
+
+  document.querySelectorAll('.album-card .btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const key = e.currentTarget.closest('.album-card').dataset.album;
+      openAlbum(key);
+    });
+  });
+  galMore.addEventListener('click', loadBatch);
+  galClose.addEventListener('click', closeAlbum);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeAlbum(); });
+
+  // ===== I18N =====
+  const dict = {
+    es: {
+      meta_title: "Cris Bernal Photography · Bodas y Retratos en Puerto Vallarta",
+      meta_desc: "Fotografía de bodas y retratos en Puerto Vallarta, Sayulita y Punta Mita. Estilo documental y artístico. Reserva tu fecha con Cris Bernal.",
+      meta_og_title: "Cris Bernal Photography · Bodas y Retratos",
+      meta_og_desc: "Fotografía de bodas y retratos en Puerto Vallarta y Bahía de Banderas.",
+
+      nav_home:"Inicio", nav_about:"Acerca", nav_recent:"Reciente", nav_contact:"Contacto", nav_reviews:"Reseñas", nav_book:"Reservar",
+      aria_menu_open:"Abrir menú", aria_menu_close:"Cerrar menú",
+
+      hero_h1:"Hola, soy Cris Bernal — Puerto Vallarta Photos",
+      hero_p:"Fotógrafa de bodas y retratos con base en Puerto Vallarta. Cobertura en Sayulita y Punta Mita. Reserva tu fecha.",
+
+      about_title:"Acerca de Cris", about_sub:"Más de 15 años fotografiando historias en Bahía de Banderas.",
+      about_p1:"<strong>Hola, soy Cris Bernal</strong>, fotógrafa con base en <strong>Puerto Vallarta</strong>. Trabajo en <strong>Sayulita</strong> y <strong>Punta Mita</strong>, creando imágenes genuinas con una mezcla de estilo <em>documental</em>, <em>artístico</em> y <em>fotoperiodístico</em>.",
+      about_p2:"En 2018 fui reconocida con <strong>Wedding Awards</strong> (Bodas.com.mx) y he recibido reseñas 5★ por profesionalismo, flexibilidad y entrega puntual.",
+      chip1:"PV · Sayulita · Punta Mita", chip2:"Documental & Artístico", chip3:"+15 años",
+      label_address:"Dirección:", addr_value:"Paseo de la Rivera, 48290 Puerto Vallarta, Jal.",
+      label_hours:"Atención:", hours_value:"Lun–Vie, 15:00–20:00 (previa cita)",
+
+      recent_title:"Reciente",
+      recent_sub:"Álbumes por categoría. Abre uno para ver más.",
+      cat_weddings:"Bodas (varias parejas)", cat_engagement:"Engagement",
+      cat_family:"Familia", cat_pregnancy:"Embarazo", cat_vow:"Renovación de votos", cat_trash:"Trash the Dress",
+
+      photos_word:"fotos", open_album:"Abrir álbum", load_more:"Ver más", close:"Cerrar",
+
+      reviews_title:"Reseñas", reviews_sub:"Valoración 5.0/5 — 100% de parejas recomiendan a Cris Bernal Photography.",
+      rev1:"“Excelente servicio y profesionalismo… capturó cada momento con ideas originales y mucha energía.”", rev1_by:"Christian",
+      rev2:"“Seria, responsable, puntual y flexible; te hace sentir cómoda. Entrega a tiempo y trabajo magnífico.”", rev2_by:"Tania",
+      rev3:"“De las mejores decisiones para nuestra boda. Desde la sesión casual hasta el evento, siempre atenta.”", rev3_by:"Casandra",
+
+      contact_title:"Contacto", contact_sub:"Comparte fecha, locación y tipo de sesión; te responderé dentro de horario de atención.",
+      label_whatsapp:"WhatsApp:", label_instagram:"Instagram:", label_facebook:"Facebook:",
+      chip_hours:"Lun–Vie 15:00–20:00", chip_reserve:"Reserva por WhatsApp", chip_delivery:"Entrega digital",
+      cta_whatsapp:"Reservar por WhatsApp", fab_text:"WhatsApp",
+
+      foot_copy:"© YEAR Cris Bernal Photography · Puerto Vallarta, México",
+
+      wa_text_top:"Hola Cris, me gustaría cotizar una sesión o boda en Puerto Vallarta.",
+      wa_text_cta:"Hola Cris, me gustaría cotizar una boda en Puerto Vallarta.",
+      wa_text_fab:"Hola Cris, me gustaría cotizar mi evento."
+    },
+    en: {
+      meta_title: "Cris Bernal Photography · Weddings & Portraits in Puerto Vallarta",
+      meta_desc: "Wedding & portrait photography in Puerto Vallarta, Sayulita and Punta Mita. Documentary & artistic style. Book your date with Cris Bernal.",
+      meta_og_title: "Cris Bernal Photography · Weddings & Portraits",
+      meta_og_desc: "Wedding & portrait photography in Puerto Vallarta and Bahía de Banderas.",
+
+      nav_home:"Home", nav_about:"About", nav_recent:"Recent", nav_contact:"Contact", nav_reviews:"Reviews", nav_book:"Book",
+      aria_menu_open:"Open menu", aria_menu_close:"Close menu",
+
+      hero_h1:"Hi, I'm Cris Bernal — Puerto Vallarta Photos",
+      hero_p:"Wedding & portrait photographer based in Puerto Vallarta. Coverage in Sayulita and Punta Mita. Book your date.",
+
+      about_title:"About Cris", about_sub:"+15 years telling stories across Bahía de Banderas.",
+      about_p1:"<strong>Hi, I'm Cris Bernal</strong>, a photographer based in <strong>Puerto Vallarta</strong>. I work in <strong>Sayulita</strong> and <strong>Punta Mita</strong>, creating genuine images with a blend of <em>documentary</em>, <em>artistic</em> and <em>photojournalistic</em> style.",
+      about_p2:"In 2018 I received the <strong>Wedding Awards</strong> (Bodas.com.mx) and have 5★ reviews for professionalism, flexibility and on-time delivery.",
+      chip1:"PV · Sayulita · Punta Mita", chip2:"Documentary & Artistic", chip3:"+15 years",
+      label_address:"Address:", addr_value:"Paseo de la Rivera, 48290 Puerto Vallarta, Jalisco",
+      label_hours:"Hours:", hours_value:"Mon–Fri, 3:00–8:00 PM (by appointment)",
+
+      recent_title:"Recent",
+      recent_sub:"Albums by category. Open one to see more.",
+      cat_weddings:"Weddings (various couples)", cat_engagement:"Engagement",
+      cat_family:"Family", cat_pregnancy:"Pregnancy", cat_vow:"Vow Renewal", cat_trash:"Trash the Dress",
+
+      photos_word:"photos", open_album:"Open album", load_more:"Load more", close:"Close",
+
+      reviews_title:"Reviews", reviews_sub:"Rated 5.0/5 — 100% of couples recommend Cris Bernal Photography.",
+      rev1:"“Excellent service and professionalism… captured every moment with original ideas and great energy.”", rev1_by:"Christian",
+      rev2:"“Responsible, punctual and flexible; she makes you feel comfortable. On-time delivery and magnificent work.”", rev2_by:"Tania",
+      rev3:"“One of the best decisions for our wedding. From the casual session to the big day, always attentive.”", rev3_by:"Casandra",
+
+      contact_title:"Contact", contact_sub:"Share date, location and session type; I'll reply during business hours.",
+      label_whatsapp:"WhatsApp:", label_instagram:"Instagram:", label_facebook:"Facebook:",
+      chip_hours:"Mon–Fri 3:00–8:00 PM", chip_reserve:"Book via WhatsApp", chip_delivery:"Digital delivery",
+      cta_whatsapp:"Book on WhatsApp", fab_text:"WhatsApp",
+
+      foot_copy:"© YEAR Cris Bernal Photography · Puerto Vallarta, Mexico",
+
+      wa_text_top:"Hi Cris, I'd like a quote for a session or wedding in Puerto Vallarta.",
+      wa_text_cta:"Hi Cris, I'd like a quote for a wedding in Puerto Vallarta.",
+      wa_text_fab:"Hi Cris, I'd like a quote for my event."
+    }
+  };
+
+  let lang = 'es';
+  let t = dict[lang];
+
+  const q = (sel) => document.querySelector(sel);
+  const qa = (sel) => [...document.querySelectorAll(sel)];
+  const setText = () => {
+    qa('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if (!key || !(key in t)) return;
+      if (/(about_p1|about_p2)/.test(key)) el.innerHTML = t[key];
+      else el.textContent = t[key];
+    });
+
+    qa('[data-i18n-attr]').forEach(el=>{
+      const pairs = el.getAttribute('data-i18n-attr').split(',');
+      pairs.forEach(p=>{
+        const [attr, key] = p.split(':').map(s=>s.trim());
+        if(attr && key && (key in t)) el.setAttribute(attr, t[key]);
+      });
+    });
+
+    const titleEl = q('title[data-i18n="meta_title"]');
+    if (titleEl) titleEl.textContent = t.meta_title;
+    document.documentElement.lang = lang;
+
+    const waBase = "https://wa.me/523221217474?text=";
+    const wa1 = q('#ctaTop');
+    const wa2 = q('#ctaWhats');
+    const waLink1 = q('#waLink1');
+    const fab = q('#fabWA');
+    if (wa1) wa1.onclick = () => location.href = waBase + encodeURIComponent(t.wa_text_top);
+    if (wa2) wa2.onclick = () => location.href = waBase + encodeURIComponent(t.wa_text_cta);
+    if (waLink1) waLink1.href = waBase + encodeURIComponent(t.wa_text_top);
+    if (fab) { fab.textContent = t.fab_text; fab.onclick = () => location.href = waBase + encodeURIComponent(t.wa_text_fab); }
+
+    const year = new Date().getFullYear();
+    const foot = q('#footCopy');
+    if (foot) foot.textContent = t.foot_copy.replace('YEAR', year);
+
+    if (navToggle) {
+      const open = navToggle.classList.contains('active');
+      navToggle.setAttribute('aria-label', open ? t.aria_menu_close : t.aria_menu_open);
+    }
+  };
+
+  // Idioma
+  const btnES = q('#btnES');
+  const btnEN = q('#btnEN');
+  const setLang = (l) => {
+    lang = l; t = dict[l];
+    btnES.classList.toggle('active', l==='es');
+    btnEN.classList.toggle('active', l==='en');
+    setText();
+  };
+  btnES.addEventListener('click', ()=> setLang('es'));
+  btnEN.addEventListener('click', ()=> setLang('en'));
+
+  // Cerrar menú móvil al click fuera
+  if (navToggle) {
+    navToggle.addEventListener('click', toggleMenu);
+    navFlyout.addEventListener('click', e => { if(e.target.tagName === 'A'){ toggleMenu(); } });
+    document.addEventListener('click', (e)=>{
+      if(!e.target.closest('.navbar') && !e.target.closest('#navFlyout')){
+        navToggle.classList.remove('active'); navFlyout.style.display='none';
+        navToggle.setAttribute('aria-label', t.aria_menu_open);
+      }
+    });
+  }
+
+  // Primera carga en ES
+  setText();
 </script>
 </body>
 </html>
