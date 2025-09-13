@@ -23,6 +23,7 @@
     --radius-xl: 22px;
     --nav-h: 64px;
     --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
 
     --bg:#ffffff;
     --surface:#fafbff;
@@ -52,15 +53,15 @@
     -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     overflow-x:hidden;
   }
-  img{ max-width:100%; display:block }
+  img{ max-width:100%; display:block; height:auto }
   a{ color:inherit; text-decoration:none }
   :focus-visible{ outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 8px }
 
-  .container{ max-width:var(--container); margin:0 auto; padding:0 20px }
-  .section{ padding: clamp(56px, 8vw, 96px) 0; scroll-margin-top: calc(var(--nav-h) + 16px) }
-  .section-header{ text-align:center; margin-bottom: clamp(28px, 4vw, 48px) }
-  .section-title{ font-size: clamp(28px, 3.2vw, 38px); font-weight: 800; letter-spacing:.01em; margin:0 0 8px }
-  .section-sub{ color:var(--text-dim); font-size: clamp(14px, 1.8vw, 16px); max-width: 720px; margin: 0 auto }
+  .container{ max-width:var(--container); margin:0 auto; padding:0 clamp(14px, 4vw, 20px) }
+  .section{ padding: clamp(48px, 8vw, 96px) 0; scroll-margin-top: calc(var(--nav-h) + 16px) }
+  .section-header{ text-align:center; margin-bottom: clamp(24px, 4vw, 48px) }
+  .section-title{ font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing:.01em; margin:0 0 8px }
+  .section-sub{ color:var(--text-dim); font-size: clamp(14px, 2.4vw, 16px); max-width: 720px; margin: 0 auto }
 
   /* ===== NAVBAR ===== */
   .navbar{
@@ -68,20 +69,24 @@
     display:flex; align-items:center; backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
     background: color-mix(in oklab, #fff 80%, transparent); border-bottom:1px solid var(--border);
   }
-  .nav-wrap{ display:flex; align-items:center; gap:14px; justify-content:space-between; height:100% }
-  .brand{ display:flex; align-items:center; gap:12px; }
+  .nav-wrap{ display:flex; align-items:center; gap:14px; justify-content:space-between; height:100%; min-width:0 }
+  .brand{ display:flex; align-items:center; gap:12px; min-width:0 }
   .brand-badge{
     width:38px; height:38px; border-radius:12px; background:var(--accent); color:var(--accent-ink);
     display:grid; place-items:center; font-weight:800; letter-spacing:.5px; box-shadow: inset 0 0 0 1px #00000014;
+    flex:0 0 auto;
   }
-  .brand span{ font-weight:700; font-size:15px; white-space:nowrap }
+  .brand span{
+    font-weight:700; font-size:clamp(14px, 2.6vw, 15px);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:48vw;
+  }
 
   .nav-links{
     display:flex; align-items:center; gap:6px; padding:6px; border-radius:14px;
     background:#fff; border:1px solid var(--border);
   }
   .nav-links a{
-    color:var(--text-dim); font-size:14px; padding:8px 12px; border-radius:10px; position:relative;
+    color:var(--text-dim); font-size:14px; padding:10px 12px; border-radius:10px; position:relative;
   }
   .nav-links a.active{ color:var(--text); background: #f4f6fb }
   .nav-links a::after{
@@ -91,11 +96,12 @@
   }
   .nav-links a:hover::after{ transform: scaleX(1) }
 
-  .nav-actions{ display:flex; align-items:center; gap:10px }
+  .nav-actions{ display:flex; align-items:center; gap:10px; flex:0 0 auto }
   .btn{
     appearance:none; border:none; cursor:pointer; font-size:14px; line-height:1;
     color:var(--accent-ink); background: var(--accent); padding:12px 14px; border-radius:12px;
     border:1px solid #000; box-shadow: 0 2px 0 #000; transition: transform .06s ease, box-shadow .06s ease, opacity .2s;
+    touch-action: manipulation; min-height:44px;
   }
   .btn:hover{ opacity:.92 } .btn:active{ transform: translateY(1px); box-shadow: 0 1px 0 #000 }
 
@@ -112,36 +118,40 @@
   .nav-toggle.active::after{ transform: translateY(0) rotate(-45deg) }
 
   .nav-flyout{
-    position: fixed; left:16px; right:16px; top: calc(var(--nav-h) + var(--safe-top) + 8px); z-index:40;
-    display:none; padding:10px; border-radius:16px; background: color-mix(in oklab, #fff 92%, transparent);
+    position: fixed; left:16px; right:16px;
+    top: calc(var(--nav-h) + var(--safe-top) + 8px); z-index:40;
+    display:block; padding:10px; border-radius:16px; background: color-mix(in oklab, #fff 92%, transparent);
     border:1px solid var(--border); box-shadow: var(--shadow);
     backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+    transform: translateY(-8px); opacity:0; pointer-events:none; transition: .22s ease;
   }
+  .nav-flyout.show{ transform: translateY(0); opacity:1; pointer-events:auto }
   .nav-flyout a{
-    display:block; padding:12px 10px; border-radius:10px; color:var(--text-dim); font-size:15px;
+    display:block; padding:12px 10px; border-radius:10px; color:var(--text-dim); font-size:16px;
   }
+  .nav-flyout a + a{ margin-top:4px }
   .nav-flyout a:hover{ background:#f2f4fa; color:var(--text) }
 
   /* Language switch */
   .lang-switch{ display:flex; gap:6px }
   .lang-btn{
-    background:#fff; border:1px solid var(--border); border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;
+    background:#fff; border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-weight:800; cursor:pointer; min-height:40px;
   }
   .lang-btn.active{ background:#f4f6fb }
 
   /* ===== HERO ===== */
-  .hero{ position:relative; background:var(--surface); padding: clamp(18px, 4vw, 28px) 0 0; }
+  .hero{ position:relative; background:var(--surface); padding: clamp(14px, 4vw, 28px) 0 0; }
   .hero-inner{ position:relative }
 
   .hero-tagline{
-    position:absolute; left:24px; bottom:24px; z-index:4;
+    position:absolute; left:24px; bottom:24px; right:auto; z-index:4;
     background: var(--panel); backdrop-filter: var(--blur); border:1px solid var(--border);
     padding:14px 18px; border-radius:14px; max-width:min(640px, 86vw)
   }
-  .hero-tagline h1{ margin:0 0 6px; font-size: clamp(20px, 3.2vw, 30px); font-weight:800; letter-spacing:.02em }
-  .hero-tagline p{ margin:0; color:var(--text-dim); font-size: clamp(13px, 2.2vw, 15.5px) }
+  .hero-tagline h1{ margin:0 0 6px; font-size: clamp(20px, 5.6vw, 30px); font-weight:800; letter-spacing:.02em; line-height:1.2 }
+  .hero-tagline p{ margin:0; color:var(--text-dim); font-size: clamp(13px, 3.6vw, 15.5px) }
 
-  /* === Marquee (igual que el tuyo, pero adaptado) === */
+  /* === Marquee === */
   .scroller{ position:relative; width:100%; height:min(72vh, 680px); display:grid; place-items:center; overflow:hidden; }
   .scroller::before, .scroller::after{
     content:""; position:absolute; top:0; bottom:0; width:min(10vw,140px); z-index:3; pointer-events:none;
@@ -149,8 +159,8 @@
   .scroller::before{ left:0; background:linear-gradient(90deg, var(--surface), transparent) }
   .scroller::after{ right:0; background:linear-gradient(270deg, var(--surface), transparent) }
   .marquee{ display:flex; gap:var(--gap); width:max-content; align-items:center; animation: scroll var(--marquee-duration, 40s) linear infinite; will-change: transform }
-  .scroller:hover .marquee{ animation-play-state: paused }        /* desktop hover */
-  .marquee.paused{ animation-play-state: paused }                 /* pausa por toque/visibilidad */
+  .scroller:hover .marquee{ animation-play-state: paused }
+  .marquee.paused{ animation-play-state: paused }
   .track{ display:flex; gap:var(--gap); align-items:center }
   .card{
     position:relative; width: clamp(140px, 22vw, 300px); aspect-ratio: 4 / 5;
@@ -170,10 +180,10 @@
     display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center;
     background:#fff; border:1px solid var(--border); border-radius:18px; padding:22px; box-shadow:var(--shadow);
   }
-  .about p, .contact p{ color:var(--text-dim); line-height:1.6 }
+  .about p, .contact p{ color:var(--text-dim); line-height:1.65; font-size:clamp(14px, 2.6vw, 16px) }
 
   .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
-  .chip{ border:1px solid var(--border); border-radius:999px; padding:6px 10px; font-size:.85rem; background:#fff }
+  .chip{ border:1px solid var(--border); border-radius:999px; padding:8px 12px; font-size:clamp(12px, 2.4vw, .95rem); background:#fff }
 
   /* ===== REVIEWS ===== */
   .reviews{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:18px }
@@ -181,11 +191,12 @@
   .stars{ color:#f59e0b; font-weight:800; letter-spacing:.12em }
 
   /* ===== Footer / WhatsApp ===== */
-  footer{ padding:28px 0; border-top:1px solid var(--border); color:var(--muted); text-align:center }
+  footer{ padding:28px 0 calc(28px + var(--safe-bottom)); border-top:1px solid var(--border); color:var(--muted); text-align:center }
   .fab{
-    position: fixed; right:16px; bottom:16px; z-index:60;
-    background:#25D366; color:#fff; border:0; border-radius:999px; padding:12px 16px; font-weight:800;
-    box-shadow: 0 10px 24px rgba(0,0,0,.18); cursor:pointer
+    position: fixed; right:16px; bottom:calc(16px + var(--safe-bottom)); z-index:60;
+    background:#25D366; color:#fff; border:0; border-radius:999px; padding:14px 18px; font-weight:800;
+    box-shadow: 0 10px 24px rgba(0,0,0,.18); cursor:pointer; font-size: clamp(14px, 3.8vw, 16px);
+    min-height:44px;
   }
 
   /* ===== RECENT (ÁLBUMES) ===== */
@@ -200,9 +211,9 @@
   .album-cover img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s ease, filter .4s ease }
   .album-card:hover .album-cover img{ transform:scale(1.04); filter:saturate(1.05) contrast(1.02) }
   .album-meta{ padding:16px; display:grid; gap:8px; align-content:start }
-  .album-title{ margin:0; font-size:1.06rem; font-weight:800 }
-  .album-count{ margin:0; color:var(--text-dim); font-size:.92rem }
-  .btn-small{ padding:8px 12px; font-size:13px }
+  .album-title{ margin:0; font-size:clamp(1rem, 3.8vw, 1.06rem); font-weight:800 }
+  .album-count{ margin:0; color:var(--text-dim); font-size:clamp(.9rem, 3.4vw, .92rem) }
+  .btn-small{ padding:10px 12px; font-size:clamp(13px, 3.6vw, 14px) }
   .btn-small-outline{
     background:#fff; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:8px 12px; cursor:pointer;
   }
@@ -217,7 +228,7 @@
     display:flex; align-items:center; gap:12px; justify-content:space-between;
     background:#fff; border:1px solid var(--border); border-radius:14px; padding:10px 12px; box-shadow:var(--shadow);
   }
-  .gal-meta{ color:var(--text-dim); font-size:.9rem }
+  .gal-meta{ color:var(--text-dim); font-size:.95rem }
   .gal-grid{
     margin-top:12px; flex:1; overflow:auto; padding:4px;
     column-width: 280px; column-gap: 12px; /* Masonry fluido */
@@ -227,27 +238,39 @@
   .gal-actions{ display:flex; justify-content:center; margin-top:10px }
 
   /* ===== Responsive ===== */
+  @media (max-width:1200px){
+    .container{ padding:0 clamp(14px, 3.2vw, 20px) }
+  }
   @media (max-width:992px){
     .nav-links{ display:none } .nav-toggle{ display:flex }
     .about, .contact{ grid-template-columns: 1fr }
   }
-  /* --- Móvil: ajustes del marquee y del hero --- */
   @media (max-width:768px){
     .scroller{ height: clamp(360px, 60vh, 540px); }
     .track{ gap: clamp(10px, 3.6vw, 16px); }
-    .card{ width: 68vw; border-radius: 18px; }
+    .card{ width: 72vw; border-radius: 18px; }
     .hero-tagline{
       left: 12px; right: 12px; bottom: 12px;
       max-width: none; padding:12px 14px;
     }
     .shade-top, .shade-bot{ height: 14vh; }
-  }
-  @media (max-width:380px){
-    .card{ width: 78vw; }
+    .albums-grid{ grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap:14px }
+    .gal-grid{ column-width: 200px }
   }
   @media (max-width:560px){
-    .brand span{ font-size:14px }
-    .btn{ padding:10px 12px; font-size:13px }
+    .brand span{ font-size:14px; max-width:56vw }
+    .btn{ padding:12px 14px; font-size:14px }
+    .lang-btn{ padding:10px 12px }
+    .albums-grid{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:12px }
+    .gal-header{ gap:8px }
+  }
+  @media (max-width:520px){
+    #ctaTop{ display:none }            /* ocultar CTA del header en XS (sigue el FAB) */
+    .lang-switch{ display:none }       /* ocultar ES/EN del header en XS (van al flyout) */
+  }
+  @media (max-width:380px){
+    .card{ width: 80vw; }
+    .album-title{ font-size:1rem }
   }
   @media (prefers-reduced-motion: reduce){
     .marquee{ animation: none }
@@ -290,6 +313,11 @@
   <a href="#recent" data-i18n="nav_recent">Reciente</a>
   <a href="#contacto" data-i18n="nav_contact">Contacto</a>
   <a href="#reseñas" data-i18n="nav_reviews">Reseñas</a>
+  <!-- Idiomas dentro del flyout (XS) -->
+  <div class="lang-switch" style="margin-top:6px; display:flex; gap:6px">
+    <button class="lang-btn" id="flyES">ES</button>
+    <button class="lang-btn" id="flyEN">EN</button>
+  </div>
 </nav>
 
 <!-- ===== HERO ===== -->
@@ -301,28 +329,33 @@
         <div class="track">
           <figure class="card">
             <picture>
-              <source srcset="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop&fm=webp" type="image/webp">
-              <img loading="eager" decoding="async" src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" alt="Beach wedding, Puerto Vallarta">
+              <source srcset="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop&fm=webp 1200w" type="image/webp" sizes="(max-width:768px) 72vw, 300px">
+              <img loading="eager" fetchpriority="high" decoding="async"
+                   src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop"
+                   srcset="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=800&auto=format&fit=crop 800w,
+                           https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop 1200w"
+                   sizes="(max-width:768px) 72vw, 300px"
+                   alt="Beach wedding, Puerto Vallarta">
             </picture>
           </figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" alt="Intimate wedding moments"></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" alt="Wedding details"></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop" alt="Sayulita landscape"></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?w=1200&auto=format&fit=crop" alt="Creative portrait"></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1200&auto=format&fit=crop" alt="Couple on the beach"></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" alt="Sunset ceremony"></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?w=1200&auto=format&fit=crop" alt="Bouquet and rings"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Intimate wedding moments"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Wedding details"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Sayulita landscape"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Creative portrait"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Couple on the beach"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Sunset ceremony"></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt="Bouquet and rings"></figure>
         </div>
-        <!-- Track 2 -->
+        <!-- Track 2 (duplicado para loop continuo) -->
         <div class="track" aria-hidden="true">
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" alt=""></figure>
-          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?w=1200&auto=format&fit=crop" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1519336555923-59661f41bb54?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
+          <figure class="card"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1520975605368-d0d8f2e48b13?w=1200&auto=format&fit=crop" sizes="(max-width:768px) 72vw, 300px" alt=""></figure>
         </div>
       </div>
     </div>
@@ -371,10 +404,15 @@
     </div>
 
     <div class="albums-grid">
-      <!-- Album cards (igual) -->
+      <!-- Album cards -->
       <article class="album-card" data-album="weddings">
         <div class="album-cover">
-          <img src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop" alt="Weddings cover">
+          <img loading="lazy" decoding="async"
+               src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop"
+               srcset="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=600&auto=format&fit=crop 600w,
+                       https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop 1200w"
+               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
+               alt="Weddings cover">
         </div>
         <div class="album-meta">
           <h3 class="album-title" data-i18n="cat_weddings">Bodas (varias parejas)</h3>
@@ -385,7 +423,12 @@
 
       <article class="album-card" data-album="engagement">
         <div class="album-cover">
-          <img src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop" alt="Engagement cover">
+          <img loading="lazy" decoding="async"
+               src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop"
+               srcset="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=600&auto=format&fit=crop 600w,
+                       https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop 1200w"
+               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
+               alt="Engagement cover">
         </div>
         <div class="album-meta">
           <h3 class="album-title" data-i18n="cat_engagement">Engagement</h3>
@@ -396,7 +439,12 @@
 
       <article class="album-card" data-album="family">
         <div class="album-cover">
-          <img src="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1200&auto=format&fit=crop" alt="Family cover">
+          <img loading="lazy" decoding="async"
+               src="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1200&auto=format&fit=crop"
+               srcset="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=600&auto=format&fit=crop 600w,
+                       https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1200&auto=format&fit=crop 1200w"
+               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
+               alt="Family cover">
         </div>
         <div class="album-meta">
           <h3 class="album-title" data-i18n="cat_family">Family</h3>
@@ -407,7 +455,12 @@
 
       <article class="album-card" data-album="pregnancy">
         <div class="album-cover">
-          <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop" alt="Pregnancy cover">
+          <img loading="lazy" decoding="async"
+               src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop"
+               srcset="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=600&auto=format&fit=crop 600w,
+                       https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop 1200w"
+               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
+               alt="Pregnancy cover">
         </div>
         <div class="album-meta">
           <h3 class="album-title" data-i18n="cat_pregnancy">Pregnancy</h3>
@@ -418,7 +471,12 @@
 
       <article class="album-card" data-album="vow">
         <div class="album-cover">
-          <img src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop" alt="Vow renewal cover">
+          <img loading="lazy" decoding="async"
+               src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop"
+               srcset="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=600&auto=format&fit=crop 600w,
+                       https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop 1200w"
+               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
+               alt="Vow renewal cover">
         </div>
         <div class="album-meta">
           <h3 class="album-title" data-i18n="cat_vow">Vow Renewal</h3>
@@ -429,7 +487,12 @@
 
       <article class="album-card" data-album="trash">
         <div class="album-cover">
-          <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1200&auto=format&fit=crop" alt="Trash the Dress cover">
+          <img loading="lazy" decoding="async"
+               src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1200&auto=format&fit=crop"
+               srcset="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600&auto=format&fit=crop 600w,
+                       https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1200&auto=format&fit=crop 1200w"
+               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
+               alt="Trash the Dress cover">
         </div>
         <div class="album-meta">
           <h3 class="album-title" data-i18n="cat_trash">Trash the Dress</h3>
@@ -548,7 +611,7 @@
   const toggleMenu = () => {
     navToggle.classList.toggle('active');
     const open = navToggle.classList.contains('active');
-    navFlyout.style.display = open ? 'block' : 'none';
+    navFlyout.classList.toggle('show', open);
     navToggle.setAttribute('aria-label', open ? t.aria_menu_close : t.aria_menu_open);
   };
 
@@ -567,11 +630,11 @@
     lbCap.textContent = a.dataset.lightbox || '';
     lb.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-  });
+  }, {passive:true});
 
   const closeLB = ()=>{ lb.style.display='none'; lbImg.src=''; document.body.style.overflow = '' };
-  lbClose.addEventListener('click', closeLB);
-  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() });
+  lbClose.addEventListener('click', closeLB, {passive:true});
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() }, {passive:true});
 
   // ===== Scrollspy =====
   const navLinks = [...document.querySelectorAll('.nav-links a, #navFlyout a')];
@@ -589,7 +652,7 @@
   window.addEventListener('scroll', onScroll, { passive:true });
   setActiveLink('#home');
 
-  // ===== Marquee duration (mejor en móviles) =====
+  // ===== Marquee duration =====
   const marquee = document.getElementById('marquee');
   const scroller = document.getElementById('scroller');
 
@@ -599,13 +662,11 @@
     if(!track) return;
     const w = track.getBoundingClientRect().width;
     const vw = Math.max(window.innerWidth, 360);
-    // Un poco más lento en pantallas pequeñas para que se aprecie mejor
     const pxPerSecond = vw < 768 ? 64 : 82;
     const duration = Math.max(22, Math.round(w / pxPerSecond));
     marquee.style.setProperty('--marquee-duration', duration + 's');
   }
 
-  // Pausa inteligente: toque/drag, pérdida de visibilidad
   const pause = ()=> marquee.classList.add('paused');
   const play  = ()=> marquee.classList.remove('paused');
 
@@ -619,7 +680,7 @@
 
   const ro = new ResizeObserver(setMarqueeDuration);
   ro.observe(document.body);
-  window.addEventListener('load', setMarqueeDuration);
+  window.addEventListener('load', setMarqueeDuration, {once:true});
   window.addEventListener('orientationchange', setMarqueeDuration);
 
   // ===== Smooth anchors =====
@@ -631,7 +692,8 @@
       e.preventDefault();
       el.scrollIntoView({ behavior:'smooth', block:'start' });
       history.pushState(null, '', id);
-    });
+      if (navToggle && navToggle.classList.contains('active')) toggleMenu();
+    }, {passive:false});
   });
 
   // ====== DATA: URLs por álbum ======
@@ -679,6 +741,11 @@
   let currentKey = null;
   let pointer = 0;
 
+  function thumb(url, alt){
+    const src = url + "&q=80";
+    return `<img loading="lazy" decoding="async" src="${src}" alt="${alt}" sizes="(max-width:768px) 100vw, 680px">`;
+  }
+
   function openAlbum(key){
     currentKey = key;
     pointer = 0;
@@ -702,7 +769,7 @@
       a.href = url;
       a.className = 'g-thumb';
       a.setAttribute('data-lightbox', galTitle.textContent);
-      a.innerHTML = `<img loading="lazy" decoding="async" src="${url}&q=80" alt="${galTitle.textContent}">`;
+      a.innerHTML = thumb(url, galTitle.textContent);
       galGrid.appendChild(a);
     });
     pointer += slice.length;
@@ -713,11 +780,11 @@
     btn.addEventListener('click', (e)=>{
       const key = e.currentTarget.closest('.album-card').dataset.album;
       openAlbum(key);
-    });
+    }, {passive:true});
   });
-  galMore.addEventListener('click', loadBatch);
-  galClose.addEventListener('click', closeAlbum);
-  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeAlbum(); });
+  galMore.addEventListener('click', loadBatch, {passive:true});
+  galClose.addEventListener('click', closeAlbum, {passive:true});
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeAlbum(); }, {passive:true});
 
   // ===== I18N =====
   const dict = {
@@ -861,19 +928,25 @@
     btnEN.classList.toggle('active', l==='en');
     setText();
   };
-  btnES.addEventListener('click', ()=> setLang('es'));
-  btnEN.addEventListener('click', ()=> setLang('en'));
+  btnES.addEventListener('click', ()=> setLang('es'), {passive:true});
+  btnEN.addEventListener('click', ()=> setLang('en'), {passive:true});
+
+  // Botones de idioma dentro del flyout (XS)
+  const flyES = document.getElementById('flyES');
+  const flyEN = document.getElementById('flyEN');
+  if (flyES) flyES.addEventListener('click', ()=> { btnES.click(); toggleMenu(); }, {passive:true});
+  if (flyEN) flyEN.addEventListener('click', ()=> { btnEN.click(); toggleMenu(); }, {passive:true});
 
   // Cerrar menú móvil al click fuera
   if (navToggle) {
-    navToggle.addEventListener('click', toggleMenu);
-    navFlyout.addEventListener('click', e => { if(e.target.tagName === 'A'){ toggleMenu(); } });
+    navToggle.addEventListener('click', toggleMenu, {passive:true});
+    navFlyout.addEventListener('click', e => { if(e.target.tagName === 'A'){ toggleMenu(); } }, {passive:true});
     document.addEventListener('click', (e)=>{
       if(!e.target.closest('.navbar') && !e.target.closest('#navFlyout')){
-        navToggle.classList.remove('active'); navFlyout.style.display='none';
+        navToggle.classList.remove('active'); navFlyout.classList.remove('show');
         navToggle.setAttribute('aria-label', t.aria_menu_open);
       }
-    });
+    }, {passive:true});
   }
 
   // Primera carga en ES
