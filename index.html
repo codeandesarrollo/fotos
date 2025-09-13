@@ -234,7 +234,8 @@
   /* ===== Social Bubbles ===== */
   .social-bubbles{
     position: fixed;
-    left:16px;
+    right:16px;           /* ← ahora a la derecha */
+    left:auto;
     bottom: calc(16px + var(--safe-bottom)); /* ya no hay FAB, pegamos al borde seguro */
     display:flex; flex-direction:column; gap:10px; z-index:56;
   }
@@ -274,7 +275,7 @@
     .lang-btn{ padding:10px 12px }
     .albums-grid{ grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:12px }
     .gal-header{ gap:8px }
-    .social-bubbles{ left:12px }
+    .social-bubbles{ right:12px }   /* ← ajustado para móviles */
     .bubble{ width:44px; height:44px }
   }
   @media (max-width:380px){
