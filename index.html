@@ -57,36 +57,27 @@ a{ color:inherit; text-decoration:none }
   display:flex; align-items:center;
   background:#fff;
   border-bottom:1px solid var(--border);
-  box-shadow:none;
-  transition: height .22s, border-color .22s; overflow:visible;
+  transition: height .22s, border-color .22s;
 }
-.navbar.nav-compact{
-  height: calc(62px + var(--safe-top));
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  box-shadow:none;
-  --logo-scale: 1.18;
-}
+.navbar.nav-compact{ height: calc(62px + var(--safe-top)); --logo-scale: 1.18; }
 
-/* Logo */
 .nav-wrap{ display:flex; align-items:center; gap:20px; justify-content:space-between; height:100%; min-width:0 }
-.brand{ display:flex; align-items:center; gap:14px; min-width:0; flex:0 0 auto; margin-right: calc((var(--logo-scale) - 1) * var(--logo-w) + 24px); position:relative; }
+.brand{ display:flex; align-items:center; gap:14px; min-width:0; flex:0 0 auto; margin-right: calc((var(--logo-scale) - 1) * var(--logo-w) + 24px) }
 .brand-logo{ height: var(--logo-h); width:auto }
 .brand-logo--big{ transform: scale(var(--logo-scale)); transform-origin: left center }
 .brand span{ font-family:var(--font-display); font-weight:700; letter-spacing:.2px; line-height:1; font-size: clamp(18px, 2.2vw, 22px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:48vw }
 
-/* Sr-only */
 .sr-only{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
 
-/* Links */
+/* Links desktop */
 .nav-links{ display:flex; align-items:center; gap:8px }
 .nav-links a{
-  --pad-x:14px; position:relative; text-transform:uppercase; letter-spacing:.08em;
+  --pad-x:14px; text-transform:uppercase; letter-spacing:.08em;
   font-weight:600; font-size:12.5px; color:var(--text-dim);
   padding:10px var(--pad-x);
   transition: color .2s, text-underline-offset .2s;
 }
-.nav-links a:hover{ color:var(--text); text-decoration:underline; text-underline-offset:6px; }
+.nav-links a:hover{ color:var(--text); text-decoration:underline; text-underline-offset:6px }
 .nav-links a.active{ color:var(--text) }
 
 /* Acciones */
@@ -96,12 +87,11 @@ a{ color:inherit; text-decoration:none }
   background: linear-gradient(135deg, #1a3249, #2c4d6f);
   padding:14px 22px; border-radius:999px; border:1px solid color-mix(in oklab, #1a3249 80%, #000);
   box-shadow: 0 6px 18px rgba(26,50,73,.18);
-  transition: transform .06s, box-shadow .06s, opacity .2s, background .2s; touch-action:manipulation; min-height:48px; font-weight:600; font-size:15px;
+  transition: transform .06s, box-shadow .06s, opacity .2s, background .2s; min-height:48px; font-weight:600; font-size:15px;
 }
 .btn:hover{ opacity:.9; background: linear-gradient(135deg, #203a55, #355b81) }
-.btn:active{ transform: translateY(1px); box-shadow: 0 1px 0 color-mix(in oklab, var(--accent) 70%, #000) }
 
-/* Toggle */
+/* Botón hamburguesa (oculto en desktop) */
 .nav-toggle{
   display:none; width:44px; height:44px; border-radius:999px; background:#fff; border:1px solid var(--border); align-items:center; justify-content:center;
 }
@@ -109,26 +99,23 @@ a{ color:inherit; text-decoration:none }
 .nav-toggle::before{ transform: translateY(-7px) } .nav-toggle::after{ transform: translateY(7px) }
 .nav-toggle.active span{ transform: scaleX(0) } .nav-toggle.active::before{ transform: translateY(0) rotate(45deg) } .nav-toggle.active::after{ transform: translateY(0) rotate(-45deg) }
 
-/* Flyout */
+/* Flyout móvil */
 .nav-flyout{
   position:fixed; left:16px; right:16px; top: calc(var(--nav-h) + var(--safe-top) + 12px); z-index:40;
   display:block; padding:12px; border-radius:16px; background:#fff; border:1px solid var(--border);
   transform: translateY(-10px); opacity:0; pointer-events:none; transition:.25s ease;
 }
 .nav-flyout.show{ transform: translateY(0); opacity:1; pointer-events:auto }
-.nav-flyout a{ display:block; padding:14px 16px; border-radius:var(--radius); color:var(--text-dim); font-size:13px; text-transform:uppercase; letter-spacing:.08em; font-weight:600; transition: background .2s ease, color .2s ease }
+.nav-flyout a{ display:block; padding:14px 16px; border-radius:10px; color:var(--text-dim); font-size:13px; text-transform:uppercase; letter-spacing:.08em; font-weight:600; transition: background .2s, color .2s }
 .nav-flyout a + a{ margin-top:6px }
 .nav-flyout a:hover{ background:var(--bg); color:var(--text) }
 
-/* Lang */
-.lang-switch{ display:flex; gap:6px }
-.lang-btn{
-  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-  padding:10px 14px; font-weight:700; cursor:pointer; min-height:44px; font-size:15px;
-  color:var(--text-dim); transition: background .2s, color .2s, border-color .2s;
+/* Backdrop para el menú móvil */
+.menu-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.22); z-index:39;
+  opacity:0; pointer-events:none; transition:opacity .2s ease;
 }
-.lang-btn:hover{ background:var(--bg); color:var(--text); border-color: color-mix(in oklab, var(--border) 50%, #000) }
-.lang-btn.active{ background:var(--bg); color:var(--text); border-color: var(--border) }
+.menu-backdrop.show{ opacity:1; pointer-events:auto }
 
 /* ===== HERO ===== */
 .hero{ position:relative; background:var(--bg); padding: clamp(20px, 4vw, 40px) 0 0 }
@@ -146,14 +133,13 @@ a{ color:inherit; text-decoration:none }
   position:relative; width:100%;
   height:min(78vh, 720px);
   border-radius:var(--radius-xl); overflow:hidden;
-  box-shadow:var(--shadow); background:#0b1220; border:1px solid var(--border); isolation:isolate;
+  box-shadow:var(--shadow); background:#0b1220; border:1px solid var(--border);
 }
 .slider-wrapper{ display:flex; height:100%; transition: transform .7s cubic-bezier(.22,.61,.36,1) }
 .slide{ position:relative; flex:0 0 100% }
 .slide img{ width:100%; height:100%; object-fit:cover; object-position:50% 50%; transform:scale(1.03); filter:contrast(1.05) saturate(1.02); animation: kenburns 16s ease-in-out infinite alternate }
 @keyframes kenburns{ 0%{ transform:scale(1.05) } 100%{ transform:scale(1.12) translateY(-1.5%) } }
 
-/* Caption */
 .slide .caption{
   position:absolute; left: clamp(18px, 4vw, 40px); bottom: clamp(18px, 3.6vw, 36px);
   z-index:3; background: color-mix(in oklab, #0b1220 58%, #ffffff00);
@@ -162,19 +148,15 @@ a{ color:inherit; text-decoration:none }
   box-shadow:0 8px 26px rgba(0,0,0,.28); max-width:min(70ch, 86vw); font-size: clamp(14px, 2.6vw, 16px);
 }
 
-/* Flechas */
 .slider-btn{
   position:absolute; top:50%; transform:translateY(-50%);
   backdrop-filter: blur(8px); background:#ffffffd6; border:1px solid var(--border); color:var(--text);
   border-radius:14px; width:48px; height:48px; cursor:pointer; font-size:26px; line-height:48px; text-align:center; font-weight:800; z-index:4;
-  box-shadow:0 10px 28px rgba(0,0,0,.18);
-  transition: transform .12s, background .2s, box-shadow .2s, opacity .2s;
+  box-shadow:0 10px 28px rgba(0,0,0,.18); transition: transform .12s, background .2s, box-shadow .2s, opacity .2s;
 }
 .slider-btn:hover{ background:#fff; transform:translateY(-50%) scale(1.04) }
-.slider-btn:active{ transform:translateY(-50%) scale(.98) }
 .slider-btn.prev{ left:16px } .slider-btn.next{ right:16px }
 
-/* Dots */
 .slider-dots{
   position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
   display:flex; gap:10px; z-index:4; padding:6px 10px; border-radius:999px;
@@ -182,7 +164,7 @@ a{ color:inherit; text-decoration:none }
 }
 .dot{ appearance:none; border:none; width:10px; height:10px; border-radius:50%; background:#c9d1e0; cursor:pointer; transition: transform .2s, background .2s, box-shadow .2s }
 .dot:hover{ transform:scale(1.15); background:#9fb0cb }
-.dot.active{ background:#1a3249; transform:scale(1.25); box-shadow:0 2px 6px rgba(0,0,0,.22) }
+.dot.active{ background:#1a3249; transform:scale(1.25) }
 
 /* ===== ABOUT / CONTACT ===== */
 .about, .contact{
@@ -200,12 +182,6 @@ a{ color:inherit; text-decoration:none }
 .album-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-hover) }
 .album-cover{ aspect-ratio:16/10; overflow:hidden; background:#eef2f8 }
 .album-cover img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s, filter .4s }
-.album-card:hover .album-cover img{ transform:scale(1.04); filter:saturate(1.05) contrast(1.02) brightness(1.05) }
-.album-meta{ padding:20px; display:grid; gap:8px; align-content:start }
-.album-title{ margin:0; font-size:clamp(1.06rem, 3.8vw, 1.15rem); font-weight:700; line-height:1.3 }
-.album-count{ margin:0; color:var(--text-dim); font-size:clamp(.92rem, 3.4vw, .98rem) }
-.btn-small{ padding:12px 16px; font-size:clamp(14px, 3.6vw, 15px); min-height:40px }
-.btn-small-outline{ background:var(--bg); color:var(--text-dim); border:1px solid var(--border); border-radius:var(--radius); padding:10px 14px; cursor:pointer; font-weight:500; transition: background .2s, color .2s, border-color .2s }
 
 /* ===== MODAL GALERÍA ===== */
 .gallery-modal{ position:fixed; inset:0; background:rgba(10,15,30,.88); z-index:80; display:flex; flex-direction:column; padding: clamp(16px, 3vw, 24px) }
@@ -215,14 +191,7 @@ a{ color:inherit; text-decoration:none }
 .gal-meta{ color:var(--text-dim); font-size:1rem }
 .gal-grid{ margin-top:clamp(12px, 2vw, 20px); flex:1; overflow:auto; padding:8px; column-width:300px; column-gap: clamp(10px, 2vw, 16px) }
 .gal-grid a{ break-inside: avoid; display:block; margin:0 0 clamp(10px, 2vw, 16px); border-radius:var(--radius); overflow:hidden; background:#eef2f8; border:1px solid var(--border); box-shadow:0 4px 12px rgba(0,0,0,.08); transition: transform .2s, box-shadow .2s }
-.gal-grid a:hover{ transform: translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.12) }
-.gal-grid img{ width:100%; height:auto }
 .gal-actions{ display:flex; justify-content:center; margin-top:clamp(12px, 2vw, 20px) }
-
-/* ===== Burbujas Sociales ===== */
-.social-bubbles{ position:fixed; right:clamp(16px, 4vw, 24px); bottom: calc(clamp(16px, 4vw, 24px)); display:flex; flex-direction:column; gap:12px; z-index:56 }
-.bubble{ width:52px; height:52px; border-radius:999px; background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow); display:grid; place-items:center; transition: transform .12s }
-.bubble:hover{ transform: translateY(-2px) }
 
 /* ===== Lightbox ===== */
 #lightbox{ position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:clamp(16px, 3vw, 24px); z-index:70 }
@@ -237,7 +206,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 .fullbleed{ width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw }
 .slider-container.fullbleed{ border-radius:0; border:none; box-shadow:none; height: clamp(480px, 82vh, 980px); background:#000 }
 
-/* ===== ABOUT · MÁS FORMAL ===== */
+/* ===== ABOUT · formal ===== */
 .about-rustic{
   display:grid; grid-template-columns: .95fr 1.05fr; gap: var(--gap); align-items:center;
   background: var(--surface);
@@ -245,31 +214,47 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   border-radius:18px;
   box-shadow: var(--shadow);
   padding: clamp(22px, 4vw, 40px);
-  isolation:isolate;
 }
-/* Foto tipo tarjeta limpia */
 .figure-polaroid{
   background:#fff; border:1px solid var(--border);
   padding:12px; border-radius:12px;
-  box-shadow: var(--shadow); /* más sutil */
-  max-width: 560px; margin:0 auto;
+  box-shadow: var(--shadow); max-width: 560px; margin:0 auto;
 }
 .figure-polaroid img{ width:100%; height:auto; display:block; border-radius:10px }
-.figure-polaroid figcaption{
-  text-align:center; color:var(--text-dim); font-size:.95rem;
-  margin-top:10px; letter-spacing:.02em; font-family: var(--font-display);
-}
-/* Texto */
-.about-body h3{
-  font-family: var(--font-display);
-  font-weight:800; letter-spacing:.02em; margin:0 0 8px;
-  font-size: clamp(22px, 3.6vw, 26px);
-}
+.figure-polaroid figcaption{ text-align:center; color:var(--text-dim); font-size:.95rem; margin-top:10px; letter-spacing:.02em; font-family: var(--font-display) }
+.about-body h3{ font-family: var(--font-display); font-weight:800; letter-spacing:.02em; margin:0 0 8px; font-size: clamp(22px, 3.6vw, 26px) }
 .about-body p{ margin:0 0 12px; color:var(--text-dim); line-height:1.8 }
 
-/* Responsive about */
-@media (max-width: 992px){ .about-rustic{ grid-template-columns: 1fr } }
-@media (max-width:560px){ .about-rustic{ padding:16px } }
+/* ====== RESPONSIVE ====== */
+@media (max-width:1200px){ .container{ padding:0 clamp(16px, 3vw, 24px) } }
+@media (max-width:992px){
+  .navbar{ --logo-scale: 1.06; }
+  .nav-links{ display:none }           /* ocultamos links en móvil */
+  .nav-toggle{ display:flex }          /* mostramos hamburguesa */
+  .nav-actions{ gap:10px }
+  .about, .contact, .about-rustic{ grid-template-columns: 1fr }
+  .slider-container{ height: clamp(420px, 64vh, 620px) }
+}
+@media (max-width:768px){
+  .brand{ margin-right:14px }
+  .brand-logo{ height:44px; max-width: clamp(140px, 40vw, 220px) }
+  .hero-tagline{ padding:16px 20px }
+  .slider-btn{ width:44px; height:44px; font-size:22px; border-radius:12px }
+}
+@media (max-width:560px){
+  .brand{ margin-right:10px; max-width:55vw }
+  .brand-logo{ height:38px; max-width:55vw }
+  .lang-switch{ display:none }         /* ahorra espacio en móviles pequeños */
+  .btn{ padding:10px 14px; min-height:38px; font-size:13.5px }
+  .container{ padding-left:16px; padding-right:16px }
+  .slider-container{ height: clamp(360px, 58vh, 520px) }
+  .slider-dots{ bottom:12px; gap:8px; padding:5px 8px }
+}
+@media (max-width:420px){
+  .brand{ max-width:48vw }
+  .brand-logo{ height:32px; max-width:48vw }
+  .nav-toggle{ width:38px; height:38px }
+}
 </style>
 
 </head>
@@ -296,11 +281,12 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
         <button class="lang-btn active" id="btnES">ES</button>
         <button class="lang-btn" id="btnEN">EN</button>
       </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" data-i18n-attr="aria-label:aria_menu_open"><span></span></button>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" data-i18n-attr="aria-label:aria_menu_open"><span></span></button>
     </div>
   </div>
 </header>
 
+<!-- Flyout y backdrop para móvil -->
 <nav class="nav-flyout" id="navFlyout" aria-label="Mobile menu">
   <a href="#home" data-i18n="nav_home">Inicio</a>
   <a href="#acerca" data-i18n="nav_about">Acerca</a>
@@ -312,6 +298,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     <button class="lang-btn" id="flyEN">EN</button>
   </div>
 </nav>
+<div class="menu-backdrop" id="menuBackdrop" hidden></div>
 
 <section class="hero section" id="home" aria-label="Horizontal gallery">
   <div class="container hero-inner">
@@ -331,7 +318,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </div>
 </section>
 
-<!-- ===== ACERCA (más formal, sin "tapes") ===== -->
+<!-- ===== ACERCA formal ===== -->
 <section class="section" id="acerca" aria-label="About Cris">
   <div class="container">
     <div class="section-header">
@@ -340,17 +327,14 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     </div>
 
     <div class="about-rustic">
-      <!-- Foto -->
       <figure class="figure-polaroid">
         <img src="boda/ella.webp" alt="Cris Bernal en sesión en Puerto Vallarta" loading="lazy" decoding="async">
         <figcaption>Puerto Vallarta · Bahía de Banderas</figcaption>
       </figure>
 
-      <!-- Texto -->
       <div class="about-body">
         <h3 data-i18n="about_title">Acerca de Cris</h3>
 
-        <!-- Nuevos párrafos (ES/EN vía i18n) -->
         <p data-i18n="about_p1"></p>
         <p data-i18n="about_p2"></p>
         <p data-i18n="about_p3"></p>
@@ -484,7 +468,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   <div class="gal-header">
     <h3 id="galTitle">Album</h3>
     <div class="gal-meta"><span id="galCount">0</span> <span data-i18n="photos_word">fotos</span></div>
-    <button id="galClose" class="btn btn-small-outline" data-i18n="close">Cerrar</button>
+    <button id="galClose" class="btn btn-small" data-i18n="close">Cerrar</button>
   </div>
   <div id="galGrid" class="gal-grid" aria-live="polite"></div>
   <div class="gal-actions">
@@ -522,7 +506,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   <div class="container">
     <div class="section-header">
       <h2 class="section-title" data-i18n="contact_title">Contacto</h2>
-    <div class="section-sub" data-i18n="contact_sub">Comparte fecha, locación y tipo de sesión; te responderé dentro de horario de atención.</div>
+      <p class="section-sub" data-i18n="contact_sub">Comparte fecha, locación y tipo de sesión; te responderé dentro de horario de atención.</p>
     </div>
 
     <div class="contact">
@@ -587,12 +571,37 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   // ===== Menú móvil =====
   const navToggle = document.getElementById('navToggle');
   const navFlyout = document.getElementById('navFlyout');
-  const toggleMenu = () => {
-    navToggle.classList.toggle('active');
-    const open = navToggle.classList.contains('active');
-    navFlyout.classList.toggle('show', open);
-    navToggle.setAttribute('aria-label', open ? t.aria_menu_close : t.aria_menu_open);
+  const menuBackdrop = document.getElementById('menuBackdrop');
+
+  const lockScroll = (lock) => {
+    document.body.style.overflow = lock ? 'hidden' : '';
   };
+
+  const toggleMenu = (forceOpen = null) => {
+    const willOpen = forceOpen !== null ? forceOpen : !navToggle.classList.contains('active');
+    navToggle.classList.toggle('active', willOpen);
+    navFlyout.classList.toggle('show', willOpen);
+    menuBackdrop.classList.toggle('show', willOpen);
+    menuBackdrop.hidden = !willOpen;
+    navToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    navToggle.setAttribute('aria-label', willOpen ? t.aria_menu_close : t.aria_menu_open);
+    lockScroll(willOpen);
+  };
+
+  // Cerrar al tocar backdrop o links
+  if (menuBackdrop) menuBackdrop.addEventListener('click', ()=> toggleMenu(false), {passive:true});
+  navFlyout.addEventListener('click', e => {
+    if (e.target.tagName === 'A' || e.target.closest('button.lang-btn')) toggleMenu(false);
+  }, {passive:true});
+
+  // Botón hamburguesa
+  if (navToggle) navToggle.addEventListener('click', ()=> toggleMenu(), {passive:true});
+
+  // Cerrar al hacer click fuera (desktop)
+  document.addEventListener('click', (e)=>{
+    const inside = e.target.closest('.navbar') || e.target.closest('#navFlyout') || e.target.closest('#menuBackdrop');
+    if (!inside && navToggle.classList.contains('active')) toggleMenu(false);
+  }, {passive:true});
 
   // ===== Lightbox =====
   const lb = document.getElementById('lightbox');
@@ -608,10 +617,10 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     lbImg.alt = a.dataset.lightbox || '';
     lbCap.textContent = a.dataset.lightbox || '';
     lb.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    lockScroll(true);
   }, {passive:true});
 
-  const closeLB = ()=>{ lb.style.display='none'; lbImg.src=''; document.body.style.overflow = '' };
+  const closeLB = ()=>{ lb.style.display='none'; lbImg.src=''; lockScroll(false); };
   lbClose.addEventListener('click', closeLB, {passive:true});
   lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() }, {passive:true});
 
@@ -657,7 +666,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
   let currentIndex = 0;
   let autoplayTimer = null;
-
   const AUTOPLAY_MS = 6000;
 
   function createSlidesAndDots() {
@@ -666,8 +674,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       slide.className = 'slide';
 
       const img = document.createElement('img');
-      img.src = s.src;
-      img.alt = s.alt || '';
+      img.src = s.src; img.alt = s.alt || '';
       img.loading = (i === 0) ? 'eager' : 'lazy';
       if (i === 0) img.fetchPriority = 'high';
       slide.appendChild(img);
@@ -682,8 +689,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       sliderWrapper.appendChild(slide);
 
       const dot = document.createElement('button');
-      dot.className = 'dot';
-      dot.type = 'button';
+      dot.className = 'dot'; dot.type = 'button';
       dot.dataset.index = i;
       dot.setAttribute('aria-label', `Ir a la imagen ${i+1}`);
       dot.setAttribute('role', 'tab');
@@ -702,24 +708,18 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
   function goTo(index) {
     currentIndex = (index + slidesData.length) % slidesData.length;
-    updateSlider();
-    startAutoplay();
+    updateSlider(); startAutoplay();
   }
 
   function next(){ goTo(currentIndex + 1); }
   function prev(){ goTo(currentIndex - 1); }
 
-  function startAutoplay(){
-    clearInterval(autoplayTimer);
-    autoplayTimer = setInterval(next, AUTOPLAY_MS);
-  }
+  function startAutoplay(){ clearInterval(autoplayTimer); autoplayTimer = setInterval(next, AUTOPLAY_MS); }
   function stopAutoplay(){ clearInterval(autoplayTimer); }
 
-  document.querySelector('.slider-btn.next').addEventListener('click', ()=> goTo(currentIndex + 1));
-  document.querySelector('.slider-btn.prev').addEventListener('click', ()=> goTo(currentIndex - 1));
-  dotsContainer.addEventListener('click', (e)=>{
-    if (e.target.matches('.dot')) goTo(Number(e.target.dataset.index));
-  });
+  nextBtn.addEventListener('click', ()=> goTo(currentIndex + 1));
+  prevBtn.addEventListener('click', ()=> goTo(currentIndex - 1));
+  dotsContainer.addEventListener('click', (e)=>{ if (e.target.matches('.dot')) goTo(Number(e.target.dataset.index)); });
 
   sliderContainer.addEventListener('mouseenter', stopAutoplay);
   sliderContainer.addEventListener('mouseleave', startAutoplay);
@@ -840,7 +840,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     qa('[data-i18n]').forEach(el=>{
       const key = el.getAttribute('data-i18n');
       if (!key || !(key in t)) return;
-      if (/^about_p\d+$/.test(key)) el.innerHTML = t[key]; // About acepta HTML
+      if (/^about_p\d+$/.test(key)) el.innerHTML = t[key];
       else el.textContent = t[key];
     });
 
@@ -867,6 +867,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     const foot = q('#footCopy');
     if (foot) foot.textContent = (t.foot_copy || "© YEAR Cris Bernal Photography").replace('YEAR', year);
 
+    // actualizar aria-label del botón del menú con el idioma actual
     if (navToggle) {
       const open = navToggle.classList.contains('active');
       navToggle.setAttribute('aria-label', open ? t.aria_menu_close : t.aria_menu_open);
@@ -882,26 +883,18 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   // Flyout idioma
   const flyES = document.getElementById('flyES');
   const flyEN = document.getElementById('flyEN');
-  if (flyES) flyES.addEventListener('click', ()=> { btnES.click(); toggleMenu(); }, {passive:true});
-  if (flyEN) flyEN.addEventListener('click', ()=> { btnEN.click(); toggleMenu(); }, {passive:true});
-
-  // Cerrar menú al click fuera
-  if (navToggle) {
-    navToggle.addEventListener('click', toggleMenu, {passive:true});
-    navFlyout.addEventListener('click', e => { if(e.target.tagName === 'A'){ toggleMenu(); } }, {passive:true});
-    document.addEventListener('click', (e)=>{
-      if(!e.target.closest('.navbar') && !e.target.closest('#navFlyout')){
-        navToggle.classList.remove('active'); navFlyout.classList.remove('show');
-        navToggle.setAttribute('aria-label', t.aria_menu_open);
-      }
-    }, {passive:true});
-  }
+  if (flyES) flyES.addEventListener('click', ()=> { btnES.click(); toggleMenu(false); }, {passive:true});
+  if (flyEN) flyEN.addEventListener('click', ()=> { btnEN.click(); toggleMenu(false); }, {passive:true});
 
   // Slider init + i18n
-  createSlidesAndDots();
-  updateSlider();
-  startAutoplay();
-  setText();
+  function start() {
+    // Crear slides solo una vez
+    if (!sliderWrapper.children.length) {
+      createSlidesAndDots(); updateSlider(); startAutoplay();
+    }
+    setText();
+  }
+  start();
 </script>
 </body>
 </html>
