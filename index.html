@@ -187,6 +187,10 @@ a{ color:inherit; text-decoration:none }
   border-radius:var(--radius-xl); overflow:hidden;
   box-shadow:var(--shadow); background:#0b1220; border:1px solid var(--border);
 }
+.slider-container .slide img{
+  transform: none !important;   /* quita el scale inicial */
+  animation: none !important;   /* apaga la animación kenburns */
+}
 .slider-wrapper{ display:flex; height:100%; transition: transform .7s cubic-bezier(.22,.61,.36,1) }
 .slide{ position:relative; flex:0 0 100% }
 .slide img{ width:100%; height:100%; object-fit:cover; object-position:50% 50%; transform:scale(1.03); filter:contrast(1.05) saturate(1.02); animation: kenburns 16s ease-in-out infinite alternate }
