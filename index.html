@@ -235,18 +235,18 @@ a{ color:inherit; text-decoration:none }
 .album-cover{ aspect-ratio:16/10; overflow:hidden; background:#eef2f8 }
 .album-cover img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s, filter .4s }
 
-/* ===== MODAL GALERÍA ===== */
-.gallery-modal{ position:fixed; inset:0; background:rgba(10,15,30,.88); z-index:80; display:flex; flex-direction:column; padding: clamp(16px, 3vw, 24px) }
+/* ===== MODAL GALERÍA (estructura base) ===== */
+.gallery-modal{ position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; padding: clamp(16px, 3vw, 24px) }
 .gallery-modal[hidden]{ display:none }
-.gal-header{ display:flex; align-items:center; gap:16px; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-xl); padding:12px 20px; box-shadow:var(--shadow) }
+.gal-header{ display:flex; align-items:center; gap:16px; justify-content:space-between; border-radius:var(--radius-xl); padding:12px 20px; box-shadow:var(--shadow) }
 .gal-header h3{ margin:0; font-size:clamp(1rem, 4vw, 1.2rem); font-weight:700 }
 .gal-meta{ color:var(--text-dim); font-size:1rem }
 .gal-grid{ margin-top:clamp(12px, 2vw, 20px); flex:1; overflow:auto; padding:8px; column-width:300px; column-gap: clamp(10px, 2vw, 16px) }
 .gal-grid a{ break-inside: avoid; display:block; margin:0 0 clamp(10px, 2vw, 16px); border-radius:var(--radius); overflow:hidden; background:#eef2f8; border:1px solid var(--border); box-shadow:0 4px 12px rgba(0,0,0,.08); transition: transform .2s, box-shadow .2s }
 .gal-actions{ display:flex; justify-content:center; margin-top:clamp(12px, 2vw, 20px) }
 
-/* ===== Lightbox ===== */
-#lightbox{ position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:clamp(16px, 3vw, 24px); z-index:70 }
+/* ===== Lightbox base ===== */
+#lightbox{ position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:clamp(16px, 3vw, 24px); z-index:90 }
 #lbClose{ position:absolute; top:clamp(16px, 3vw, 24px); right:clamp(16px, 3vw, 24px); background:#ffffff; border:1px solid #0f1220; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer }
 #lbImg{ max-width:min(96vw, 1400px); max-height:86vh; border-radius:var(--radius) }
 #lbCap{ color:#e9eefc; margin-top:14px; text-align:center; font-size:1rem }
@@ -308,6 +308,245 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   .nav-toggle{ width:38px; height:38px }
 }
 
+/* ========== (NUEVO) GALERÍA RÚSTICA: tema, polaroids, paginado, lightbox flechas ========== */
+.btn.btn-small{ padding:10px 14px; min-height:38px; font-size:13.5px }
+
+/* Fondo papel + viñetas sutiles */
+.gallery-modal{
+  background:
+    radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.12), transparent 60%),
+    radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.12), transparent 60%),
+    linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
+  color:#2b2b2b;
+}
+
+/* Header con textura suave */
+.gal-header{
+  background: #fff9f0;
+  border:1px solid #e8e1d6;
+  box-shadow: 0 10px 30px rgba(17,24,39,.06), 0 2px 6px rgba(17,24,39,.04) inset;
+}
+
+/* Grid tipo masonry con columnas */
+.gal-grid{
+  column-width: 320px;
+  column-gap: clamp(10px, 2vw, 18px);
+  padding-top: 6px;
+}
+
+/* Tarjeta polaroid con cinta kraft */
+.photo-card{
+  display:block; position:relative; break-inside: avoid; margin:0 0 clamp(10px, 2vw, 18px);
+  padding:10px 10px 26px;
+  background:#ffffff;
+  border:1px solid #e6e1d9; border-radius:12px;
+  transform: rotate(var(--rot, 0deg));
+  box-shadow:
+    0 12px 26px rgba(0,0,0,.12),
+    0 2px 0 rgba(0,0,0,.04) inset;
+  transition: transform .22s ease, box-shadow .22s ease;
+  will-change: transform;
+}
+.photo-card:hover{
+  transform: rotate(var(--rot, 0deg)) translateY(-3px) scale(1.01);
+  box-shadow:
+    0 18px 36px rgba(0,0,0,.16),
+    0 2px 0 rgba(0,0,0,.04) inset;
+}
+
+/* Cinta kraft (3 variantes para variedad) */
+.photo-card::before{
+  content:""; position:absolute; top:8px; left:26%;
+  width:88px; height:22px; border-radius:3px;
+  background: linear-gradient(#f3e7c9, #e8dab3);
+  border:1px solid #e5d7a8;
+  box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08);
+  opacity:.92; transform: rotate(calc(var(--rot,0deg) * -0.6));
+  pointer-events:none;
+}
+.photo-card.tape-2::before{ left:auto; right:24%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:76px }
+.photo-card.tape-3::before{ left:18%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:64px }
+
+/* Imagen con textura y blur mientras carga */
+.photo-card .ph-img{
+  width:100%; height:auto; display:block; border-radius:8px;
+  background:#eef2f8;
+  filter: contrast(1.02) saturate(1.03);
+  transition: filter .35s ease, transform .25s ease;
+}
+.photo-card.loading .ph-img{ filter: blur(10px) saturate(1.1) }
+.photo-card:hover .ph-img{ transform: scale(1.01) }
+
+/* Pie de polaroid */
+.photo-card .ph-cap{
+  margin-top:8px; text-align:center; color:#6b6256;
+  font-size:.95rem; letter-spacing:.02em; font-family: var(--font-display);
+}
+
+/* Botón “Ver más” acorde */
+.gal-actions .btn{
+  background: linear-gradient(135deg, #5a4a3a, #2f2a25);
+  border-color: #2f2a25;
+}
+.gal-actions .btn:hover{ background: linear-gradient(135deg, #6e5a46, #3a342e) }
+
+/* Lightbox: flechas */
+.lb-nav{
+  position:absolute; top:50%; transform: translateY(-50%);
+  width:46px; height:46px; border-radius:10px;
+  background:#ffffff; border:1px solid #0f1220; color:#0f1220;
+  font-weight:800; line-height:46px; text-align:center; cursor:pointer; user-select:none;
+}
+.lb-prev{ left:18px } .lb-next{ right:18px }
+
+/* ========== (NUEVO) RESEÑAS RÚSTICAS ========== */
+.reviews-panel{
+  background:
+    radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.08), transparent 60%),
+    radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.08), transparent 60%),
+    linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
+  border:1px solid #e8e1d6;
+  border-radius:18px;
+  box-shadow: var(--shadow);
+  padding: clamp(18px, 3.6vw, 28px);
+}
+.reviews-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: clamp(12px, 2.6vw, 22px);
+}
+.review-card{
+  position:relative; background:#fff;
+  border:1px solid #e6e1d9; border-radius:14px;
+  padding: 18px 16px 16px;
+  color:#2b2b2b;
+  box-shadow:
+    0 12px 26px rgba(0,0,0,.12),
+    0 2px 0 rgba(0,0,0,.04) inset;
+  transform: rotate(var(--rot, 0deg));
+  transition: transform .22s ease, box-shadow .22s ease;
+  will-change: transform;
+}
+.review-card:hover{
+  transform: rotate(var(--rot,0deg)) translateY(-3px) scale(1.01);
+  box-shadow:
+    0 18px 36px rgba(0,0,0,.16),
+    0 2px 0 rgba(0,0,0,.04) inset;
+}
+.review-card::before{
+  content:""; position:absolute; top:10px; left:24%;
+  width:82px; height:20px; border-radius:3px;
+  background: linear-gradient(#f3e7c9, #e8dab3);
+  border:1px solid #e5d7a8;
+  box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08);
+  opacity:.95; transform: rotate(calc(var(--rot,0deg) * -0.6));
+  pointer-events:none;
+}
+.review-card.tape-2::before{ left:auto; right:22%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:72px }
+.review-card.tape-3::before{ left:16%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:60px }
+
+.review-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px;
+}
+.review-stars{
+  font-size: 1.05rem; letter-spacing:.12rem; color:#d4a373;
+  text-shadow: 0 1px 0 #fff;
+}
+.review-quoteMark{
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.8vw, 40px);
+  line-height:1; color:#e7dcc7; user-select:none;
+  transform: translateY(2px) rotate(-6deg);
+}
+
+.review-text{
+  margin:6px 0 10px; color:#6b6256;
+  line-height:1.85; font-size: .98rem;
+}
+.review-text p{ margin:0 }
+
+.review-author{
+  text-align:right; margin-top:6px; color:#6b6256;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 3.6vw, 1.15rem);
+}
+
+.reviews-grid .review-card:nth-child(3n){ --rot: .6deg }
+.reviews-grid .review-card:nth-child(4n){ --rot: -.8deg }
+.reviews-grid .review-card:nth-child(5n){ --rot: .4deg }
+.reviews-grid .review-card:nth-child(6n){ --rot: -.5deg }
+
+@media (max-width: 560px){
+  .review-card{ padding:16px 14px 14px }
+  .review-quoteMark{ font-size: 30px }
+}
+
+/* ====== Burbujas sociales (fix deforma ico) ====== */
+.social-bubbles{
+  position: fixed;
+  right: clamp(12px, 2.4vw, 20px);
+  bottom: calc(12px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 70; /* por encima del footer y backdrop */
+}
+
+.social-bubbles .bubble{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  line-height: 0;              /* evita “aplastar” el svg */
+  color: #fff;                 /* los SVG usan currentColor */
+  background: #111;
+  border: 1px solid rgba(0,0,0,.2);
+  box-shadow: 0 12px 24px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.35) inset;
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .2s ease, opacity .2s;
+}
+
+.social-bubbles .bubble:hover{
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 16px 30px rgba(0,0,0,.22), 0 1px 0 rgba(255,255,255,.35) inset;
+}
+
+.social-bubbles .bubble:active{
+  transform: translateY(0) scale(.98);
+}
+
+.social-bubbles .bubble svg{
+  width: 26px;  /* tamaño fijo para que no se deforme */
+  height: 26px;
+  display: block;
+  flex: 0 0 auto;
+}
+
+/* Colores de cada red */
+.bubble--wa{ background:#25D366; }
+.bubble--ig{
+  background:
+    radial-gradient(120% 120% at 30% 110%, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%);
+}
+.bubble--fb{ background:#1877F2; }
+
+/* Tamaños más compactos en pantallas pequeñas */
+@media (max-width:560px){
+  .social-bubbles .bubble{ width:52px; height:52px; }
+  .social-bubbles .bubble svg{ width:24px; height:24px; }
+}
+@media (max-width:380px){
+  .social-bubbles .bubble{ width:48px; height:48px; }
+  .social-bubbles .bubble svg{ width:22px; height:22px; }
+}
+
+/* Usuarios con motion reducido: sin animaciones de hover */
+@media (prefers-reduced-motion: reduce){
+  .social-bubbles .bubble{ transition:none }
+  .social-bubbles .bubble:hover{ transform:none }
+}
 </style>
 
 </head>
@@ -421,9 +660,9 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       <article class="album-card" data-album="weddings">
         <div class="album-cover">
           <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=600&auto=format&fit=crop 600w,
-                       https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1200&auto=format&fit=crop 1200w"
+               src="boda/_MG_2482.webp"
+               srcset="boda/_MG_2482.webp,
+                       boda/_MG_2482.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Weddings cover">
         </div>
@@ -437,9 +676,9 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       <article class="album-card" data-album="engagement">
         <div class="album-cover">
           <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=600&auto=format&fit=crop 600w,
-                       https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1200&auto=format&fit=crop 1200w"
+               src="embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
+               srcset="embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp,
+                      embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Engagement cover">
         </div>
@@ -453,9 +692,9 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       <article class="album-card" data-album="family">
         <div class="album-cover">
           <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1200&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=600&auto=format&fit=crop 600w,
-                       https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1200&auto=format&fit=crop 1200w"
+               src="Familia/Puerto-Vallarta-Family-Photographer-14.webp"
+               srcset="Familia/Puerto-Vallarta-Family-Photographer-14.webp,
+                       Familia/Puerto-Vallarta-Family-Photographer-14.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Family cover">
         </div>
@@ -466,60 +705,32 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
         </div>
       </article>
 
-      <article class="album-card" data-album="pregnancy">
+      <article class="album-card" data-album="Kids">
         <div class="album-cover">
           <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=600&auto=format&fit=crop 600w,
-                       https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1200&auto=format&fit=crop 1200w"
+               src="Kids/Cris-Bernal-Photography-Kids6.webp"
+               srcset="Kids/Cris-Bernal-Photography-Kids6.webp,
+                       Kids/Cris-Bernal-Photography-Kids6.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
-               alt="Pregnancy cover">
+               alt="Kids cover">
         </div>
         <div class="album-meta">
-          <h3 class="album-title" data-i18n="cat_pregnancy">Embarazo</h3>
-          <p class="album-count"><span data-count="pregnancy">0</span> <span data-i18n="photos_word">fotos</span></p>
+          <h3 class="album-title" data-i18n="cat_Kids">Niños</h3>
+          <p class="album-count"><span data-count="Kids">0</span> <span data-i18n="photos_word">fotos</span></p>
           <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
         </div>
       </article>
 
-      <article class="album-card" data-album="vow">
-        <div class="album-cover">
-          <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1520975916090-3105956dac38?w=600&auto=format&fit=crop 600w,
-                       https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1200&auto=format&fit=crop 1200w"
-               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
-               alt="Vow renewal cover">
-        </div>
-        <div class="album-meta">
-          <h3 class="album-title" data-i18n="cat_vow">Renovación de votos</h3>
-          <p class="album-count"><span data-count="vow">0</span> <span data-i18n="photos_word">fotos</span></p>
-          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
-        </div>
-      </article>
 
-      <article class="album-card" data-album="trash">
-        <div class="album-cover">
-          <img loading="lazy" decoding="async"
-               src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1200&auto=format&fit=crop"
-               srcset="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=600&auto=format&fit=crop 600w,
-                       https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1200&auto=format&fit=crop 1200w"
-               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
-               alt="Trash the Dress cover">
-        </div>
-        <div class="album-meta">
-          <h3 class="album-title" data-i18n="cat_trash">Trash the Dress</h3>
-          <p class="album-count"><span data-count="trash">0</span> <span data-i18n="photos_word">fotos</span></p>
-          <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
-        </div>
-      </article>
+
     </div>
   </div>
 </section>
 
+<!-- Modal de Galería -->
 <div id="galleryModal" class="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="galTitle" hidden>
   <div class="gal-header">
-    <h3 id="galTitle">Album</h3>
+    <h3 id="galTitle">Álbum</h3>
     <div class="gal-meta"><span id="galCount">0</span> <span data-i18n="photos_word">fotos</span></div>
     <button id="galClose" class="btn btn-small" data-i18n="close">Cerrar</button>
   </div>
@@ -529,31 +740,56 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </div>
 </div>
 
+<!-- ===== Reseñas (SECCIÓN REEMPLAZADA) ===== -->
 <section class="section" id="reseñas" aria-label="Reviews">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title" data-i18n="reviews_title">Reseñas</h2>
       <p class="section-sub" data-i18n="reviews_sub">Valoración 5.0/5 — 100% de parejas recomiendan a Cris Bernal Photography.</p>
     </div>
-    <div class="reviews">
-      <blockquote class="review">
-        <div class="stars">★★★★★</div>
-        <p data-i18n="rev1">“Excelente servicio y profesionalismo… capturó cada momento con ideas originales y mucha energía.”</p>
-        <small>— <span data-i18n="rev1_by">Christian</span></small>
-      </blockquote>
-      <blockquote class="review">
-        <div class="stars">★★★★★</div>
-        <p data-i18n="rev2">“Seria, responsable, puntual y flexible; te hace sentir cómoda. Entrega a tiempo y trabajo magnífico.”</p>
-        <small>— <span data-i18n="rev2_by">Tania</span></small>
-      </blockquote>
-      <blockquote class="review">
-        <div class="stars">★★★★★</div>
-        <p data-i18n="rev3">“De las mejores decisiones para nuestra boda. Desde la sesión casual hasta el evento, siempre atenta.”</p>
-        <small>— <span data-i18n="rev3_by">Casandra</span></small>
-      </blockquote>
+
+    <div class="reviews-panel">
+      <div class="reviews-grid">
+        <!-- Reseña 1 -->
+        <article class="review-card tape-1">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 estrellas" title="5/5">★★★★★</div>
+            <div class="review-quoteMark" aria-hidden="true">“</div>
+          </div>
+          <div class="review-text">
+            <p data-i18n="rev1">“Excelente servicio y profesionalismo… capturó cada momento con ideas originales y mucha energía.”</p>
+          </div>
+          <div class="review-author">— <span data-i18n="rev1_by">Christian</span></div>
+        </article>
+
+        <!-- Reseña 2 -->
+        <article class="review-card tape-2">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 estrellas" title="5/5">★★★★★</div>
+            <div class="review-quoteMark" aria-hidden="true">“</div>
+          </div>
+          <div class="review-text">
+            <p data-i18n="rev2">“Seria, responsable, puntual y flexible; te hace sentir cómoda. Entrega a tiempo y trabajo magnífico.”</p>
+          </div>
+          <div class="review-author">— <span data-i18n="rev2_by">Tania</span></div>
+        </article>
+
+        <!-- Reseña 3 -->
+        <article class="review-card tape-3">
+          <div class="review-head">
+            <div class="review-stars" aria-label="5 estrellas" title="5/5">★★★★★</div>
+            <div class="review-quoteMark" aria-hidden="true">“</div>
+          </div>
+          <div class="review-text">
+            <p data-i18n="rev3">“De las mejores decisiones para nuestra boda. Desde la sesión casual hasta el evento, siempre atenta.”</p>
+          </div>
+          <div class="review-author">— <span data-i18n="rev3_by">Casandra</span></div>
+        </article>
+      </div>
     </div>
   </div>
 </section>
+<!-- ===== /Reseñas ===== -->
 
 <section class="section" id="contacto" aria-label="Contact">
   <div class="container">
@@ -596,10 +832,13 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </a>
 </nav>
 
-<div id="lightbox" style="position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:24px; z-index:70;">
+<!-- Lightbox base (las flechas se agregan por JS) -->
+<div id="lightbox" style="position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:24px; z-index:90;">
   <button id="lbClose" aria-label="Close" style="position:absolute; top:16px; right:16px; background:#ffffff; border:1px solid #0f1220; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;">✕</button>
-  <img id="lbImg" alt="" style="max-width: min(96vw, 1400px); max-height: 86vh; border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.35)"/>
-  <div id="lbCap" style="color:#e9eefc; margin-top:10px; text-align:center"></div>
+  <div style="text-align:center">
+    <img id="lbImg" alt="" style="max-width: min(96vw, 1400px); max-height: 86vh; border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.35)"/>
+    <div id="lbCap" style="color:#e9eefc; margin-top:10px; text-align:center"></div>
+  </div>
 </div>
 
 <script type="application/ld+json">
@@ -656,27 +895,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     if (!inside && navToggle.classList.contains('active')) toggleMenu(false);
   }, {passive:true});
 
-  // ===== Lightbox =====
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lbImg');
-  const lbCap = document.getElementById('lbCap');
-  const lbClose = document.getElementById('lbClose');
-
-  document.addEventListener('click', (e)=>{
-    const a = e.target.closest('[data-lightbox]');
-    if(!a) return;
-    e.preventDefault();
-    lbImg.src = a.getAttribute('href');
-    lbImg.alt = a.dataset.lightbox || '';
-    lbCap.textContent = a.dataset.lightbox || '';
-    lb.style.display = 'flex';
-    lockScroll(true);
-  }, {passive:true});
-
-  const closeLB = ()=>{ lb.style.display='none'; lbImg.src=''; lockScroll(false); };
-  lbClose.addEventListener('click', closeLB, {passive:true});
-  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() }, {passive:true});
-
   // ===== Scrollspy =====
   const navLinks = [...document.querySelectorAll('.nav-links a, #navFlyout a')];
   const sections = ['home','acerca','recent','contacto','reseñas'].map(id => document.getElementById(id));
@@ -707,7 +925,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   const prevBtn = document.querySelector('.slider-btn.prev');
   const nextBtn = document.querySelector('.slider-btn.next');
   const dotsContainer = document.querySelector('.slider-dots');
-  const progressBar = document.querySelector('.slider-progress > span');
   const sliderContainer = document.querySelector('.slider-container');
 
   const slidesData = [
@@ -778,33 +995,91 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   sliderContainer.addEventListener('mouseleave', startAutoplay);
   document.addEventListener('visibilitychange', ()=>{ if (document.hidden) stopAutoplay(); else startAutoplay(); });
 
-  // ===== Álbumes =====
+  // ===== Álbumes (puedes sustituir por tus rutas locales masivas con seq()) =====
   const albums = {
     weddings: [
-      "https://images.unsplash.com/photo-1530036439199-0f3aa6c75fe8?w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1600&auto=format&fit=crop"
+      "boda/_MG_2482.webp",
+      "boda/_MG_3386.webp",
+      "boda/_MG_6015.webp",
+      "boda/_MG_6349.webp",
+      "boda/cris-12.webp",
+      "boda/_MG_0909.webp",
+      "boda/_MG_9248 2.webp",
+      "boda/CASTLEWEB-139-1.webp",
+      "boda/cris-16.webp",
+      "boda/cris-5.webp",
+      "boda/cris-8.webp",
+      "boda/CrisBernalPhoto-6.webp",
+      "boda/CrisBernalPhoto-17.webp",
+      "boda/CrisBernalPhoto-37.webp",
+      "boda/CrisBernalPhoto-159.webp",
+      "boda/CrisBernalPhotography-300.webp",
+      "boda/IMG_0666-854.webp",
+      "boda/IMG_0828.webp",
+      "boda/HIGHLIGHTS_Diana&Elias-33-1.webp",
+      "boda/IMG_0666-854.webp",
+      "boda/IMG_2965-2.webp",
+      "boda/IMG_3055.webp",
+      "boda/IMG_3765.webp",
+      "boda/IMG_3870-3.webp",
+      "boda/IMG_3975.webp",
+      "boda/IMG_4587.webp",
+      "boda/IMG_5004.webp",
+      "boda/IMG_5457.webp",
+      "boda/IMG_5824.webp",
+      "boda/insta-Marlen&Daniel-28.webp",
+      "boda/insta-Marlen&Daniel-21.webp",
+      "boda/insta-Marlen&Daniel-11-3.webp"
     ],
     engagement: [
-      "https://images.unsplash.com/photo-1512412046878-8c85f3f376d5?w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&auto=format&fit=crop"
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-1-1-scaled.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-2.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-7.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-14.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-15.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-16.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-20.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-26.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-28.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-30.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-33.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-35.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
     ],
     family: [
-      "https://images.unsplash.com/photo-1516487106395-f2d269d6a21c?w=1600&auto=format&fit=crop"
+      "Familia/Puerto-Vallarta-Family-Photographer-1.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-2 (1).webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-3.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-4.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-5.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-6.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-7.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-8.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-14.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-15.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-16.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-17.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-18.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-19.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-20.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-21.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-22.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-23.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-24.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-25.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-31.webp"
     ],
-    pregnancy: [
-      "https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=1600&auto=format&fit=crop"
-    ],
-    vow: [
-      "https://images.unsplash.com/photo-1520975916090-3105956dac38?w=1600&auto=format&fit=crop"
-    ],
-    trash: [
-      "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1600&auto=format&fit=crop"
-    ],
+    Kids: [
+      "Kids/Cris-Bernal-Photography-Kids1.webp",
+      "Kids/Cris-Bernal-Photography-Kids2.webp",
+      "Kids/Cris-Bernal-Photography-Kids3.webp",
+      "Kids/Cris-Bernal-Photography-Kids4.webp",
+      "Kids/Cris-Bernal-Photography-Kids5.webp",
+      "Kids/Cris-Bernal-Photography-Kids6.webp"
+    ]
   };
 
+  // Contadores en tarjetas
   Object.keys(albums).forEach(k=>{
     const el = document.querySelector(`[data-count="${k}"]`);
     if (el) el.textContent = albums[k].length;
@@ -833,7 +1108,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       label_address:"Dirección:", addr_value:"Privada Huatulco 208-24, Fraccionamiento las Palmas, 48317.Puerto Vallarta, Jal.",
       label_hours:"Atención:", hours_value:"Lun–Vie, 15:00–20:00 (previa cita)",
       recent_title:"Reciente", recent_sub:"Álbumes por categoría. Abre uno para ver más.",
-      cat_weddings:"Bodas (varias parejas)", cat_engagement:"Engagement", cat_family:"Familia", cat_pregnancy:"Embarazo", cat_vow:"Renovación de votos", cat_trash:"Trash the Dress",
+      cat_weddings:"Bodas (varias parejas)", cat_engagement:"Engagement", cat_family:"Familia", cat_pregnancy:"Kids",
       photos_word:"fotos", open_album:"Abrir álbum", load_more:"Ver más", close:"Cerrar",
       reviews_title:"Reseñas", reviews_sub:"Valoración 5.0/5 — 100% de parejas recomiendan a Cris Bernal Photography.",
       rev1:"“Excelente servicio y profesionalismo… capturó cada momento con ideas originales y mucha energía.”", rev1_by:"Christian",
@@ -939,9 +1214,152 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   if (flyES) flyES.addEventListener('click', ()=> { btnES.click(); toggleMenu(false); }, {passive:true});
   if (flyEN) flyEN.addEventListener('click', ()=> { btnEN.click(); toggleMenu(false); }, {passive:true});
 
-  // Slider init + i18n
+  // ======= (NUEVO) GALERÍA RÚSTICA: apertura, paginado y lightbox =======
+
+  // Helper para generar secuencias locales (si renombras tus archivos)
+  function seq(prefix, count, pad = 3, ext = 'webp'){
+    return Array.from({length: count}, (_,i)=> `${prefix}${String(i+1).padStart(pad,'0')}.${ext}`);
+  }
+
+  const galModal = document.getElementById('galleryModal');
+  const galGrid  = document.getElementById('galGrid');
+  const galTitle = document.getElementById('galTitle');
+  const galCount = document.getElementById('galCount');
+  const galMore  = document.getElementById('galMore');
+  const galClose = document.getElementById('galClose');
+
+  let currentAlbumKey = null;
+  let currentAlbumPhotos = [];
+  let page = 0;
+  const PAGE_SIZE = 24;
+
+  // Abrir modal desde las tarjetas
+  document.querySelector('.albums-grid')?.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.album-card .btn');
+    if(!btn) return;
+    const card = btn.closest('.album-card');
+    const key  = card?.dataset.album;
+    const title= card?.querySelector('.album-title')?.textContent?.trim() || 'Álbum';
+    openGallery(key, title);
+  }, {passive:true});
+
+  function openGallery(key, title){
+    currentAlbumKey = key;
+    currentAlbumPhotos = (albums[key] || []).slice(); // copia
+    galTitle.textContent = title;
+    galCount.textContent = currentAlbumPhotos.length;
+    galGrid.innerHTML = '';
+    page = 0;
+
+    // Si quieres las más nuevas primero:
+    // currentAlbumPhotos.reverse();
+
+    galModal.hidden = false;
+    lockScroll(true);
+    renderPage();
+  }
+
+  function renderPage(){
+    const start = page * PAGE_SIZE;
+    const slice = currentAlbumPhotos.slice(start, start + PAGE_SIZE);
+
+    slice.forEach((url, i)=>{
+      const globalIndex = start + i;
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.className = `photo-card tape-${(globalIndex % 3) + 1} loading`;
+      a.style.setProperty('--rot', `${(Math.random()*2 - 1) * 1.2}deg`);
+      a.dataset.index = String(globalIndex);
+
+      const img = document.createElement('img');
+      img.className = 'ph-img';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = `${galTitle.textContent} · ${globalIndex+1}`;
+      img.src = url;
+      img.addEventListener('load', ()=> a.classList.remove('loading'), {once:true});
+
+      const cap = document.createElement('div');
+      cap.className = 'ph-cap';
+      cap.textContent = ''; // agrega leyenda si gustas
+
+      a.appendChild(img);
+      a.appendChild(cap);
+      galGrid.appendChild(a);
+    });
+
+    page++;
+    galMore.style.display = (page * PAGE_SIZE < currentAlbumPhotos.length) ? '' : 'none';
+  }
+
+  galMore.addEventListener('click', renderPage);
+  galClose.addEventListener('click', ()=>{ galModal.hidden = true; lockScroll(false); }, {passive:true});
+  document.addEventListener('keydown', (e)=>{
+    if (galModal.hidden) return;
+    if (e.key === 'Escape') { galModal.hidden = true; lockScroll(false); }
+  });
+
+  // ===== Lightbox mejorado (reemplaza el anterior) =====
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCap = document.getElementById('lbCap');
+  const lbCloseBtn = document.getElementById('lbClose');
+  let lbIndex = 0;
+
+  function showLB(i){
+    if (!currentAlbumPhotos.length) return;
+    lbIndex = (i + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+    lbImg.src = currentAlbumPhotos[lbIndex];
+    lbCap.textContent = `${galTitle.textContent} · ${lbIndex+1}/${currentAlbumPhotos.length}`;
+    lb.style.display = 'flex';
+    lockScroll(true);
+  }
+
+  function closeLB(){
+    lb.style.display='none';
+    lbImg.src='';
+    lockScroll(false);
+  }
+
+  // Abrir LB al click en una foto del modal
+  galGrid.addEventListener('click', (e)=>{
+    const card = e.target.closest('.photo-card');
+    if(!card) return;
+    e.preventDefault();
+    const idx = Number(card.dataset.index || 0);
+    showLB(idx);
+  });
+
+  // Cerrar por botón o click fuera
+  lbCloseBtn.addEventListener('click', closeLB, {passive:true});
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() }, {passive:true});
+
+  // Navegación teclado
+  document.addEventListener('keydown', (e)=>{
+    if (lb.style.display !== 'flex') return;
+    if (e.key === 'ArrowRight') showLB(lbIndex + 1);
+    if (e.key === 'ArrowLeft')  showLB(lbIndex - 1);
+    if (e.key === 'Escape')     closeLB();
+  });
+
+  // Flechas visibles dentro del lightbox
+  (function addLbArrows(){
+    const make = (cls, txt, onClick)=>{
+      const b = document.createElement('button');
+      b.className = `lb-nav ${cls}`;
+      b.type = 'button';
+      b.textContent = txt;
+      b.setAttribute('aria-label', cls.includes('prev') ? 'Anterior' : 'Siguiente');
+      b.addEventListener('click', onClick);
+      lb.appendChild(b);
+    };
+    make('lb-prev','‹', ()=> showLB(lbIndex - 1));
+    make('lb-next','›', ()=> showLB(lbIndex + 1));
+  })();
+
+  // ===== Arranque =====
   function start() {
-    // Crear slides solo una vez
     if (!sliderWrapper.children.length) {
       createSlidesAndDots(); updateSlider(); startAutoplay();
     }
