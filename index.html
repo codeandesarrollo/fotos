@@ -13,12 +13,21 @@
 <meta property="og:locale" content="es_MX" />
 <meta name="color-scheme" content="light"/>
 
-<!-- Fuentes -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Playfair+Display:ital,wght@0,600..800;1,600..800&display=swap" rel="stylesheet">
+<!-- Preload + @font-face de Brandon Grotesque Light -->
+<link rel="preload" as="font"
+      href="fonts/HvDTrial_Brandon_Grotesque_light-BF64a625c93e709.otf"
+      type="font/otf" crossorigin>
 
 <style>
+/* ====== TIPOGRAFÍA GLOBAL ====== */
+@font-face{
+  font-family: 'BrandonGrotesque';
+  src: url('fonts/HvDTrial_Brandon_Grotesque_light-BF64a625c93e709.otf') format('opentype');
+  font-weight: 300;            /* Este archivo es Light */
+  font-style: normal;
+  font-display: swap;
+}
+
 :root{
   --bg:#f8faff; --surface:#ffffff; --panel:#ffffffcc; --border:#e2e6ed;
   --shadow: 0 8px 24px rgba(17, 24, 39, .06); --shadow-hover: 0 12px 30px rgba(17, 24, 39, .1);
@@ -31,16 +40,24 @@
   --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
   --blur: blur(12px);
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  /* TODA LA WEB EN BRANDON GROTESQUE */
+  --font-brand: 'BrandonGrotesque', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-sans: var(--font-brand);
+  --font-display: var(--font-brand);
 
   --logo-w: 240px; --logo-h: 54px; --logo-scale: 1.35;
 }
 
-/* Base */
+/* ====== REGLAS BASE ====== */
 *, *::before, *::after{ box-sizing:border-box }
 html,body{ height:100% }
-body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--font-sans); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden; line-height:1.5 }
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--font-sans);
+  font-weight:300;              /* Light por defecto */
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden; line-height:1.5
+}
 img{ max-width:100%; display:block; height:auto }
 a{ color:inherit; text-decoration:none }
 :focus-visible{ outline:3px solid var(--focus); outline-offset:3px; border-radius:var(--radius) }
@@ -48,15 +65,20 @@ a{ color:inherit; text-decoration:none }
 .container{ max-width:var(--container); margin:0 auto; padding:0 clamp(16px, 4vw, 24px) }
 .section{ padding: clamp(60px, 10vw, 120px) 0; scroll-margin-top: calc(var(--nav-h) + 24px) }
 .section-header{ text-align:center; margin-bottom: clamp(32px, 5vw, 64px) }
-.section-title{ font-size: clamp(32px, 5vw, 48px); font-weight:800; letter-spacing:-.02em; margin:0 0 10px; line-height:1.2 }
+.section-title{
+  font-family:var(--font-display);
+  font-weight:300;              /* mantiene el feel ligero */
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  font-size: clamp(32px, 5vw, 48px);
+  margin:0 0 10px; line-height:1.2
+}
 .section-sub{ color:var(--text-dim); font-size: clamp(16px, 2.6vw, 18px); max-width:760px; margin:0 auto; line-height:1.6 }
 
 /* ===== NAVBAR ===== */
 .navbar{
   position:sticky; top:0; z-index:50; height: calc(var(--nav-h) + var(--safe-top));
-  display:flex; align-items:center;
-  background:#fff;
-  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; background:#fff; border-bottom:1px solid var(--border);
   transition: height .22s, border-color .22s;
 }
 .navbar.nav-compact{ height: calc(62px + var(--safe-top)); --logo-scale: 1.18; }
@@ -65,15 +87,24 @@ a{ color:inherit; text-decoration:none }
 .brand{ display:flex; align-items:center; gap:14px; min-width:0; flex:0 0 auto; margin-right: calc((var(--logo-scale) - 1) * var(--logo-w) + 24px) }
 .brand-logo{ height: var(--logo-h); width:auto }
 .brand-logo--big{ transform: scale(var(--logo-scale)); transform-origin: left center }
-.brand span{ font-family:var(--font-display); font-weight:700; letter-spacing:.2px; line-height:1; font-size: clamp(18px, 2.2vw, 22px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:48vw }
+.brand span{
+  font-family:var(--font-display);
+  font-weight:300;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  line-height:1; font-size: clamp(18px, 2.2vw, 22px);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:48vw
+}
 
 .sr-only{ position:absolute!important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
 
 /* Links desktop */
 .nav-links{ display:flex; align-items:center; gap:8px }
 .nav-links a{
-  --pad-x:14px; text-transform:uppercase; letter-spacing:.08em;
-  font-weight:600; font-size:12.5px; color:var(--text-dim);
+  --pad-x:14px;
+  font-family:var(--font-display);
+  text-transform:uppercase; letter-spacing:.08em;
+  font-weight:300; font-size:12.5px; color:var(--text-dim);
   padding:10px var(--pad-x);
   transition: color .2s, text-underline-offset .2s;
 }
@@ -82,91 +113,75 @@ a{ color:inherit; text-decoration:none }
 
 /* Acciones */
 .nav-actions{ display:flex; align-items:center; gap:12px; flex:0 0 auto }
-.btn{
-  appearance:none; border:none; cursor:pointer; line-height:1; color:var(--accent-ink);
-  background: linear-gradient(135deg, #1a3249, #2c4d6f);
-  padding:14px 22px; border-radius:999px; border:1px solid color-mix(in oklab, #1a3249 80%, #000);
-  box-shadow: 0 6px 18px rgba(26,50,73,.18);
-  transition: transform .06s, box-shadow .06s, opacity .2s, background .2s; min-height:48px; font-weight:600; font-size:15px;
-}
-.btn:hover{ opacity:.9; background: linear-gradient(135deg, #203a55, #355b81) }
 
-/* ===== Botones de idioma (ES / EN) ===== */
-.lang-switch{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:4px;
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:999px;
-  box-shadow:0 6px 16px rgba(17,24,39,.06);
+/* ===========================
+   Buttons v3 · Halo Outline
+   =========================== */
+.btn{
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  padding: 11px 18px; min-height: 42px; border-radius: 999px;
+  font-family:var(--font-sans); font-weight:300; letter-spacing:.02em; font-size: 15px; line-height: 1;
+  color: var(--accent); border: 1.5px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+             linear-gradient(135deg, color-mix(in oklab, var(--accent) 70%, #fff 30%), var(--accent-light)) border-box;
+  box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 8px 22px rgba(17,24,39,.06);
+  transition: transform .06s ease, box-shadow .18s ease, background .18s ease, color .18s ease, opacity .2s ease;
 }
-.lang-btn{
-  appearance:none;
-  border:0;
-  background:transparent;
-  padding:9px 14px;
-  border-radius:999px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-weight:700;
-  font-size:12.5px;
-  color:var(--text-dim);
-  line-height:1;
-  cursor:pointer;
-  transition:background .2s,color .2s,transform .08s ease;
+.btn::before{ content:""; position:absolute; inset:0; border-radius:inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,.22), rgba(255,255,255,0) 42%); pointer-events:none; }
+.btn:hover{ transform: translateY(-1px); color: color-mix(in oklab, var(--accent) 78%, #000 22%);
+  box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 12px 28px rgba(17,24,39,.10);
+  background: linear-gradient(color-mix(in oklab, #fff 92%, var(--accent) 8%), color-mix(in oklab, #fff 92%, var(--accent-light) 8%)) padding-box,
+              linear-gradient(135deg, color-mix(in oklab, var(--accent) 70%, #fff 30%), var(--accent-light)) border-box; }
+.btn:active{ transform: translateY(0); box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 8px 18px rgba(17,24,39,.08); }
+.btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px var(--focus), 0 10px 24px rgba(17,24,39,.10); }
+.btn-small{ padding: 9px 14px; min-height: 36px; font-size: 13.5px; }
+.btn-lg{ padding: 15px 24px; min-height: 50px; font-size: 16px; }
+.btn--solid{ color: var(--accent-ink); background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  border: 1px solid color-mix(in oklab, var(--accent) 70%, #000);
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 10px 26px rgba(26,50,73,.22); }
+.btn--solid:hover{ transform: translateY(-1px);
+  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 94%, #fff 6%), color-mix(in oklab, var(--accent-light) 98%, #fff 2%)); }
+.btn-ghost{ color: var(--text); background: linear-gradient(#fff, #fff); border: 1px solid var(--border); box-shadow: 0 6px 16px rgba(17,24,39,.06); }
+.btn-ghost:hover{ background: color-mix(in oklab, #fff 96%, var(--bg) 4%); }
+.btn-kraft{ color:#fff; background: linear-gradient(135deg, #6e5a46, #3a342e); border: 1px solid #3a342e; box-shadow: 0 10px 24px rgba(0,0,0,.18); }
+.btn-kraft:hover{ background: linear-gradient(135deg, #7b634d, #463f38); }
+#ctaTop, #ctaWhats{ color: var(--accent-ink); background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  border: 1px solid color-mix(in oklab, var(--accent) 70%, #000);
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 10px 26px rgba(26,50,73,.22); }
+#ctaTop:hover, #ctaWhats:hover{
+  background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 94%, #fff 6%), color-mix(in oklab, var(--accent-light) 98%, #fff 2%));
 }
+
+/* Botones idioma (heredan Brandon) */
+.lang-switch{ display:inline-flex; align-items:center; gap:6px; padding:4px; background:var(--bg); border:1px solid var(--border);
+  border-radius:999px; box-shadow:0 6px 16px rgba(17,24,39,.06); }
+.lang-btn{ appearance:none; border:0; background:transparent; padding:9px 14px; border-radius:999px;
+  text-transform:uppercase; letter-spacing:.08em; font-weight:300; font-size:12.5px;
+  color:var(--text-dim); line-height:1; cursor:pointer; transition:background .2s,color .2s,transform .08s ease; }
 .lang-btn:hover{ background:#fff; color:var(--text) }
 .lang-btn:active{ transform:translateY(1px) }
-.lang-btn.active{
-  background:linear-gradient(135deg,var(--accent),var(--accent-light));
-  color:var(--accent-ink);
-  box-shadow:0 6px 14px rgba(26,50,73,.25);
-}
-.lang-btn:focus-visible{
-  outline:3px solid var(--focus);
-  outline-offset:2px;
-  border-radius:999px;
-}
-/* Ajustes en el flyout móvil */
-.nav-flyout .lang-switch{
-  width:100%;
-  padding:6px;
-  border-radius:14px;
-  box-shadow:none;
-}
-.nav-flyout .lang-btn{
-  flex:1;
-  text-align:center;
-  padding:12px 10px;
-  font-size:13px;
-}
+.lang-btn.active{ background:linear-gradient(135deg,var(--accent),var(--accent-light)); color:var(--accent-ink);
+  box-shadow:0 6px 14px rgba(26,50,73,.25); }
+.lang-btn:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; border-radius:999px; }
+.nav-flyout .lang-switch{ width:100%; padding:6px; border-radius:14px; box-shadow:none; }
+.nav-flyout .lang-btn{ flex:1; text-align:center; padding:12px 10px; font-size:13px; }
 
-/* Botón hamburguesa (oculto en desktop) */
-.nav-toggle{
-  display:none; width:44px; height:44px; border-radius:999px; background:#fff; border:1px solid var(--border); align-items:center; justify-content:center;
-}
+/* Hamburguesa + flyout */
+.nav-toggle{ display:none; width:44px; height:44px; border-radius:999px; background:#fff; border:1px solid var(--border);
+  align-items:center; justify-content:center; }
 .nav-toggle span, .nav-toggle::before, .nav-toggle::after{ content:""; display:block; width:22px; height:2px; background:var(--text); border-radius:2px; transition:.25s }
 .nav-toggle::before{ transform: translateY(-7px) } .nav-toggle::after{ transform: translateY(7px) }
 .nav-toggle.active span{ transform: scaleX(0) } .nav-toggle.active::before{ transform: translateY(0) rotate(45deg) } .nav-toggle.active::after{ transform: translateY(0) rotate(-45deg) }
 
-/* Flyout móvil */
-.nav-flyout{
-  position:fixed; left:16px; right:16px; top: calc(var(--nav-h) + var(--safe-top) + 12px); z-index:40;
+.nav-flyout{ position:fixed; left:16px; right:16px; top: calc(var(--nav-h) + var(--safe-top) + 12px); z-index:40;
   display:block; padding:12px; border-radius:16px; background:#fff; border:1px solid var(--border);
-  transform: translateY(-10px); opacity:0; pointer-events:none; transition:.25s ease;
-}
+  transform: translateY(-10px); opacity:0; pointer-events:none; transition:.25s ease; }
 .nav-flyout.show{ transform: translateY(0); opacity:1; pointer-events:auto }
-.nav-flyout a{ display:block; padding:14px 16px; border-radius:10px; color:var(--text-dim); font-size:13px; text-transform:uppercase; letter-spacing:.08em; font-weight:600; transition: background .2s, color .2s }
+.nav-flyout a{ display:block; padding:14px 16px; border-radius:10px; color:var(--text-dim); font-size:13px; text-transform:uppercase; letter-spacing:.08em; font-weight:300; transition: background .2s, color .2s }
 .nav-flyout a + a{ margin-top:6px }
 .nav-flyout a:hover{ background:var(--bg); color:var(--text) }
-
-/* Backdrop para el menú móvil */
-.menu-backdrop{
-  position:fixed; inset:0; background:rgba(0,0,0,.22); z-index:39;
-  opacity:0; pointer-events:none; transition:opacity .2s ease;
-}
+.menu-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.22); z-index:39; opacity:0; pointer-events:none; transition:opacity .2s ease; }
 .menu-backdrop.show{ opacity:1; pointer-events:auto }
 
 /* ===== HERO ===== */
@@ -177,47 +192,36 @@ a{ color:inherit; text-decoration:none }
   background: var(--panel); backdrop-filter: var(--blur); border:1px solid var(--border);
   padding:18px 24px; border-radius:var(--radius-xl); max-width:min(680px, 86vw); box-shadow:var(--shadow);
 }
-.hero-tagline h1{ margin:0 0 8px; font-size: clamp(24px, 6vw, 36px); font-weight:800; letter-spacing:-.01em; line-height:1.2; font-family:var(--font-display) }
+.hero-tagline h1{
+  margin:0 0 8px; font-size: clamp(24px, 6vw, 36px);
+  font-family:var(--font-display); font-weight:300; letter-spacing:.02em; line-height:1.2
+}
 .hero-tagline p{ margin:0; color:var(--text-dim); font-size: clamp(15px, 3.8vw, 17.5px); line-height:1.6 }
 
 /* ===== SLIDER ===== */
-.slider-container{
-  position:relative; width:100%;
-  height:min(78vh, 720px);
-  border-radius:var(--radius-xl); overflow:hidden;
-  box-shadow:var(--shadow); background:#0b1220; border:1px solid var(--border);
-}
-.slider-container .slide img{
-  transform: none !important;   /* quita el scale inicial */
-  animation: none !important;   /* apaga la animación kenburns */
-}
+.slider-container{ position:relative; width:100%; height:min(78vh, 720px); border-radius:var(--radius-xl); overflow:hidden;
+  box-shadow:var(--shadow); background:#0b1220; border:1px solid var(--border); }
+.slider-container .slide img{ transform:none !important; animation:none !important }
 .slider-wrapper{ display:flex; height:100%; transition: transform .7s cubic-bezier(.22,.61,.36,1) }
 .slide{ position:relative; flex:0 0 100% }
 .slide img{ width:100%; height:100%; object-fit:cover; object-position:50% 50%; transform:scale(1.03); filter:contrast(1.05) saturate(1.02); animation: kenburns 16s ease-in-out infinite alternate }
 @keyframes kenburns{ 0%{ transform:scale(1.05) } 100%{ transform:scale(1.12) translateY(-1.5%) } }
-
 .slide .caption{
   position:absolute; left: clamp(18px, 4vw, 40px); bottom: clamp(18px, 3.6vw, 36px);
   z-index:3; background: color-mix(in oklab, #0b1220 58%, #ffffff00);
   color:#fff; border:1px solid #ffffff2a; border-radius:14px;
-  padding:12px 14px; font-weight:600; letter-spacing:.2px; backdrop-filter:blur(8px);
+  padding:12px 14px; font-weight:300; letter-spacing:.2px; backdrop-filter:blur(8px);
   box-shadow:0 8px 26px rgba(0,0,0,.28); max-width:min(70ch, 86vw); font-size: clamp(14px, 2.6vw, 16px);
 }
-
-.slider-btn{
-  position:absolute; top:50%; transform:translateY(-50%);
-  backdrop-filter: blur(8px); background:#ffffffd6; border:1px solid var(--border); color:var(--text);
+.slider-btn{ position:absolute; top:50%; transform:translateY(-50%); backdrop-filter: blur(8px);
+  background:#ffffffd9; border:1px solid var(--border); color:var(--text);
   border-radius:14px; width:48px; height:48px; cursor:pointer; font-size:26px; line-height:48px; text-align:center; font-weight:800; z-index:4;
-  box-shadow:0 10px 28px rgba(0,0,0,.18); transition: transform .12s, background .2s, box-shadow .2s, opacity .2s;
-}
-.slider-btn:hover{ background:#fff; transform:translateY(-50%) scale(1.04) }
+  box-shadow:0 12px 28px rgba(0,0,0,.18); transition: transform .12s, background .2s, box-shadow .2s, opacity .2s; }
+.slider-btn:hover{ background:#fff; transform:translateY(-50%) scale(1.04); box-shadow:0 16px 34px rgba(0,0,0,.22) }
 .slider-btn.prev{ left:16px } .slider-btn.next{ right:16px }
 
-.slider-dots{
-  position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
-  display:flex; gap:10px; z-index:4; padding:6px 10px; border-radius:999px;
-  background:#ffffffbb; border:1px solid var(--border); box-shadow:var(--shadow);
-}
+.slider-dots{ position:absolute; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:4; padding:6px 10px; border-radius:999px;
+  background:#ffffffbb; border:1px solid var(--border); box-shadow:var(--shadow); }
 .dot{ appearance:none; border:none; width:10px; height:10px; border-radius:50%; background:#c9d1e0; cursor:pointer; transition: transform .2s, background .2s, box-shadow .2s }
 .dot:hover{ transform:scale(1.15); background:#9fb0cb }
 .dot.active{ background:#1a3249; transform:scale(1.25) }
@@ -230,7 +234,41 @@ a{ color:inherit; text-decoration:none }
 }
 .about p, .contact p{ color:var(--text-dim); line-height:1.8; font-size:clamp(16px, 2.6vw, 18px) }
 .chips{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px }
-.chip{ border:1px solid var(--border); border-radius:999px; padding:8px 16px; font-size:clamp(13px, 2.4vw, .95rem); background:var(--bg); color:var(--text-dim); box-shadow:0 1px 3px rgba(0,0,0,.04); font-weight:500 }
+.chip{ border:1px solid var(--border); border-radius:999px; padding:8px 16px; font-size:clamp(13px, 2.4vw, .95rem); background:var(--bg); color:var(--text-dim); box-shadow:0 1px 3px rgba(0,0,0,.04); font-weight:300 }
+
+/* CONTACT – detalles visuales */
+.contact{ position:relative; overflow:hidden }
+.contact::after{ content:""; position:absolute; inset:-1px; border-radius: inherit; pointer-events:none;
+  background: radial-gradient(800px 200px at 0% 0%, rgba(44,77,111,.06), transparent 60%),
+              radial-gradient(800px 200px at 100% 100%, rgba(26,50,73,.06), transparent 60%); }
+
+.contact-channels{ list-style:none; padding:0; margin:0 0 16px; display:grid; grid-template-columns: 1fr; gap:10px }
+.channel{ display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:14px; text-decoration:none;
+  border:1px solid transparent; background: linear-gradient(#fff,#fff) padding-box,
+  linear-gradient(135deg, color-mix(in oklab, var(--accent) 70%, #fff 30%), var(--accent-light)) border-box;
+  box-shadow: 0 1px 0 rgba(255,255,255,.45) inset, 0 8px 18px rgba(17,24,39,.06);
+  transition: transform .12s ease, box-shadow .2s ease, background .2s ease; }
+.channel:hover{ transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 12px 26px rgba(17,24,39,.10) }
+
+.ch-icon{ flex:0 0 auto; width:40px; height:40px; border-radius:999px; display:grid; place-items:center; color:#fff; }
+.ch-wa{ background:#25D366 }
+.ch-ig{ background: radial-gradient(120% 120% at 30% 110%, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%); }
+.ch-fb{ background:#1877F2 }
+
+.ch-text{ display:flex; flex-direction:column; line-height:1.25 }
+.ch-text strong{ font-size:1rem; color:var(--text); font-weight:300 }
+.ch-text small{ color:var(--text-dim) }
+
+.contact-cta{ display:flex; flex-direction:column; align-items:flex-start; gap:12px }
+.cta-help{ margin:0; font-size:.95rem; color:var(--text-dim) }
+
+/* Mini burbujas */
+.contact-mini{ display:flex; gap:10px; align-items:center; margin-top:4px }
+.mini-bubble{ width:42px; height:42px; border-radius:999px; display:grid; place-items:center; color:#fff;
+  border:1px solid rgba(0,0,0,.15); box-shadow: 0 8px 16px rgba(0,0,0,.12), 0 1px 0 rgba(255,255,255,.35) inset;
+  transition: transform .1s ease, box-shadow .2s ease; }
+.mini-bubble:hover{ transform: translateY(-1px); box-shadow: 0 12px 22px rgba(0,0,0,.16), 0 1px 0 rgba(255,255,255,.35) inset }
+.mini-wa{ background:#25D366 } .mini-ig{ background: radial-gradient(120% 120% at 30% 110%, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%) } .mini-fb{ background:#1877F2 }
 
 /* ===== RECENT ===== */
 .albums-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:var(--gap) }
@@ -239,56 +277,115 @@ a{ color:inherit; text-decoration:none }
 .album-cover{ aspect-ratio:16/10; overflow:hidden; background:#eef2f8 }
 .album-cover img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s, filter .4s }
 
-/* ===== MODAL GALERÍA (estructura base) ===== */
+/* ===== MODAL GALERÍA ===== */
 .gallery-modal{ position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; padding: clamp(16px, 3vw, 24px) }
 .gallery-modal[hidden]{ display:none }
 .gal-header{ display:flex; align-items:center; gap:16px; justify-content:space-between; border-radius:var(--radius-xl); padding:12px 20px; box-shadow:var(--shadow) }
-.gal-header h3{ margin:0; font-size:clamp(1rem, 4vw, 1.2rem); font-weight:700 }
+.gal-header h3{ margin:0; font-size:clamp(1rem, 4vw, 1.2rem); font-weight:300 }
 .gal-meta{ color:var(--text-dim); font-size:1rem }
 .gal-grid{ margin-top:clamp(12px, 2vw, 20px); flex:1; overflow:auto; padding:8px; column-width:300px; column-gap: clamp(10px, 2vw, 16px) }
-.gal-grid a{ break-inside: avoid; display:block; margin:0 0 clamp(10px, 2vw, 16px); border-radius:var(--radius); overflow:hidden; background:#eef2f8; border:1px solid var(--border); box-shadow:0 4px 12px rgba(0,0,0,.08); transition: transform .2s, box-shadow .2s }
 .gal-actions{ display:flex; justify-content:center; margin-top:clamp(12px, 2vw, 20px) }
 
-/* ===== Lightbox base ===== */
+/* ===== Lightbox ===== */
 #lightbox{ position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:clamp(16px, 3vw, 24px); z-index:90 }
 #lbClose{ position:absolute; top:clamp(16px, 3vw, 24px); right:clamp(16px, 3vw, 24px); background:#ffffff; border:1px solid #0f1220; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer }
 #lbImg{ max-width:min(96vw, 1400px); max-height:86vh; border-radius:var(--radius) }
 #lbCap{ color:#e9eefc; margin-top:14px; text-align:center; font-size:1rem }
+.lb-nav{ position:absolute; top:50%; transform: translateY(-50%); width:46px; height:46px; border-radius:10px; background:#ffffff; border:1px solid #0f1220; color:#0f1220; font-weight:800; line-height:46px; text-align:center; cursor:pointer; user-select:none; }
+.lb-prev{ left:18px } .lb-next{ right:18px }
 
 /* Footer */
 footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); color:var(--muted); text-align:center; font-size:0.95rem }
 
-/* ====== FULL-WIDTH ====== */
+/* FULL-BLEED */
 .fullbleed{ width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw }
 .slider-container.fullbleed{ border-radius:0; border:none; box-shadow:none; height: clamp(480px, 82vh, 980px); background:#000 }
 
-/* ===== ABOUT · formal ===== */
+/* ABOUT · formal */
 .about-rustic{
   display:grid; grid-template-columns: .95fr 1.05fr; gap: var(--gap); align-items:center;
-  background: var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow: var(--shadow);
+  background: var(--surface); border:1px solid var(--border); border-radius:18px; box-shadow: var(--shadow);
   padding: clamp(22px, 4vw, 40px);
 }
-.figure-polaroid{
-  background:#fff; border:1px solid var(--border);
-  padding:12px; border-radius:12px;
-  box-shadow: var(--shadow); max-width: 560px; margin:0 auto;
-}
+.figure-polaroid{ background:#fff; border:1px solid var(--border); padding:12px; border-radius:12px; box-shadow: var(--shadow); max-width: 560px; margin:0 auto; }
 .figure-polaroid img{ width:100%; height:auto; display:block; border-radius:10px }
-.figure-polaroid figcaption{ text-align:center; color:var(--text-dim); font-size:.95rem; margin-top:10px; letter-spacing:.02em; font-family: var(--font-display) }
-.about-body h3{ font-family: var(--font-display); font-weight:800; letter-spacing:.02em; margin:0 0 8px; font-size: clamp(22px, 3.6vw, 26px) }
+.figure-polaroid figcaption{ text-align:center; color:#2b2b2b; font-size:.95rem; margin-top:10px; letter-spacing:.02em; font-family: var(--font-display) }
+.about-body h3{ font-family: var(--font-display); font-weight:300; letter-spacing:.02em; margin:0 0 8px; font-size: clamp(22px, 3.6vw, 26px) }
 .about-body p{ margin:0 0 12px; color:var(--text-dim); line-height:1.8 }
 
-/* ====== RESPONSIVE ====== */
+/* Rústico galería + reseñas */
+.gallery-modal{
+  background:
+    radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.12), transparent 60%),
+    radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.12), transparent 60%),
+    linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
+  color:#2b2b2b;
+}
+.gal-header{ background:#fff9f0; border:1px solid #e8e1d6; box-shadow: 0 10px 30px rgba(17,24,39,.06), 0 2px 6px rgba(17,24,39,.04) inset; }
+.gal-grid{ column-width: 320px; column-gap: clamp(10px, 2vw, 18px); padding-top: 6px; }
+.photo-card{ display:block; position:relative; break-inside: avoid; margin:0 0 clamp(10px, 2vw, 18px);
+  padding:10px 10px 26px; background:#ffffff; border:1px solid #e6e1d9; border-radius:12px;
+  transform: rotate(var(--rot, 0deg)); box-shadow: 0 12px 26px rgba(0,0,0,.12), 0 2px 0 rgba(0,0,0,.04) inset;
+  transition: transform .22s ease, box-shadow .22s ease; will-change: transform; }
+.photo-card:hover{ transform: rotate(var(--rot, 0deg)) translateY(-3px) scale(1.01); box-shadow: 0 18px 36px rgba(0,0,0,.16), 0 2px 0 rgba(0,0,0,.04) inset; }
+.photo-card::before{ content:""; position:absolute; top:8px; left:26%; width:88px; height:22px; border-radius:3px;
+  background: linear-gradient(#f3e7c9, #e8dab3); border:1px solid #e5d7a8;
+  box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08); opacity:.92; transform: rotate(calc(var(--rot,0deg) * -0.6)); pointer-events:none; }
+.photo-card.tape-2::before{ left:auto; right:24%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:76px }
+.photo-card.tape-3::before{ left:18%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:64px }
+.photo-card .ph-img{ width:100%; height:auto; display:block; border-radius:8px; background:#eef2f8; filter: contrast(1.02) saturate(1.03); transition: filter .35s ease, transform .25s ease }
+.photo-card.loading .ph-img{ filter: blur(10px) saturate(1.1) }
+.photo-card:hover .ph-img{ transform: scale(1.01) }
+.photo-card .ph-cap{ margin-top:8px; text-align:center; color:#6b6256; font-size:.95rem; letter-spacing:.02em; font-family: var(--font-display) }
+
+.reviews-panel{ background:
+  radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.08), transparent 60%),
+  radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.08), transparent 60%),
+  linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
+  border:1px solid #e8e1d6; border-radius:18px; box-shadow: var(--shadow); padding: clamp(18px, 3.6vw, 28px); }
+.reviews-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: clamp(12px, 2.6vw, 22px); }
+.review-card{ position:relative; background:#fff; border:1px solid #e6e1d9; border-radius:14px; padding: 18px 16px 16px; color:#2b2b2b;
+  box-shadow: 0 12px 26px rgba(0,0,0,.12), 0 2px 0 rgba(0,0,0,.04) inset; transform: rotate(var(--rot, 0deg)); transition: transform .22s ease, box-shadow .22s ease; will-change: transform; }
+.review-card:hover{ transform: rotate(var(--rot,0deg)) translateY(-3px) scale(1.01); box-shadow: 0 18px 36px rgba(0,0,0,.16), 0 2px 0 rgba(0,0,0,.04) inset }
+.review-card::before{ content:""; position:absolute; top:10px; left:24%; width:82px; height:20px; border-radius:3px; background: linear-gradient(#f3e7c9, #e8dab3);
+  border:1px solid #e5d7a8; box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08); opacity:.95; transform: rotate(calc(var(--rot,0deg) * -0.6)); pointer-events:none; }
+.review-card.tape-2::before{ left:auto; right:22%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:72px }
+.review-card.tape-3::before{ left:16%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:60px }
+.review-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px }
+.review-stars{ font-size: 1.05rem; letter-spacing:.12rem; color:#d4a373; text-shadow: 0 1px 0 #fff }
+.review-quoteMark{ font-family: var(--font-display); font-size: clamp(28px, 4.8vw, 40px); line-height:1; color:#e7dcc7; user-select:none; transform: translateY(2px) rotate(-6deg) }
+.review-text{ margin:6px 0 10px; color:#6b6256; line-height:1.85; font-size: .98rem }
+.review-author{ text-align:right; margin-top:6px; color:#6b6256; font-family: var(--font-display); font-size: clamp(1rem, 3.6vw, 1.15rem) }
+
+/* Burbujas sociales */
+.social-bubbles{ position: fixed; right: clamp(12px, 2.4vw, 20px); bottom: calc(12px + var(--safe-bottom)); display: flex; flex-direction: column; gap: 12px; z-index: 70; }
+.social-bubbles .bubble{ display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 999px; line-height: 0; color: #fff; background: #111; border: 1px solid rgba(0,0,0,.2); box-shadow: 0 12px 24px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.35) inset; text-decoration: none; transition: transform .12s ease, box-shadow .2s ease, opacity .2s; }
+.social-bubbles .bubble:hover{ transform: translateY(-2px) scale(1.03); box-shadow: 0 16px 30px rgba(0,0,0,.22), 0 1px 0 rgba(255,255,255,.35) inset; }
+.social-bubbles .bubble:active{ transform: translateY(0) scale(.98) }
+.social-bubbles .bubble svg{ width: 26px; height: 26px; display: block; flex: 0 0 auto }
+.bubble--wa{ background:#25D366 }
+.bubble--ig{ background: radial-gradient(120% 120% at 30% 110%, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%); }
+.bubble--fb{ background:#1877F2 }
+
+/* Dock móvil */
+@media (max-width:560px){
+  .social-bubbles{ left: clamp(12px, 3vw, 20px); right: clamp(12px, 3vw, 20px); bottom: calc(12px + var(--safe-bottom)); flex-direction: row; justify-content: center; gap: 10px; }
+  .social-bubbles::before{ content:""; position:absolute; inset:-8px -10px; border-radius:999px; background: rgba(255,255,255,.9); box-shadow: 0 10px 22px rgba(17,24,39,.16), 0 1px 0 rgba(255,255,255,.8) inset; backdrop-filter: blur(8px); z-index:-1; }
+  .social-bubbles .bubble{ width:52px; height:52px }
+  .social-bubbles .bubble svg{ width:24px; height:24px }
+}
+@media (max-width:380px){
+  .social-bubbles .bubble{ width:48px; height:48px }
+  .social-bubbles .bubble svg{ width:22px; height:22px }
+}
 @media (max-width:1200px){ .container{ padding:0 clamp(16px, 3vw, 24px) } }
 @media (max-width:992px){
   .navbar{ --logo-scale: 1.06; }
-  .nav-links{ display:none }           /* ocultamos links en móvil */
-  .nav-toggle{ display:flex }          /* mostramos hamburguesa */
+  .nav-links{ display:none }
+  .nav-toggle{ display:flex }
   .nav-actions{ gap:10px }
   .about, .contact, .about-rustic{ grid-template-columns: 1fr }
+  .contact-channels{ grid-template-columns: 1fr 1fr }
   .slider-container{ height: clamp(420px, 64vh, 620px) }
 }
 @media (max-width:768px){
@@ -296,11 +393,12 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   .brand-logo{ height:44px; max-width: clamp(140px, 40vw, 220px) }
   .hero-tagline{ padding:16px 20px }
   .slider-btn{ width:44px; height:44px; font-size:22px; border-radius:12px }
+  .contact-channels{ grid-template-columns: 1fr }
 }
 @media (max-width:560px){
   .brand{ margin-right:10px; max-width:55vw }
   .brand-logo{ height:38px; max-width:55vw }
-  .lang-switch{ display:none }         /* ahorra espacio en móviles pequeños */
+  .lang-switch{ display:none }
   .btn{ padding:10px 14px; min-height:38px; font-size:13.5px }
   .container{ padding-left:16px; padding-right:16px }
   .slider-container{ height: clamp(360px, 58vh, 520px) }
@@ -311,255 +409,18 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   .brand-logo{ height:32px; max-width:48vw }
   .nav-toggle{ width:38px; height:38px }
 }
-
-/* ========== (NUEVO) GALERÍA RÚSTICA: tema, polaroids, paginado, lightbox flechas ========== */
-.btn.btn-small{ padding:10px 14px; min-height:38px; font-size:13.5px }
-
-/* Fondo papel + viñetas sutiles */
-.gallery-modal{
-  background:
-    radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.12), transparent 60%),
-    radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.12), transparent 60%),
-    linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
-  color:#2b2b2b;
-}
-
-/* Header con textura suave */
-.gal-header{
-  background: #fff9f0;
-  border:1px solid #e8e1d6;
-  box-shadow: 0 10px 30px rgba(17,24,39,.06), 0 2px 6px rgba(17,24,39,.04) inset;
-}
-
-/* Grid tipo masonry con columnas */
-.gal-grid{
-  column-width: 320px;
-  column-gap: clamp(10px, 2vw, 18px);
-  padding-top: 6px;
-}
-
-/* Tarjeta polaroid con cinta kraft */
-.photo-card{
-  display:block; position:relative; break-inside: avoid; margin:0 0 clamp(10px, 2vw, 18px);
-  padding:10px 10px 26px;
-  background:#ffffff;
-  border:1px solid #e6e1d9; border-radius:12px;
-  transform: rotate(var(--rot, 0deg));
-  box-shadow:
-    0 12px 26px rgba(0,0,0,.12),
-    0 2px 0 rgba(0,0,0,.04) inset;
-  transition: transform .22s ease, box-shadow .22s ease;
-  will-change: transform;
-}
-.photo-card:hover{
-  transform: rotate(var(--rot, 0deg)) translateY(-3px) scale(1.01);
-  box-shadow:
-    0 18px 36px rgba(0,0,0,.16),
-    0 2px 0 rgba(0,0,0,.04) inset;
-}
-
-/* Cinta kraft (3 variantes para variedad) */
-.photo-card::before{
-  content:""; position:absolute; top:8px; left:26%;
-  width:88px; height:22px; border-radius:3px;
-  background: linear-gradient(#f3e7c9, #e8dab3);
-  border:1px solid #e5d7a8;
-  box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08);
-  opacity:.92; transform: rotate(calc(var(--rot,0deg) * -0.6));
-  pointer-events:none;
-}
-.photo-card.tape-2::before{ left:auto; right:24%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:76px }
-.photo-card.tape-3::before{ left:18%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:64px }
-
-/* Imagen con textura y blur mientras carga */
-.photo-card .ph-img{
-  width:100%; height:auto; display:block; border-radius:8px;
-  background:#eef2f8;
-  filter: contrast(1.02) saturate(1.03);
-  transition: filter .35s ease, transform .25s ease;
-}
-.photo-card.loading .ph-img{ filter: blur(10px) saturate(1.1) }
-.photo-card:hover .ph-img{ transform: scale(1.01) }
-
-/* Pie de polaroid */
-.photo-card .ph-cap{
-  margin-top:8px; text-align:center; color:#6b6256;
-  font-size:.95rem; letter-spacing:.02em; font-family: var(--font-display);
-}
-
-/* Botón “Ver más” acorde */
-.gal-actions .btn{
-  background: linear-gradient(135deg, #5a4a3a, #2f2a25);
-  border-color: #2f2a25;
-}
-.gal-actions .btn:hover{ background: linear-gradient(135deg, #6e5a46, #3a342e) }
-
-/* Lightbox: flechas */
-.lb-nav{
-  position:absolute; top:50%; transform: translateY(-50%);
-  width:46px; height:46px; border-radius:10px;
-  background:#ffffff; border:1px solid #0f1220; color:#0f1220;
-  font-weight:800; line-height:46px; text-align:center; cursor:pointer; user-select:none;
-}
-.lb-prev{ left:18px } .lb-next{ right:18px }
-
-/* ========== (NUEVO) RESEÑAS RÚSTICAS ========== */
-.reviews-panel{
-  background:
-    radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.08), transparent 60%),
-    radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.08), transparent 60%),
-    linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
-  border:1px solid #e8e1d6;
-  border-radius:18px;
-  box-shadow: var(--shadow);
-  padding: clamp(18px, 3.6vw, 28px);
-}
-.reviews-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: clamp(12px, 2.6vw, 22px);
-}
-.review-card{
-  position:relative; background:#fff;
-  border:1px solid #e6e1d9; border-radius:14px;
-  padding: 18px 16px 16px;
-  color:#2b2b2b;
-  box-shadow:
-    0 12px 26px rgba(0,0,0,.12),
-    0 2px 0 rgba(0,0,0,.04) inset;
-  transform: rotate(var(--rot, 0deg));
-  transition: transform .22s ease, box-shadow .22s ease;
-  will-change: transform;
-}
-.review-card:hover{
-  transform: rotate(var(--rot,0deg)) translateY(-3px) scale(1.01);
-  box-shadow:
-    0 18px 36px rgba(0,0,0,.16),
-    0 2px 0 rgba(0,0,0,.04) inset;
-}
-.review-card::before{
-  content:""; position:absolute; top:10px; left:24%;
-  width:82px; height:20px; border-radius:3px;
-  background: linear-gradient(#f3e7c9, #e8dab3);
-  border:1px solid #e5d7a8;
-  box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08);
-  opacity:.95; transform: rotate(calc(var(--rot,0deg) * -0.6));
-  pointer-events:none;
-}
-.review-card.tape-2::before{ left:auto; right:22%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:72px }
-.review-card.tape-3::before{ left:16%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:60px }
-
-.review-head{
-  display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px;
-}
-.review-stars{
-  font-size: 1.05rem; letter-spacing:.12rem; color:#d4a373;
-  text-shadow: 0 1px 0 #fff;
-}
-.review-quoteMark{
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4.8vw, 40px);
-  line-height:1; color:#e7dcc7; user-select:none;
-  transform: translateY(2px) rotate(-6deg);
-}
-
-.review-text{
-  margin:6px 0 10px; color:#6b6256;
-  line-height:1.85; font-size: .98rem;
-}
-.review-text p{ margin:0 }
-
-.review-author{
-  text-align:right; margin-top:6px; color:#6b6256;
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 3.6vw, 1.15rem);
-}
-
-.reviews-grid .review-card:nth-child(3n){ --rot: .6deg }
-.reviews-grid .review-card:nth-child(4n){ --rot: -.8deg }
-.reviews-grid .review-card:nth-child(5n){ --rot: .4deg }
-.reviews-grid .review-card:nth-child(6n){ --rot: -.5deg }
-
-@media (max-width: 560px){
-  .review-card{ padding:16px 14px 14px }
-  .review-quoteMark{ font-size: 30px }
-}
-
-/* ====== Burbujas sociales (fix deforma ico) ====== */
-.social-bubbles{
-  position: fixed;
-  right: clamp(12px, 2.4vw, 20px);
-  bottom: calc(12px + var(--safe-bottom));
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 70; /* por encima del footer y backdrop */
-}
-
-.social-bubbles .bubble{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  line-height: 0;              /* evita “aplastar” el svg */
-  color: #fff;                 /* los SVG usan currentColor */
-  background: #111;
-  border: 1px solid rgba(0,0,0,.2);
-  box-shadow: 0 12px 24px rgba(0,0,0,.18), 0 1px 0 rgba(255,255,255,.35) inset;
-  text-decoration: none;
-  transition: transform .12s ease, box-shadow .2s ease, opacity .2s;
-}
-
-.social-bubbles .bubble:hover{
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 16px 30px rgba(0,0,0,.22), 0 1px 0 rgba(255,255,255,.35) inset;
-}
-
-.social-bubbles .bubble:active{
-  transform: translateY(0) scale(.98);
-}
-
-.social-bubbles .bubble svg{
-  width: 26px;  /* tamaño fijo para que no se deforme */
-  height: 26px;
-  display: block;
-  flex: 0 0 auto;
-}
-
-/* Colores de cada red */
-.bubble--wa{ background:#25D366; }
-.bubble--ig{
-  background:
-    radial-gradient(120% 120% at 30% 110%, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%);
-}
-.bubble--fb{ background:#1877F2; }
-
-/* Tamaños más compactos en pantallas pequeñas */
-@media (max-width:560px){
-  .social-bubbles .bubble{ width:52px; height:52px; }
-  .social-bubbles .bubble svg{ width:24px; height:24px; }
-}
-@media (max-width:380px){
-  .social-bubbles .bubble{ width:48px; height:48px; }
-  .social-bubbles .bubble svg{ width:22px; height:22px; }
-}
-
-/* Usuarios con motion reducido: sin animaciones de hover */
 @media (prefers-reduced-motion: reduce){
   .social-bubbles .bubble{ transition:none }
   .social-bubbles .bubble:hover{ transform:none }
 }
 </style>
-
 </head>
 <body>
 
 <header class="navbar" aria-label="Navigation bar">
   <div class="container nav-wrap">
     <a class="brand" href="#home" aria-label="Inicio / Home">
-      <img class="brand-logo brand-logo--big" src="boda/logo.png" alt="Cris Bernal Photography" width="200" height="48" decoding="async" fetchpriority="high"/>
+      <img class="brand-logo brand-logo--big" src="boda/cris.png" alt="Cris Bernal Photography" width="200" height="48" decoding="async" fetchpriority="high"/>
       <span class="sr-only">Cris Bernal Photography</span>
     </a>
 
@@ -582,7 +443,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </div>
 </header>
 
-<!-- Flyout y backdrop para móvil -->
+<!-- Flyout móvil -->
 <nav class="nav-flyout" id="navFlyout" aria-label="Mobile menu">
   <a href="#home" data-i18n="nav_home">Inicio</a>
   <a href="#acerca" data-i18n="nav_about">Acerca</a>
@@ -614,7 +475,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </div>
 </section>
 
-<!-- ===== ACERCA formal ===== -->
+<!-- ===== ACERCA ===== -->
 <section class="section" id="acerca" aria-label="About Cris">
   <div class="container">
     <div class="section-header">
@@ -665,8 +526,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
         <div class="album-cover">
           <img loading="lazy" decoding="async"
                src="boda/_MG_2482.webp"
-               srcset="boda/_MG_2482.webp,
-                       boda/_MG_2482.webp"
+               srcset="boda/_MG_2482.webp, boda/_MG_2482.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Weddings cover">
         </div>
@@ -681,8 +541,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
         <div class="album-cover">
           <img loading="lazy" decoding="async"
                src="embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
-               srcset="embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp,
-                      embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
+               srcset="embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp, embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Engagement cover">
         </div>
@@ -697,8 +556,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
         <div class="album-cover">
           <img loading="lazy" decoding="async"
                src="Familia/Puerto-Vallarta-Family-Photographer-14.webp"
-               srcset="Familia/Puerto-Vallarta-Family-Photographer-14.webp,
-                       Familia/Puerto-Vallarta-Family-Photographer-14.webp"
+               srcset="Familia/Puerto-Vallarta-Family-Photographer-14.webp, Familia/Puerto-Vallarta-Family-Photographer-14.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Family cover">
         </div>
@@ -713,8 +571,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
         <div class="album-cover">
           <img loading="lazy" decoding="async"
                src="Kids/Cris-Bernal-Photography-Kids6.webp"
-               srcset="Kids/Cris-Bernal-Photography-Kids6.webp,
-                       Kids/Cris-Bernal-Photography-Kids6.webp"
+               srcset="Kids/Cris-Bernal-Photography-Kids6.webp, Kids/Cris-Bernal-Photography-Kids6.webp"
                sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 400px"
                alt="Kids cover">
         </div>
@@ -724,14 +581,11 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
           <button class="btn btn-small" data-i18n="open_album">Abrir álbum</button>
         </div>
       </article>
-
-
-
     </div>
   </div>
 </section>
 
-<!-- Modal de Galería -->
+<!-- Modal Galería -->
 <div id="galleryModal" class="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="galTitle" hidden>
   <div class="gal-header">
     <h3 id="galTitle">Álbum</h3>
@@ -740,11 +594,11 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </div>
   <div id="galGrid" class="gal-grid" aria-live="polite"></div>
   <div class="gal-actions">
-    <button id="galMore" class="btn" data-i18n="load_more">Ver más</button>
+    <button id="galMore" class="btn btn-kraft" data-i18n="load_more">Ver más</button>
   </div>
 </div>
 
-<!-- ===== Reseñas (SECCIÓN REEMPLAZADA) ===== -->
+<!-- ===== Reseñas ===== -->
 <section class="section" id="reseñas" aria-label="Reviews">
   <div class="container">
     <div class="section-header">
@@ -754,7 +608,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
     <div class="reviews-panel">
       <div class="reviews-grid">
-        <!-- Reseña 1 -->
         <article class="review-card tape-1">
           <div class="review-head">
             <div class="review-stars" aria-label="5 estrellas" title="5/5">★★★★★</div>
@@ -766,7 +619,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
           <div class="review-author">— <span data-i18n="rev1_by">Christian</span></div>
         </article>
 
-        <!-- Reseña 2 -->
         <article class="review-card tape-2">
           <div class="review-head">
             <div class="review-stars" aria-label="5 estrellas" title="5/5">★★★★★</div>
@@ -778,7 +630,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
           <div class="review-author">— <span data-i18n="rev2_by">Tania</span></div>
         </article>
 
-        <!-- Reseña 3 -->
         <article class="review-card tape-3">
           <div class="review-head">
             <div class="review-stars" aria-label="5 estrellas" title="5/5">★★★★★</div>
@@ -793,8 +644,8 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     </div>
   </div>
 </section>
-<!-- ===== /Reseñas ===== -->
 
+<!-- ===== CONTACTO ===== -->
 <section class="section" id="contacto" aria-label="Contact">
   <div class="container">
     <div class="section-header">
@@ -804,17 +655,64 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
     <div class="contact">
       <div>
-        <p><strong data-i18n="label_whatsapp">WhatsApp:</strong> <a id="waLink1" href="https://wa.me/523221217474" target="_blank" rel="noopener">+52 322 121 7474</a></p>
-        <p><strong data-i18n="label_instagram">Instagram:</strong> <a href="https://www.instagram.com/crisbernalphoto/" target="_blank" rel="noopener">@crisbernalphoto</a></p>
-        <p><strong data-i18n="label_facebook">Facebook:</strong> <a href="https://www.facebook.com/CrisBernalPhotography/" target="_blank" rel="noopener">Cris Bernal Photography</a></p>
+        <ul class="contact-channels">
+          <li>
+            <a class="channel" id="waLink1" href="https://wa.me/523221217474" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <span class="ch-icon ch-wa" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20.5 3.5A10 10 0 0 0 4 15.2L3 21l5.9-1.6A10 10 0 1 0 20.5 3.5Zm-5.9 14.1c-2.1 0-4.1-.6-5.8-1.9l-.4-.3-1.8.5.5-1.7-.3-.4a7.4 7.4 0 1 1 7.8 3.8Zm3-4.5c-.2-.1-1.3-.6-1.4-.6s-.3-.1-.5.1-.5.6-.7.7c-.1.1-.3.2-.6.1-.3-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.3-.4.4-.6.1-.2 0-.4 0-.6s-.5-1.2-.7-1.6c-.2-.4-.4-.3-.5-.3h-.4c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 3.8 3.5 2.3 1 2.3.7 2.7.7.4 0 1.3-.5 1.4-1 .2-.5.2-.9.1-1 0-.2-.1-.2-.3-.3Z"/></svg>
+              </span>
+              <span class="ch-text">
+                <strong data-i18n="label_whatsapp">WhatsApp</strong>
+                <small>+52 322 121 7474</small>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="channel" href="https://www.instagram.com/crisbernalphoto/" target="_blank" rel="noopener" aria-label="Instagram">
+              <span class="ch-icon ch-ig" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 0 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 0 7.001 3.5 3.5 0 0 0 0-7zM18.5 6a1 1 0 1 1 0 2.001 1 1 0 0 1 0-2z"/></svg>
+              </span>
+              <span class="ch-text">
+                <strong data-i18n="label_instagram">Instagram</strong>
+                <small>@crisbernalphoto</small>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="channel" href="https://www.facebook.com/CrisBernalPhotography/" target="_blank" rel="noopener" aria-label="Facebook">
+              <span class="ch-icon ch-fb" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.5 22v-7h2.3l.4-3h-2.7V9.6c0-.9.3-1.5 1.7-1.5H16V5.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V12H7v3h2.6v7h3.9z"/></svg>
+              </span>
+              <span class="ch-text">
+                <strong data-i18n="label_facebook">Facebook</strong>
+                <small>Cris Bernal Photography</small>
+              </span>
+            </a>
+          </li>
+        </ul>
+
         <div class="chips">
           <span class="chip" data-i18n="chip_hours">Lun–Vie 15:00–20:00</span>
           <span class="chip" data-i18n="chip_reserve">Reserva por WhatsApp</span>
           <span class="chip" data-i18n="chip_delivery">Entrega digital</span>
         </div>
       </div>
-      <div>
-        <button class="btn" id="ctaWhats" data-i18n="cta_whatsapp">Reservar por WhatsApp</button>
+
+      <div class="contact-cta">
+        <button class="btn btn-lg" id="ctaWhats" data-i18n="cta_whatsapp">Reservar por WhatsApp</button>
+        <p class="cta-help"><strong data-i18n="label_hours">Atención:</strong> <span data-i18n="hours_value">Lun–Vie, 15:00–20:00 (previa cita)</span></p>
+
+        <div class="contact-mini" aria-label="Redes sociales">
+          <a class="mini-bubble mini-wa" href="https://wa.me/523221217474" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.5 3.5A10 10 0 0 0 4 15.2L3 21l5.9-1.6A10 10 0 1 0 20.5 3.5Z"/></svg>
+          </a>
+          <a class="mini-bubble mini-ig" href="https://www.instagram.com/crisbernalphoto/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 0 5-5z"/></svg>
+          </a>
+          <a class="mini-bubble mini-fb" href="https://www.facebook.com/CrisBernalPhotography/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.5 22v-7h2.3l.4-3h-2.7V9.6c0-.9.3-1.5 1.7-1.5H16V5.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V12H7v3h2.6v7h3.9z"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -824,6 +722,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   <div class="container"><span id="footCopy">© <span id="yr"></span> Cris Bernal Photography · Puerto Vallarta, México</span></div>
 </footer>
 
+<!-- Burbujas sociales -->
 <nav class="social-bubbles" aria-label="Redes sociales">
   <a id="waBubble" class="bubble bubble--wa" href="https://wa.me/523221217474" target="_blank" rel="noopener" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.5 3.5A10 10 0 0 0 4 15.2L3 21l5.9-1.6A10 10 0 1 0 20.5 3.5Zm-5.9 14.1c-2.1 0-4.1-.6-5.8-1.9l-.4-.3-1.8.5.5-1.7-.3-.4a7.4 7.4 0 1 1 7.8 3.8Zm3-4.5c-.2-.1-1.3-.6-1.4-.6s-.3-.1-.5.1-.5.6-.7.7c-.1.1-.3.2-.6.1-.3-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.4-1.6-.1-.3 0-.5.1-.6.1-.1.3-.3.4-.5.2-.2.3-.4.4-.6.1-.2 0-.4 0-.6s-.5-1.2-.7-1.6c-.2-.4-.4-.3-.5-.3h-.4c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2.9 2.4.1.2 1.6 2.5 3.8 3.5 2.3 1 2.3.7 2.7.7.4 0 1.3-.5 1.4-1 .2-.5.2-.9.1-1 0-.2-.1-.2-.3-.3Z"/></svg>
@@ -836,7 +735,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   </a>
 </nav>
 
-<!-- Lightbox base (las flechas se agregan por JS) -->
+<!-- Lightbox base -->
 <div id="lightbox" style="position:fixed; inset:0; background:rgba(5,7,15,.88); display:none; align-items:center; justify-content:center; padding:24px; z-index:90;">
   <button id="lbClose" aria-label="Close" style="position:absolute; top:16px; right:16px; background:#ffffff; border:1px solid #0f1220; border-radius:10px; padding:8px 10px; font-weight:800; cursor:pointer;">✕</button>
   <div style="text-align:center">
@@ -868,11 +767,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   const navToggle = document.getElementById('navToggle');
   const navFlyout = document.getElementById('navFlyout');
   const menuBackdrop = document.getElementById('menuBackdrop');
-
-  const lockScroll = (lock) => {
-    document.body.style.overflow = lock ? 'hidden' : '';
-  };
-
+  const lockScroll = (lock) => { document.body.style.overflow = lock ? 'hidden' : ''; };
   const toggleMenu = (forceOpen = null) => {
     const willOpen = forceOpen !== null ? forceOpen : !navToggle.classList.contains('active');
     navToggle.classList.toggle('active', willOpen);
@@ -883,17 +778,11 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     navToggle.setAttribute('aria-label', willOpen ? t.aria_menu_close : t.aria_menu_open);
     lockScroll(willOpen);
   };
-
-  // Cerrar al tocar backdrop o links
   if (menuBackdrop) menuBackdrop.addEventListener('click', ()=> toggleMenu(false), {passive:true});
   navFlyout.addEventListener('click', e => {
     if (e.target.tagName === 'A' || e.target.closest('button.lang-btn')) toggleMenu(false);
   }, {passive:true});
-
-  // Botón hamburguesa
   if (navToggle) navToggle.addEventListener('click', ()=> toggleMenu(), {passive:true});
-
-  // Cerrar al hacer click fuera (desktop)
   document.addEventListener('click', (e)=>{
     const inside = e.target.closest('.navbar') || e.target.closest('#navFlyout') || e.target.closest('#menuBackdrop');
     if (!inside && navToggle.classList.contains('active')) toggleMenu(false);
@@ -980,11 +869,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     });
   }
 
-  function goTo(index) {
-    currentIndex = (index + slidesData.length) % slidesData.length;
-    updateSlider(); startAutoplay();
-  }
-
+  function goTo(index) { currentIndex = (index + slidesData.length) % slidesData.length; updateSlider(); startAutoplay(); }
   function next(){ goTo(currentIndex + 1); }
   function prev(){ goTo(currentIndex - 1); }
 
@@ -999,87 +884,45 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   sliderContainer.addEventListener('mouseleave', startAutoplay);
   document.addEventListener('visibilitychange', ()=>{ if (document.hidden) stopAutoplay(); else startAutoplay(); });
 
-  // ===== Álbumes (puedes sustituir por tus rutas locales masivas con seq()) =====
+  // ===== Álbumes =====
   const albums = {
     weddings: [
-      "boda/_MG_2482.webp",
-      "boda/_MG_3386.webp",
-      "boda/_MG_6015.webp",
-      "boda/_MG_6349.webp",
-      "boda/cris-12.webp",
-      "boda/_MG_0909.webp",
-      "boda/_MG_9248 2.webp",
-      "boda/CASTLEWEB-139-1.webp",
-      "boda/cris-16.webp",
-      "boda/cris-5.webp",
-      "boda/cris-8.webp",
-      "boda/CrisBernalPhoto-6.webp",
-      "boda/CrisBernalPhoto-17.webp",
-      "boda/CrisBernalPhoto-37.webp",
-      "boda/CrisBernalPhoto-159.webp",
-      "boda/CrisBernalPhotography-300.webp",
-      "boda/IMG_0666-854.webp",
-      "boda/IMG_0828.webp",
-      "boda/HIGHLIGHTS_Diana&Elias-33-1.webp",
-      "boda/IMG_0666-854.webp",
-      "boda/IMG_2965-2.webp",
-      "boda/IMG_3055.webp",
-      "boda/IMG_3765.webp",
-      "boda/IMG_3870-3.webp",
-      "boda/IMG_3975.webp",
-      "boda/IMG_4587.webp",
-      "boda/IMG_5004.webp",
-      "boda/IMG_5457.webp",
-      "boda/IMG_5824.webp",
-      "boda/insta-Marlen&Daniel-28.webp",
-      "boda/insta-Marlen&Daniel-21.webp",
-      "boda/insta-Marlen&Daniel-11-3.webp"
+      "boda/_MG_2482.webp","boda/_MG_3386.webp","boda/_MG_6015.webp","boda/_MG_6349.webp",
+      "boda/cris-12.webp","boda/_MG_0909.webp","boda/_MG_9248 2.webp","boda/CASTLEWEB-139-1.webp",
+      "boda/cris-16.webp","boda/cris-5.webp","boda/cris-8.webp","boda/CrisBernalPhoto-6.webp",
+      "boda/CrisBernalPhoto-17.webp","boda/CrisBernalPhoto-37.webp","boda/CrisBernalPhoto-159.webp",
+      "boda/CrisBernalPhotography-300.webp","boda/IMG_0666-854.webp","boda/IMG_0828.webp",
+      "boda/HIGHLIGHTS_Diana&Elias-33-1.webp","boda/IMG_0666-854.webp","boda/IMG_2965-2.webp",
+      "boda/IMG_3055.webp","boda/IMG_3765.webp","boda/IMG_3870-3.webp","boda/IMG_3975.webp",
+      "boda/IMG_4587.webp","boda/IMG_5004.webp","boda/IMG_5457.webp","boda/IMG_5824.webp",
+      "boda/insta-Marlen&Daniel-28.webp","boda/insta-Marlen&Daniel-21.webp","boda/insta-Marlen&Daniel-11-3.webp"
     ],
     engagement: [
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-1-1-scaled.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-2.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-7.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-14.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-15.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-16.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-20.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-26.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-28.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-30.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-33.webp",
-      "embarazo/Puerto-Vallarta-Pregnancy-Photos-35.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-1-1-scaled.webp","embarazo/Puerto-Vallarta-Pregnancy-Photos-2.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-7.webp","embarazo/Puerto-Vallarta-Pregnancy-Photos-14.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-15.webp","embarazo/Puerto-Vallarta-Pregnancy-Photos-16.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-20.webp","embarazo/Puerto-Vallarta-Pregnancy-Photos-26.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-28.webp","embarazo/Puerto-Vallarta-Pregnancy-Photos-30.webp",
+      "embarazo/Puerto-Vallarta-Pregnancy-Photos-33.webp","embarazo/Puerto-Vallarta-Pregnancy-Photos-35.webp",
       "embarazo/Puerto-Vallarta-Pregnancy-Photos-36.webp"
     ],
     family: [
-      "Familia/Puerto-Vallarta-Family-Photographer-1.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-2 (1).webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-3.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-4.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-5.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-6.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-7.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-8.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-14.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-15.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-16.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-17.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-18.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-19.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-20.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-21.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-22.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-23.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-24.webp",
-      "Familia/Puerto-Vallarta-Family-Photographer-25.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-1.webp","Familia/Puerto-Vallarta-Family-Photographer-2 (1).webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-3.webp","Familia/Puerto-Vallarta-Family-Photographer-4.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-5.webp","Familia/Puerto-Vallarta-Family-Photographer-6.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-7.webp","Familia/Puerto-Vallarta-Family-Photographer-8.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-14.webp","Familia/Puerto-Vallarta-Family-Photographer-15.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-16.webp","Familia/Puerto-Vallarta-Family-Photographer-17.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-18.webp","Familia/Puerto-Vallarta-Family-Photographer-19.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-20.webp","Familia/Puerto-Vallarta-Family-Photographer-21.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-22.webp","Familia/Puerto-Vallarta-Family-Photographer-23.webp",
+      "Familia/Puerto-Vallarta-Family-Photographer-24.webp","Familia/Puerto-Vallarta-Family-Photographer-25.webp",
       "Familia/Puerto-Vallarta-Family-Photographer-31.webp"
     ],
     Kids: [
-      "Kids/Cris-Bernal-Photography-Kids1.webp",
-      "Kids/Cris-Bernal-Photography-Kids2.webp",
-      "Kids/Cris-Bernal-Photography-Kids3.webp",
-      "Kids/Cris-Bernal-Photography-Kids4.webp",
-      "Kids/Cris-Bernal-Photography-Kids5.webp",
-      "Kids/Cris-Bernal-Photography-Kids6.webp"
+      "Kids/Cris-Bernal-Photography-Kids1.webp","Kids/Cris-Bernal-Photography-Kids2.webp",
+      "Kids/Cris-Bernal-Photography-Kids3.webp","Kids/Cris-Bernal-Photography-Kids4.webp",
+      "Kids/Cris-Bernal-Photography-Kids5.webp","Kids/Cris-Bernal-Photography-Kids6.webp"
     ]
   };
 
@@ -1101,12 +944,12 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       hero_h1:"Hola, soy Cris Bernal — Puerto Vallarta Fotos",
 
       about_title:"Acerca de Cris", about_sub:"Más de 15 años fotografiando historias.",
-      about_p1:"<strong>13 años de experiencia</strong> como fotógrafa de <strong>bodas</strong> y <strong>familia</strong>. Nací en Ciudad de México, pero he tenido la bendición de llamar a este bello paraíso de <strong>Puerto Vallarta</strong> mi hogar durante los últimos <strong>22 años</strong>. Dicho esto, me considero una feliz “pata salada”.",
-      about_p2:"¡<strong>Puerto Vallarta</strong> es <em>increíble</em> y hermoso para fotografiar! En nuestra ciudad tenemos paisajes únicos para capturar. Ya sea una propuesta, una sesión familiar o unas fotos para ti, <strong>PV</strong> es un paraíso perfecto para completar un encuadre y atesorarlo para toda la vida.",
-      about_p3:"Como <strong>fotógrafa de bodas en Puerto Vallarta</strong> tengo la experiencia para trabajar en distintas locaciones: desde las maravillosas <strong>Conchas Chinas</strong>, la colorida <strong>Sayulita</strong> o <strong>San Pancho</strong>, hasta el lujo de <strong>Punta de Mita</strong>; <em>resorts</em> espectaculares, haciendas o una vista mágica frente al mar.",
-      about_p4:"Mi enfoque y pasión están en <strong>preservar momentos</strong> como la tierna mirada de amor en los ojos de una pareja al unirse durante una ceremonia al atardecer, la energía esperanzadora de las futuras mamás y la preciosa magia de la sonrisa de un niño, todo con la impresionante belleza de <strong>Puerto Vallarta</strong> como telón de fondo.",
-      about_p5:"Es un verdadero honor que mis clientes confíen en mí para fotografiar los momentos <em>bellos</em>, <em>sencillos</em> y a la vez <em>infinitamente significativos</em> de sus vidas. Sea cual sea tu momento, me encantará ayudarte a <strong>capturar recuerdos</strong> que mirarás el resto de tu vida. <br><br><strong>Fotografiaré la belleza de tu alma.</strong> No fotografiaré lo que parece… <em>fotografiaré lo que se siente</em>. Tu evento es muy importante para mí.",
-      about_p6:"Estoy aquí para asegurarme de que tu historia única pueda contarse durante años, <strong>capturando la esencia verdadera del momento</strong>. <br><br>¡<strong>Comencemos</strong>! Érase una vez…",
+      about_p1:"<strong>13 años de experiencia</strong> como fotógrafa de <strong>bodas</strong> y <strong>familia</strong>. …",
+      about_p2:"¡<strong>Puerto Vallarta</strong> es <em>increíble</em> y hermoso para fotografiar! …",
+      about_p3:"Como <strong>fotógrafa de bodas en Puerto Vallarta</strong> …",
+      about_p4:"Mi enfoque y pasión están en <strong>preservar momentos</strong> …",
+      about_p5:"Es un verdadero honor que mis clientes confíen en mí …",
+      about_p6:"Estoy aquí para asegurarme de que tu historia única …",
 
       chip1:"PV · Sayulita · Punta Mita", chip2:"Documental & Artístico", chip3:"+15 años",
       label_address:"Dirección:", addr_value:"Privada Huatulco 208-24, Fraccionamiento las Palmas, 48317.Puerto Vallarta, Jal.",
@@ -1127,7 +970,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     },
     en: {
       meta_title:"Cris Bernal Photography · Weddings & Portraits in Puerto Vallarta",
-      meta_desc:"Wedding & portrait photography in Puerto Vallarta, Sayulita and Punta Mita. Documentary & artistic style. Book your date with Cris Bernal.",
+      meta_desc:"Wedding & portrait photography in Puerto Vallarta, Sayulita and Punta Mita.",
       meta_og_title:"Cris Bernal Photography · Weddings & Portraits",
       meta_og_desc:"Wedding & portrait photography in Puerto Vallarta and Bahía de Banderas.",
       nav_home:"Home", nav_about:"About", nav_recent:"Recent", nav_contact:"Contact", nav_reviews:"Reviews", nav_book:"Book",
@@ -1135,12 +978,12 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
       hero_h1:"Hi, I'm Cris Bernal — Puerto Vallarta Photos",
 
       about_title:"About Cris", about_sub:"+15 years telling stories across Bahía de Banderas.",
-      about_p1:"<strong>13 years of experience</strong> as a <strong>Wedding</strong> and <strong>Family</strong> Photographer. I was born in Mexico City, but I’ve been blessed to call the beautiful paradise of <strong>Puerto Vallarta</strong> my home for the last <strong>22 years</strong>. That said, I proudly consider myself a happy “pata salada.”",
-      about_p2:"<strong>Puerto Vallarta</strong> is <em>AMAZING</em> and beautiful to photograph! Our town offers unique landscapes to capture. Whether it’s a proposal, a family session, or portraits just for you, <strong>PV</strong> is a perfect paradise to complete a frame and treasure it for a lifetime.",
-      about_p3:"As a <strong>Puerto Vallarta Wedding Photographer</strong>, I have experience working in many locations: from wonderful <strong>Conchas Chinas</strong>, colorful <strong>Sayulita</strong> or <strong>San Pancho</strong>, to the luxury of <strong>Punta de Mita</strong>; gorgeous resorts, haciendas, or a magical oceanfront view.",
-      about_p4:"My focus and passion lie in <strong>preserving moments</strong> like the tender look of love in a couple’s eyes as two join to become one during a breathtaking sunset ceremony, the hopeful energy of mothers-to-be, and the precious magic of a child’s smile — all with the stunning beauty of <strong>Puerto Vallarta</strong> as the backdrop.",
-      about_p5:"It is my true honor to be trusted with photographing my clients’ <em>beautiful</em>, <em>simple</em>, and yet <em>infinitely meaningful</em> moments. Whatever your moment is, I look forward to helping you <strong>capture memories</strong> you’ll cherish for the rest of your life. <br><br><strong>I will photograph the beauty of your soul.</strong> I won’t shoot what it looks like… <em>I will shoot what it feels like</em>. Your event is very important to me.",
-      about_p6:"I’m here to ensure your unique tale can be retold for years to come, <strong>capturing the true essence of the moment</strong>. <br><br><strong>Let’s begin!</strong> Once upon a time…",
+      about_p1:"<strong>13 years of experience</strong> as a <strong>Wedding</strong> and <strong>Family</strong> Photographer. …",
+      about_p2:"<strong>Puerto Vallarta</strong> is <em>AMAZING</em> and beautiful to photograph! …",
+      about_p3:"As a <strong>Puerto Vallarta Wedding Photographer</strong> …",
+      about_p4:"My focus and passion lie in <strong>preserving moments</strong> …",
+      about_p5:"It is my true honor to be trusted with photographing my clients’ …",
+      about_p6:"I’m here to ensure your unique tale can be retold …",
 
       chip1:"PV · Sayulita · Punta Mita", chip2:"Documentary & Artistic", chip3:"+15 years",
       label_address:"Address:", addr_value:"Paseo de la Rivera, 48290 Puerto Vallarta, Jalisco",
@@ -1199,7 +1042,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     const foot = q('#footCopy');
     if (foot) foot.textContent = (t.foot_copy || "© YEAR Cris Bernal Photography").replace('YEAR', year);
 
-    // actualizar aria-label del botón del menú con el idioma actual
     if (navToggle) {
       const open = navToggle.classList.contains('active');
       navToggle.setAttribute('aria-label', open ? t.aria_menu_close : t.aria_menu_open);
@@ -1211,20 +1053,12 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   const setLang = (l) => { lang = l; t = dict[l]; btnES.classList.toggle('active', l==='es'); btnEN.classList.toggle('active', l==='en'); setText(); };
   btnES.addEventListener('click', ()=> setLang('es'), {passive:true});
   btnEN.addEventListener('click', ()=> setLang('en'), {passive:true});
-
-  // Flyout idioma
   const flyES = document.getElementById('flyES');
   const flyEN = document.getElementById('flyEN');
   if (flyES) flyES.addEventListener('click', ()=> { btnES.click(); toggleMenu(false); }, {passive:true});
   if (flyEN) flyEN.addEventListener('click', ()=> { btnEN.click(); toggleMenu(false); }, {passive:true});
 
-  // ======= (NUEVO) GALERÍA RÚSTICA: apertura, paginado y lightbox =======
-
-  // Helper para generar secuencias locales (si renombras tus archivos)
-  function seq(prefix, count, pad = 3, ext = 'webp'){
-    return Array.from({length: count}, (_,i)=> `${prefix}${String(i+1).padStart(pad,'0')}.${ext}`);
-  }
-
+  // ======= GALERÍA =======
   const galModal = document.getElementById('galleryModal');
   const galGrid  = document.getElementById('galGrid');
   const galTitle = document.getElementById('galTitle');
@@ -1237,7 +1071,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   let page = 0;
   const PAGE_SIZE = 24;
 
-  // Abrir modal desde las tarjetas
   document.querySelector('.albums-grid')?.addEventListener('click', (e)=>{
     const btn = e.target.closest('.album-card .btn');
     if(!btn) return;
@@ -1249,15 +1082,11 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
   function openGallery(key, title){
     currentAlbumKey = key;
-    currentAlbumPhotos = (albums[key] || []).slice(); // copia
+    currentAlbumPhotos = (albums[key] || []).slice();
     galTitle.textContent = title;
     galCount.textContent = currentAlbumPhotos.length;
     galGrid.innerHTML = '';
     page = 0;
-
-    // Si quieres las más nuevas primero:
-    // currentAlbumPhotos.reverse();
-
     galModal.hidden = false;
     lockScroll(true);
     renderPage();
@@ -1286,7 +1115,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
       const cap = document.createElement('div');
       cap.className = 'ph-cap';
-      cap.textContent = ''; // agrega leyenda si gustas
+      cap.textContent = '';
 
       a.appendChild(img);
       a.appendChild(cap);
@@ -1304,7 +1133,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     if (e.key === 'Escape') { galModal.hidden = true; lockScroll(false); }
   });
 
-  // ===== Lightbox mejorado (reemplaza el anterior) =====
+  // ===== Lightbox =====
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lbImg');
   const lbCap = document.getElementById('lbCap');
@@ -1319,15 +1148,9 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     lb.style.display = 'flex';
     lockScroll(true);
   }
+  function closeLB(){ lb.style.display='none'; lbImg.src=''; lockScroll(false); }
 
-  function closeLB(){
-    lb.style.display='none';
-    lbImg.src='';
-    lockScroll(false);
-  }
-
-  // Abrir LB al click en una foto del modal
-  galGrid.addEventListener('click', (e)=>{
+  document.getElementById('galGrid').addEventListener('click', (e)=>{
     const card = e.target.closest('.photo-card');
     if(!card) return;
     e.preventDefault();
@@ -1335,11 +1158,9 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     showLB(idx);
   });
 
-  // Cerrar por botón o click fuera
   lbCloseBtn.addEventListener('click', closeLB, {passive:true});
   lb.addEventListener('click', e=>{ if(e.target===lb) closeLB() }, {passive:true});
 
-  // Navegación teclado
   document.addEventListener('keydown', (e)=>{
     if (lb.style.display !== 'flex') return;
     if (e.key === 'ArrowRight') showLB(lbIndex + 1);
@@ -1347,7 +1168,6 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
     if (e.key === 'Escape')     closeLB();
   });
 
-  // Flechas visibles dentro del lightbox
   (function addLbArrows(){
     const make = (cls, txt, onClick)=>{
       const b = document.createElement('button');
@@ -1364,7 +1184,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 
   // ===== Arranque =====
   function start() {
-    if (!sliderWrapper.children.length) {
+    if (!document.querySelector('.slider-wrapper').children.length) {
       createSlidesAndDots(); updateSlider(); startAutoplay();
     }
     setText();
