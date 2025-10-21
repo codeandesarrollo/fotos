@@ -148,7 +148,7 @@ a{ color:inherit; text-decoration:none }
 .btn-kraft:hover{ background: linear-gradient(135deg, #7b634d, #463f38); }
 #ctaTop, #ctaWhats{ color: var(--accent-ink); background: linear-gradient(135deg, var(--accent), var(--accent-light));
   border: 1px solid color-mix(in oklab, var(--accent) 70%, #000);
-  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 10px 26px rgba(26,50,73,.22); }
+  box-shadow: 1px 1px 0 rgba(255,255,255,.35) inset, 0 10px 26px rgba(26,50,73,.22); }
 #ctaTop:hover, #ctaWhats:hover{
   background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 94%, #fff 6%), color-mix(in oklab, var(--accent-light) 98%, #fff 2%));
 }
@@ -277,13 +277,20 @@ a{ color:inherit; text-decoration:none }
 .album-cover{ aspect-ratio:16/10; overflow:hidden; background:#eef2f8 }
 .album-cover img{ width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s, filter .4s }
 
-/* ===== MODAL GALERÍA ===== */
+/* ===== MODAL GALERÍA (estructura base) ===== */
 .gallery-modal{ position:fixed; inset:0; z-index:80; display:flex; flex-direction:column; padding: clamp(16px, 3vw, 24px) }
 .gallery-modal[hidden]{ display:none }
 .gal-header{ display:flex; align-items:center; gap:16px; justify-content:space-between; border-radius:var(--radius-xl); padding:12px 20px; box-shadow:var(--shadow) }
 .gal-header h3{ margin:0; font-size:clamp(1rem, 4vw, 1.2rem); font-weight:300 }
 .gal-meta{ color:var(--text-dim); font-size:1rem }
-.gal-grid{ margin-top:clamp(12px, 2vw, 20px); flex:1; overflow:auto; padding:8px; column-width:300px; column-gap: clamp(10px, 2vw, 16px) }
+
+/* ← AQUI: fotos MÁS GRANDES */
+.gal-grid{
+  margin-top:clamp(12px, 2vw, 20px);
+  flex:1; overflow:auto; padding:8px;
+  column-width: clamp(320px, 36vw, 520px);
+  column-gap: clamp(12px, 2.2vw, 22px);
+}
 .gal-actions{ display:flex; justify-content:center; margin-top:clamp(12px, 2vw, 20px) }
 
 /* ===== Lightbox ===== */
@@ -311,9 +318,9 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
 .figure-polaroid img{ width:100%; height:auto; display:block; border-radius:10px }
 .figure-polaroid figcaption{ text-align:center; color:#2b2b2b; font-size:.95rem; margin-top:10px; letter-spacing:.02em; font-family: var(--font-display) }
 .about-body h3{ font-family: var(--font-display); font-weight:300; letter-spacing:.02em; margin:0 0 8px; font-size: clamp(22px, 3.6vw, 26px) }
-.about-body p{ margin:0 0 12px; color:var(--text-dim); line-height:1.8 }
+.about-body p{ margin:0 0 12px; color:#var(--text-dim); line-height:1.8 }
 
-/* Rústico galería + reseñas */
+/* Rústico galería + reseñas (fondo/estética general) */
 .gallery-modal{
   background:
     radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.12), transparent 60%),
@@ -322,33 +329,49 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   color:#2b2b2b;
 }
 .gal-header{ background:#fff9f0; border:1px solid #e8e1d6; box-shadow: 0 10px 30px rgba(17,24,39,.06), 0 2px 6px rgba(17,24,39,.04) inset; }
-.gal-grid{ column-width: 320px; column-gap: clamp(10px, 2vw, 18px); padding-top: 6px; }
-.photo-card{ display:block; position:relative; break-inside: avoid; margin:0 0 clamp(10px, 2vw, 18px);
-  padding:10px 10px 26px; background:#ffffff; border:1px solid #e6e1d9; border-radius:12px;
-  transform: rotate(var(--rot, 0deg)); box-shadow: 0 12px 26px rgba(0,0,0,.12), 0 2px 0 rgba(0,0,0,.04) inset;
-  transition: transform .22s ease, box-shadow .22s ease; will-change: transform; }
-.photo-card:hover{ transform: rotate(var(--rot, 0deg)) translateY(-3px) scale(1.01); box-shadow: 0 18px 36px rgba(0,0,0,.16), 0 2px 0 rgba(0,0,0,.04) inset; }
-.photo-card::before{ content:""; position:absolute; top:8px; left:26%; width:88px; height:22px; border-radius:3px;
-  background: linear-gradient(#f3e7c9, #e8dab3); border:1px solid #e5d7a8;
-  box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08); opacity:.92; transform: rotate(calc(var(--rot,0deg) * -0.6)); pointer-events:none; }
-.photo-card.tape-2::before{ left:auto; right:24%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:76px }
-.photo-card.tape-3::before{ left:18%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:64px }
-.photo-card .ph-img{ width:100%; height:auto; display:block; border-radius:8px; background:#eef2f8; filter: contrast(1.02) saturate(1.03); transition: filter .35s ease, transform .25s ease }
-.photo-card.loading .ph-img{ filter: blur(10px) saturate(1.1) }
-.photo-card:hover .ph-img{ transform: scale(1.01) }
-.photo-card .ph-cap{ margin-top:8px; text-align:center; color:#6b6256; font-size:.95rem; letter-spacing:.02em; font-family: var(--font-display) }
 
-.reviews-panel{ background:
-  radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.08), transparent 60%),
-  radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.08), transparent 60%),
-  linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
-  border:1px solid #e8e1d6; border-radius:18px; box-shadow: var(--shadow); padding: clamp(18px, 3.6vw, 28px); }
+/* ====== GALERÍA SIN MARCO ====== */
+.photo-card{
+  display:block; position:relative; break-inside: avoid;
+  margin:0 0 clamp(10px, 2vw, 18px);
+  padding:0; background:transparent; border:none; border-radius:0;
+  box-shadow:none; transform:none;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+.photo-card::before{ display:none; }
+.photo-card .ph-img{
+  width:100%; height:auto; display:block;
+  border-radius:12px;           /* Ajusta a 0 si prefieres sin redondeo */
+  background:#eef2f8;
+  filter:none;
+  transition: transform .2s ease, filter .2s ease;
+}
+.photo-card.loading .ph-img{ filter: blur(8px) saturate(1.05) }
+.photo-card:hover .ph-img{ transform: scale(1.01) }
+.photo-card .ph-cap{
+  margin-top:8px; text-align:center; color:#6b6256;
+  font-size:.95rem; letter-spacing:.02em; font-family: var(--font-display);
+}
+
+/* ===== Reseñas (se mantiene igual, con marco) ===== */
+.reviews-panel{
+  background:
+    radial-gradient(1100px 500px at 50% -10%, rgba(0,0,0,.08), transparent 60%),
+    radial-gradient(1100px 500px at 50% 110%, rgba(0,0,0,.08), transparent 60%),
+    linear-gradient(180deg, #f7f3ea 0%, #f3efe6 100%);
+  border:1px solid #e8e1d6; border-radius:18px; box-shadow: var(--shadow); padding: clamp(18px, 3.6vw, 28px);
+}
 .reviews-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: clamp(12px, 2.6vw, 22px); }
-.review-card{ position:relative; background:#fff; border:1px solid #e6e1d9; border-radius:14px; padding: 18px 16px 16px; color:#2b2b2b;
-  box-shadow: 0 12px 26px rgba(0,0,0,.12), 0 2px 0 rgba(0,0,0,.04) inset; transform: rotate(var(--rot, 0deg)); transition: transform .22s ease, box-shadow .22s ease; will-change: transform; }
+.review-card{
+  position:relative; background:#fff; border:1px solid #e6e1d9; border-radius:14px; padding: 18px 16px 16px; color:#2b2b2b;
+  box-shadow: 0 12px 26px rgba(0,0,0,.12), 0 2px 0 rgba(0,0,0,.04) inset; transform: rotate(var(--rot, 0deg));
+  transition: transform .22s ease, box-shadow .22s ease; will-change: transform;
+}
 .review-card:hover{ transform: rotate(var(--rot,0deg)) translateY(-3px) scale(1.01); box-shadow: 0 18px 36px rgba(0,0,0,.16), 0 2px 0 rgba(0,0,0,.04) inset }
-.review-card::before{ content:""; position:absolute; top:10px; left:24%; width:82px; height:20px; border-radius:3px; background: linear-gradient(#f3e7c9, #e8dab3);
-  border:1px solid #e5d7a8; box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08); opacity:.95; transform: rotate(calc(var(--rot,0deg) * -0.6)); pointer-events:none; }
+.review-card::before{
+  content:""; position:absolute; top:10px; left:24%; width:82px; height:20px; border-radius:3px; background: linear-gradient(#f3e7c9, #e8dab3);
+  border:1px solid #e5d7a8; box-shadow: 0 2px 8px rgba(0,0,0,.10) inset, 0 4px 10px rgba(0,0,0,.08); opacity:.95; transform: rotate(calc(var(--rot,0deg) * -0.6)); pointer-events:none;
+}
 .review-card.tape-2::before{ left:auto; right:22%; transform: rotate(calc(var(--rot,0deg) * 0.45)); width:72px }
 .review-card.tape-3::before{ left:16%; transform: rotate(calc(var(--rot,0deg) * -0.2)); width:60px }
 .review-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px }
@@ -373,6 +396,12 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   .social-bubbles::before{ content:""; position:absolute; inset:-8px -10px; border-radius:999px; background: rgba(255,255,255,.9); box-shadow: 0 10px 22px rgba(17,24,39,.16), 0 1px 0 rgba(255,255,255,.8) inset; backdrop-filter: blur(8px); z-index:-1; }
   .social-bubbles .bubble{ width:52px; height:52px }
   .social-bubbles .bubble svg{ width:24px; height:24px }
+
+  /* Galería: 1 foto por fila (muy grande) en móvil */
+  .gallery-modal .gal-grid{
+    column-width: 92vw;
+    column-gap: 12px;
+  }
 }
 @media (max-width:380px){
   .social-bubbles .bubble{ width:48px; height:48px }
@@ -413,6 +442,7 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   .social-bubbles .bubble{ transition:none }
   .social-bubbles .bubble:hover{ transform:none }
 }
+
 </style>
 </head>
 <body>
@@ -821,10 +851,20 @@ footer{ padding: clamp(32px, 5vw, 60px) 0; border-top:1px solid var(--border); c
   const sliderContainer = document.querySelector('.slider-container');
 
   const slidesData = [
-    { src: "boda/IMG_6641.webp", alt: "Boda en la playa en Puerto Vallarta", caption: "Atardecer en Puerto Vallarta" },
-    { src: "boda/insta-Marlen&Daniel-21.webp", alt: "Momentos íntimos de boda", caption: "Momentos íntimos · Sayulita" },
-    { src: "boda/_MG_3386.webp", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
-    { src: "boda/IMG_5996.webp", alt: "Paisaje de Sayulita", caption: "Costa de Sayulita" }
+    { src: "slider/CrisBernal-03.jpg", alt: "Boda en la playa en Puerto Vallarta", caption: "Atardecer en Puerto Vallarta" },
+    { src: "slider/IMG_0828.jpg", alt: "Paisaje de Sayulita", caption: "Costa de Sayulita" },
+    { src: "slider/CrisBernalPhoto-6.jpg", alt: "Momentos íntimos de boda", caption: "Momentos íntimos · Sayulita" },
+    { src: "slider/CrisBernalPhoto-23.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/IMG_5996.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/IMG_6265.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/IMG_3195.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/IMG_6541.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/IMG_6810.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/IMG_7101.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+     { src: "slider/EMILYJAMESANIMOTO-2.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" },
+    { src: "slider/L&A-46.jpg", alt: "Detalles de boda", caption: "Detalles que cuentan historias" }
+   
+    
   ];
 
   let currentIndex = 0;
